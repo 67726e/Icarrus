@@ -16,30 +16,21 @@ import java.util.Arrays;
  * Time: 2:08 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AccountCredentialDAO {
-    private static String username;
-    private static String password;
-    private static String token;
-    private static boolean loginStatus;
+public class CredentialDAO {
     private static final File accountCredentialFile =
                 new File("../data/AccountCredentials.idat");                                    // Default file for all user account credentials
 
-    public static void setUsername(String _username) {username = _username;}
-    public static void setPassword(String _password) {password = _password;}
-    public static void setToken(String _token) {token = _token;}
-    public static String getToken() {return token;}
-    public static void setLoginStatus(boolean _loginStatus) {loginStatus = _loginStatus;}
-    public static boolean getLoginStatus() {return loginStatus;}
-
-    private AccountCredentialDAO() {}
+    private CredentialDAO() {}
 
     public static void storeCredentials(String username, char[] password) {
-        String passwordHash;
+        String passwordHash = "";
+
+        for (char c : password) { passwordHash += c; }
 
         try {
             MessageDigest passwordHasher = MessageDigest.getInstance("MD5");
-            passwordHasher.update(Arrays.toString(password).getBytes(), 0, password.length);    // Create the password hash
-            passwordHash = new BigInteger(1, passwordHasher.digest()).toString();               // Get hexadecimal String representation of hash
+            passwordHasher.update(passwordHash.getBytes(), 0, password.length);                 // Create the password hash
+            passwordHash = new BigInteger(1, passwordHasher.digest()).toString(16);             // Get hexadecimal String representation of hash
         } catch (NoSuchAlgorithmException e) {
             MessageHandler.postMessage("Credentials Storage Error", "Your account credentials could not be securely stored. You will not be automatically logged in", LoggingDAO.WARNING);
             return;

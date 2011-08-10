@@ -1,6 +1,6 @@
 package com.hexcoder.icarrus.ui;
 
-import com.hexcoder.icarrus.dao.AccountCredentialDAO;
+import com.hexcoder.icarrus.dao.CredentialDAO;
 import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dao.LoginServerDAO;
@@ -39,7 +39,7 @@ public class LoginForm extends JFrame {
         setTitle("Icarrus ~ Login");
         setResizable(false);
         try {
-            setIconImage(ImageDAO.getImage("data/wingIcon-32x32"));                             // Attempt to set the window's icon image
+            setIconImage(ImageDAO.getImage("data/wingIcon-32x32.png"));                         // Attempt to set the window's icon image
         } catch (FileNotFoundException e) {
             // Do nothing for this exception
         } catch (IOException e) {
@@ -79,7 +79,7 @@ public class LoginForm extends JFrame {
             rememberMe.setBounds(127, 90, 95, 20);
             this.add(rememberMe);
 
-            JButton login = new JButton("LoginForm");
+            JButton login = new JButton("Login");
             login.setBounds(50, 135, 80, 25);
             login.addActionListener(enterListener);
             this.add(login);
@@ -95,7 +95,7 @@ public class LoginForm extends JFrame {
             LoginServerDAO loginServerDAO = new LoginServerDAO(
                         usernameField.getText(), passwordField.getPassword());                  // Create object to interface with the login server
             if (loginServerDAO.getLoginStatus()) {                                              // Check for a successful login
-                if (rememberMe.isSelected()) AccountCredentialDAO.storeCredentials(
+                if (rememberMe.isSelected()) CredentialDAO.storeCredentials(
                         usernameField.getText(), passwordField.getPassword());                  // Store the username and password in a file for automatic login
                 form_pointer.dispose();                                                         // Clear up resources used by this form
                 ExtendedTrayIcon.setLoginStatus("Logout");

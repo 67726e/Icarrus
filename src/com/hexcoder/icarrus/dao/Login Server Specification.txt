@@ -25,6 +25,7 @@ To allow for the expansion of parameters while maintaining backwards compatibili
     C) The value segment is to be terminated by a single newline character '\n'
     D) Whitespace is not allowed prior to the instance of the colon and the first character in the value segment may not be whitespace.
     E) To maintain backwards compatibility, any unknown parameter or line that does not start with the identifying tilde '~' is to be ignored and treated as if it were not there.
+    F) Invalid characters inside of a parameter's value string include: colon ':',
 
         Parameters
         ----------

@@ -3,9 +3,12 @@ package com.hexcoder.icarrus;
 import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.ui.ControlPanelForm;
 import com.hexcoder.icarrus.ui.ExtendedTrayIcon;
+import com.hexcoder.icarrus.ui.LoginForm;
+import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -20,7 +23,7 @@ public class main {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
 		catch (Exception e) {}
 
-        ControlPanelForm controlPanelForm = new ControlPanelForm();
-        controlPanelForm.setVisible(true);
+        ControlPanelForm form = new ControlPanelForm();
+        form.setVisible(true);
     }
 }

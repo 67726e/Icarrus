@@ -22,6 +22,7 @@ public class ExtendedTrayIcon extends TrayIcon {
     private JPopupMenu popupMenu;                                                               // Swing popupmenu used in lieu of the AWT popup menu used by TrayIcon
     private JDialog popupDialog;
     private static JMenuItem login;
+    private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
 
     public static void setLoginStatus(String status) {login.setText(status);}
 
@@ -29,7 +30,6 @@ public class ExtendedTrayIcon extends TrayIcon {
         super(image);
         this.setImageAutoSize(false);
         this.addMouseListener(new trayMouseListener());
-        SystemTray.getSystemTray().add(this);
 
         popupDialog = new JDialog();
         popupDialog.setAlwaysOnTop(true);
@@ -59,6 +59,8 @@ public class ExtendedTrayIcon extends TrayIcon {
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(new ExitListener());
         popupMenu.add(exit);
+
+        SystemTray.getSystemTray().add(this);
     }
 
     public void showPopupMenu(MouseEvent event) {
@@ -113,7 +115,8 @@ public class ExtendedTrayIcon extends TrayIcon {
 
     private class ExitListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-
+            SystemTray.getSystemTray().remove(trayIcon);                                        // Remove the TrayIcon from the system's tray
+            System.exit(0);                                                                     // Clean exit
         }
     }
 }
