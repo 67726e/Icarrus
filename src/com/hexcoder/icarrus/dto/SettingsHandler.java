@@ -8,22 +8,28 @@ package com.hexcoder.icarrus.dto;
  * To change this template use File | Settings | File Templates.
  */
 public class SettingsHandler {
-    private static boolean writeMessagesToLog = true;
+    private static boolean saveMessagesToLog = true;
+    private static boolean saveHistoryToFile = true;
     private static boolean displayMessagesToUser = true;
+    private static boolean copyURLToClipboard = true;
     private static String loginServerURL = "http://127.0.0.1/Icarrus/app/login.php";
     private static String uploadServerURL = "http://127.0.0.1/Icarrus/app/upload.php";
     // TODO: Point default loginServerURL to HexCoder run Icarrus server
     // TODO: Point default uploadServerURL to HexCoder run Icarrus server
 
 
-    public static boolean getWriteMessagesToLog() {return writeMessagesToLog;}
-    public static void setWriteMessagesToLog(boolean setting) {writeMessagesToLog = setting;}
+    public static boolean getSaveMessagesToLog() {return saveMessagesToLog;}
+    public static void setSaveMessagesToLog(boolean setting) {saveMessagesToLog = setting;}
     public static boolean getDisplayMessagesToUser() {return displayMessagesToUser;}
     public static void setDisplayMessagesToUser(boolean setting) {displayMessagesToUser = setting;}
     public static String getLoginServerURL() {return loginServerURL;}
     public static void setLoginServerURL(String setting) {loginServerURL = setting;}
     public static String getUploadServerURL() {return uploadServerURL;}
     public static void setUploadServerURL(String setting) {uploadServerURL = setting;}
+    public static boolean getSaveHistoryToFile() {return saveHistoryToFile;}
+    public static void setSaveHistoryToFile(boolean setting) {saveHistoryToFile = setting;}
+    public static boolean getCopyURLToClipboard() {return copyURLToClipboard;}
+    public static void setCopyURLToClipboard(boolean setting) {copyURLToClipboard = setting;}
 
     private SettingsHandler() {}
 }

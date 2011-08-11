@@ -63,7 +63,7 @@ public class MessageHandler {
         System.out.println("\t[" + severity + "] - " + title + ": " + message);                 // Print formatted message to command line
         if (SettingsHandler.getDisplayMessagesToUser())
             displayMessageToUser(title, message, messageType);                                  // Call method to display the message to the user if applicable
-        if (SettingsHandler.getWriteMessagesToLog())
+        if (SettingsHandler.getSaveMessagesToLog())
             LoggingDAO.logToFile(title, message, messageType);                                  // Call logging method to write this message to the log
 
         if (messageType == LoggingDAO.FATAL_ERROR) System.exit(-1);                             // Exit with a general error code upon a fatal error
