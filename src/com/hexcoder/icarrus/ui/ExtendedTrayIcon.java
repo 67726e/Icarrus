@@ -1,5 +1,6 @@
 package com.hexcoder.icarrus.ui;
 
+import com.hexcoder.icarrus.dto.CredentialHandler;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import javax.swing.*;
@@ -23,6 +24,8 @@ public class ExtendedTrayIcon extends TrayIcon {
     private JDialog popupDialog;
     private static JMenuItem login;
     private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
+    private LoginForm loginForm;                                                                // Form to allow the user to login
+    private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
 
     public static void setLoginStatus(String status) {login.setText(status);}
 
@@ -90,26 +93,47 @@ public class ExtendedTrayIcon extends TrayIcon {
 
 
 
-
-
     /****** Event Listener Classes *******/
-    // TODO: Add handling tasks for popupmenu menu item listeners
 
     private class SettingsMenuListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
+            JMenuItem item = (JMenuItem)event.getSource();
+            String text = item.getText();                                                       // Get the text of the item to determine which item was clicked
 
+            if (text.equals("About")) {                                                         // Determine which item was clicked and switch to the appropriate panel
+                controlPanelForm.switchToTab(ControlPanelForm.ControlPanelTab.ABOUT);
+            } else if (text.equals("History")) {
+                controlPanelForm.switchToTab(ControlPanelForm.ControlPanelTab.HISTORY);
+            } else {
+                controlPanelForm.switchToTab(ControlPanelForm.ControlPanelTab.SETTINGS);
+            }
+
+            controlPanelForm.setVisible(true);
+            controlPanelForm.toFront();
         }
     }
 
     private class CalibrateListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-
+            // TODO: Create functionality to locate the TrayIcon
+            // TODO: Call method to relocate the TrayIcon
         }
     }
 
     private class LoginListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
+            if (login.getText().equals("Login")) {
+                if (loginForm != null) return;                                                  // Do nothing if the login form is already displayed
+                loginForm = new LoginForm();                                                    // Display the login form so the user may login
+            } else {
+                if (loginForm != null) loginForm.dispose();                                     // Get rid of the current login form if one is somehow still displayed
+                login.setText("Login");                                                         // Change the text to show we are no longer logged in
 
+                CredentialHandler.setLoginStatus(false);                                        // Clear last logged in user's credentials
+                CredentialHandler.setToken("");
+                CredentialHandler.setUsername("");
+                CredentialHandler.setPassword("");
+            }
         }
     }
 

@@ -16,7 +16,7 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class ImageDAO {
-    private static final String rootPath = "src/com/hexcoder/icarrus/";
+    private static final String rootPath = "data/images/";
 
     private ImageDAO() {}
 

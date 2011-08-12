@@ -39,7 +39,7 @@ public class LoginForm extends JFrame {
         setTitle("Icarrus ~ Login");
         setResizable(false);
         try {
-            setIconImage(ImageDAO.getImage("data/wingIcon-32x32.png"));                         // Attempt to set the window's icon image
+            setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));                              // Attempt to set the window's icon image
         } catch (FileNotFoundException e) {
             // Do nothing for this exception
         } catch (IOException e) {

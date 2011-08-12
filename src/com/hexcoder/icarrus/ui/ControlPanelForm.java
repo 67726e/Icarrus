@@ -1,7 +1,9 @@
 package com.hexcoder.icarrus.ui;
 
 import com.hexcoder.icarrus.dao.ImageDAO;
+import com.hexcoder.icarrus.dao.SettingsDAO;
 import com.hexcoder.icarrus.dto.SettingsHandler;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.sun.xml.internal.bind.v2.model.impl.ModelBuilder;
 
 import javax.swing.*;
@@ -20,9 +22,11 @@ import java.io.IOException;
 public class ControlPanelForm extends JFrame {
     private final int WIDTH = 500, HEIGHT = 300;
     private JFrame form = this;                                                                 // Pointer to the JFrame for use by inner classes
-    private JPanel panel;                                                                       // Pointer to the JPanel for this form
+    private ControlPanelPanel panel;                                                            // Pointer to the JPanel for this form
 
-     public enum ControlPanelTab {HISTORY, SETTINGS, ABOUT}                                     // Enum used to determine which tab to switch to
+    public enum ControlPanelTab {HISTORY, SETTINGS, ABOUT}                                     // Enum used to determine which tab to switch to
+
+    public void switchToTab(ControlPanelTab tab) {panel.switchToTab(tab);}
 
     public ControlPanelForm() {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -40,7 +44,7 @@ public class ControlPanelForm extends JFrame {
         this.setTitle("Icarrus ~ Settings");
         this.getContentPane().add(panel);                                                       // Add the JPanel with the form's contents
         try {
-            this.setIconImage(ImageDAO.getImage("data/wingIcon-32x32.png"));
+            this.setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));
         } catch (IOException e) {
 
         }
@@ -137,25 +141,43 @@ public class ControlPanelForm extends JFrame {
     }
 
     private class SettingsTab extends JPanel {
-        private JCheckBox deleteHistory, saveHistory, copyURL, saveLog;
+        private JCheckBox deleteHistory, saveHistory, copyURL, saveLog, displayMessages;
         private JTextField uploadURL, loginURL;
 
         public SettingsTab() {
             this.setLayout(null);
-            // TODO: Create SettingsDAO
+            new SettingsDAO().loadSettingsFromFile();                                               // Load the settings from the Settings file for a proper display of user settings
 
-            deleteHistory = new JCheckBox("Delete History: ", false);
+            deleteHistory = new JCheckBox("Delete History", false);
             deleteHistory.setBounds(20, 20, 100, 20);
             this.add(deleteHistory);
-            saveHistory = new JCheckBox("Save History: ", SettingsHandler.getSaveHistoryToFile());
+            saveHistory = new JCheckBox("Save History", SettingsHandler.getSaveHistoryToFile());
             saveHistory.setBounds(20, 50, 100, 20);
             this.add(saveHistory);
             copyURL = new JCheckBox("Copy URLs", SettingsHandler.getCopyURLToClipboard());
             copyURL.setBounds(20, 80, 100, 20);
             this.add(copyURL);
-            saveLog = new JCheckBox("Save Logs: ", SettingsHandler.getSaveMessagesToLog());
+            saveLog = new JCheckBox("Save Logs", SettingsHandler.getSaveMessagesToLog());
             saveLog.setBounds(20, 110, 100, 20);
             this.add(saveLog);
+            displayMessages = new JCheckBox("Display Messages", SettingsHandler.getDisplayMessagesToUser());
+            displayMessages.setBounds(20, 140, 120, 20);
+            this.add(displayMessages);
+
+
+            JLabel loginURLLabel = new JLabel("Login Server URL:");
+            loginURLLabel.setBounds(160, 20, 100, 20);
+            this.add(loginURLLabel);
+            loginURL = new JTextField(SettingsHandler.getLoginServerURL());
+            loginURL.setBounds(260, 20, 200, 20);
+            this.add(loginURL);
+            JLabel uploadURLLabel = new JLabel("Upload Server URL:");
+            uploadURLLabel.setBounds(160, 50, 100, 20);
+            this.add(uploadURLLabel);
+            uploadURL = new JTextField(SettingsHandler.getUploadServerURL());
+            uploadURL.setBounds(260, 50, 200, 20);
+            this.add(uploadURL);
+
 
 
             JButton apply = new JButton("Apply");
@@ -170,7 +192,7 @@ public class ControlPanelForm extends JFrame {
             cancel.setBounds(110, 190, 80, 25);
             cancel.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
+                    cancelSettings();
                 }
             });
             this.add(cancel);
@@ -182,15 +204,14 @@ public class ControlPanelForm extends JFrame {
          * SettingsHandler.
          */
         private void updateSettings() {
-            // TODO: Update all settings in SettingsHandler with the new values
-
-
             SettingsHandler.setCopyURLToClipboard(copyURL.isSelected());
-            // TODO: Implement SettingsHandler.setDisplayMessagesToUser();
+            SettingsHandler.setDisplayMessagesToUser(displayMessages.isSelected());
             SettingsHandler.setLoginServerURL(loginURL.getText());
             SettingsHandler.setSaveHistoryToFile(saveHistory.isSelected());
             SettingsHandler.setSaveMessagesToLog(saveLog.isSelected());
             SettingsHandler.setUploadServerURL(uploadURL.getText());
+
+            new SettingsDAO().writeSettingsToFile();                                            // Write out the newly updated settings to the Settings file
         }
 
         /**
@@ -202,6 +223,7 @@ public class ControlPanelForm extends JFrame {
             saveHistory.setSelected(SettingsHandler.getSaveHistoryToFile());
             copyURL.setSelected(SettingsHandler.getCopyURLToClipboard());
             saveLog.setSelected(SettingsHandler.getSaveMessagesToLog());
+            displayMessages.setSelected(SettingsHandler.getDisplayMessagesToUser());
 
             uploadURL.setText(SettingsHandler.getUploadServerURL());
             loginURL.setText(SettingsHandler.getLoginServerURL());
@@ -241,7 +263,7 @@ public class ControlPanelForm extends JFrame {
 
     private class AboutItemListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            // TODO: Switch the the "About" tab
+            switchToTab(ControlPanelTab.ABOUT);                                                 // Switch to the "About" tab
         }
     }
 
