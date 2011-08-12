@@ -1,5 +1,5 @@
-Login Server Specification
------------------------------------
+Login Server Specification v1.0
+-------------------------------
 
     Request
     -------

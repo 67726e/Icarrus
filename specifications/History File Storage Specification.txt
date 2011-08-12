@@ -1,0 +1,29 @@
+History File Storage Specification v1.0
+---------------------------------------
+
+The history file is used to store any data related to the user's file upload history. Typical attributes include but are not limited to
+the date the file was uploaded, the URL returned for the file, the file size, and the file name. The format of stored data is based upon
+the IDAT (Icarrus DATa) specification with minor alterations to account for the tabular nature of the data stored within.
+
+    Format
+    ------
+Given that the history information is of a tabular nature, slight alterations to the IDAT format have been taken for the History data
+storage. A standard history entry for a single file must match the schema as follows:
+    A) The indication of a file entry is "~File {" ending with a single newline '\n' character.
+    B) The indication of the end of a file entry is "}" followed by a single newline '\n' character
+    C) All parameters inside of the file entry block must meet the standard IDAT specification for parameters
+    D) Following the IDAT specification, all unknown lines or parameters inside of the file entry block are to be ignored.
+
+~File {
+    ~filename:example.txt
+    ~filesize:233
+    ~fileurl:http~//icarrus.us/server~8080
+    ~uploaddate:2/5/2011 @ 13~45
+}
+
+    Parameters
+    ----------
+filename    --  Required parameter. Contains the filename (including extension) of the file uploaded to an Icarrus server.
+filesize    --  Required parameter. Contains the size of the file upload in bytes --or-- in a formatted manner e.g. "240 GB"
+fileurl     --  Required paremeter. Contains the URL of the file on the Icarrus server that the file was uploaded to.
+uploaddate  --  Required parameter. Contains the date and/or time of the file upload.

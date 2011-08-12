@@ -1,5 +1,6 @@
 package com.hexcoder.icarrus.ui;
 
+import com.hexcoder.icarrus.dao.HistoryDAO;
 import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.SettingsDAO;
 import com.hexcoder.icarrus.dto.SettingsHandler;
@@ -8,9 +9,11 @@ import com.sun.xml.internal.bind.v2.model.impl.ModelBuilder;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.tools.JavaCompiler;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -112,8 +115,8 @@ public class ControlPanelForm extends JFrame {
         public HistoryTab() {
             this.setLayout(null);
 
-            // TODO: Create HistoryDAO
-            // TODO: Call HistoryDAO to get upload history
+            java.util.List<String[]> historyRows = new HistoryDAO().loadHistoryFromFile();
+            // TODO: Convert historyRows<String[]> to Object[][]
             Object[][] data = {};
             String[] columns = {"File Name", "URL", "Size", "Date"};
 
@@ -248,9 +251,6 @@ public class ControlPanelForm extends JFrame {
             this.add(homepageLink);
         }
     }
-
-
-
 
 
     /***** Event Listeners *****/
