@@ -4,7 +4,7 @@ import com.hexcoder.icarrus.dao.CredentialDAO;
 import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dao.LoginServerDAO;
-import com.hexcoder.icarrus.messaging.MessageHandler;
+import com.hexcoder.icarrus.dto.MessageHandler;
 
 import javax.swing.*;
 import java.awt.*;

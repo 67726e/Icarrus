@@ -1,18 +1,14 @@
 package com.hexcoder.icarrus.dao;
 
 import com.hexcoder.icarrus.dto.CredentialHandler;
+import com.hexcoder.icarrus.dto.MessageHandler;
 import com.hexcoder.icarrus.dto.SettingsHandler;
-import com.hexcoder.icarrus.messaging.MessageHandler;
-import com.sun.xml.internal.fastinfoset.util.CharArray;
-import com.sun.xml.internal.messaging.saaj.util.CharReader;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;

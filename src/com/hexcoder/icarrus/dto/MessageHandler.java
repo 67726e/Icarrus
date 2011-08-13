@@ -1,4 +1,4 @@
-package com.hexcoder.icarrus.messaging;
+package com.hexcoder.icarrus.dto;
 
 import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dto.SettingsHandler;

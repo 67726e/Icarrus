@@ -1,13 +1,11 @@
 package com.hexcoder.icarrus.dao;
 
-import com.hexcoder.icarrus.messaging.MessageHandler;
-import sun.security.util.BigInt;
+import com.hexcoder.icarrus.dto.MessageHandler;
 
 import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
