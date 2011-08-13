@@ -4,16 +4,14 @@ import com.hexcoder.icarrus.dao.HistoryDAO;
 import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.SettingsDAO;
 import com.hexcoder.icarrus.dto.SettingsHandler;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.xml.internal.bind.v2.model.impl.ModelBuilder;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.tools.JavaCompiler;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -115,9 +113,8 @@ public class ControlPanelForm extends JFrame {
         public HistoryTab() {
             this.setLayout(null);
 
-            java.util.List<String[]> historyRows = new HistoryDAO().loadHistoryFromFile();
-            // TODO: Convert historyRows<String[]> to Object[][]
-            Object[][] data = {};
+            java.util.List<List<String[]>> history = new HistoryDAO().loadHistoryFromFile();                            // Get a List containing all of the history data
+            Object[][] data = listToObject(history);                                                                    // Convert the List to a properly formatted Object array for the JTable
             String[] columns = {"File Name", "URL", "Size", "Date"};
 
             tableModel = new DefaultTableModel(data, columns);
@@ -134,6 +131,37 @@ public class ControlPanelForm extends JFrame {
         public void insertRow(Object[] data) {tableModel.insertRow(0, data);}
         public void clearTable() {tableModel.getDataVector().removeAllElements();}
 
+        /**
+         * Private utility method used to convert the List containing history entries into a format readable
+         * by the JTable that displays the history. Function iterates through the key/value pairs and places
+         * the value in the corresponding slot of the array.
+         *
+         * @param list contains the key/value pairs for each row in the history table
+         * @return Object[][] containing the data for the rows of the JTable
+         */
+        private Object[][] listToObject(List<List<String[]>> list) {
+            Object[][] data = new Object[list.size()][0];
+
+            int rowCount = 0;
+            for (List<String[]> row : list) {
+                Object[] rowObject = {"", "", "", ""};                                                                  // Current temporary row object
+                for (String[] pair : row) {                                                                             // Iterate through the key/value pair to determine what column it belongs in
+                    if (pair[0].equals("filename")) {
+                        rowObject[0] = pair[1];
+                    } else if (pair[0].equals("fileurl")) {
+                        rowObject[1] = pair[1];
+                    } else if (pair[0].equals("filesize")) {
+                        rowObject[2] = pair[1];
+                    } else if (pair[0].equals("uploaddate")) {
+                        rowObject[3] = pair[1];
+                    }
+                }
+                data[rowCount++] = rowObject;                                                                           // Pass the new Object[] for the current row into the final row object
+            }
+
+            return data;
+        }
+
         private class HistoryMouseListener implements MouseListener {
             public void mouseClicked(MouseEvent event) {}
             public void mouseEntered(MouseEvent event) {}
@@ -149,7 +177,7 @@ public class ControlPanelForm extends JFrame {
 
         public SettingsTab() {
             this.setLayout(null);
-            new SettingsDAO().loadSettingsFromFile();                                               // Load the settings from the Settings file for a proper display of user settings
+            new SettingsDAO().loadSettingsFromFile();                                                                   // Load the settings from the Settings file for a proper display of user settings
 
             deleteHistory = new JCheckBox("Delete History", false);
             deleteHistory.setBounds(20, 20, 100, 20);

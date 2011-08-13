@@ -19,10 +19,51 @@ public class HistoryDAO {
 
     public HistoryDAO() {}
 
-    public List<String[]> loadHistoryFromFile() {
-        List<String[]> historyRows = new LinkedList<String[]>();
+    public List<List<String[]>> loadHistoryFromFile() {
+        List<List<String[]>> historyRows = new LinkedList<List<String[]>>();
+        List<String[]> tmpList = new LinkedList<String[]>();                                                            // Temp list to hold the contents of a file block while it is being read
 
-        // TODO: Implement History loader code based on the specification
+        if (!historyFile.exists()) return historyRows;                                                                  // We can stop right here if there is no history file to read
+
+        BufferedReader in = null;
+        boolean insideBlock = false;
+        String line = "";
+
+        try {
+            in = new BufferedReader(new FileReader(historyFile));
+
+            try {
+                while ((line = in.readLine()) != null) {
+                    line = line.trim();
+                    if (line.length() == 0) continue;                                                                   // If this line is empty, skip over it
+
+                    if (insideBlock) {
+                        if (line.equals("}")) {                                                                         // End of the current file block, signify this and add the file block data to the List
+                            insideBlock = false;
+                            historyRows.add(tmpList);
+                            tmpList = new LinkedList<String[]>();
+                        } else {                                                                                        // Otherwise we have a regular line, perform parameter checks.
+                            if (line.charAt(0) != '~') continue;                                                        // Doesn't start with the parameter designator, skip over this line
+                            String[] parts = line.split(":");
+                            if (parts.length != 2) continue;                                                            // If the line contains more than one colon, it is invalid and skipped over
+                            if (parts[0].length() == 1) continue;                                                       // Invalid parameter if the key value is blank
+                            if (parts[0].contains(" ") || parts[0].contains("\t")) continue;                            // Skip the line if it contains whitespace
+
+                            parts[0] = parts[0].substring(1, parts[0].length());                                        // Strip the tilde from the key String
+                            parts[1] = parts[1].replaceAll("\\~", ":");                                                 // Replace all tildes '~' with colons ':' as per spec
+
+                            tmpList.add(parts);                                                                         // Add the valid key/value pair to the temporary file block List
+                        }
+                    } else {
+                        if (line.equals("-File {")) insideBlock = true;                                                 // Check to see if we have the start of a new block
+                    }
+                }
+            } finally {
+                in.close();
+            }
+        } catch (IOException e) {
+            MessageHandler.postMessage("History Read Error", "The upload history could not be read.", LoggingDAO.ERROR);
+        }
 
         return historyRows;
     }
@@ -36,7 +77,7 @@ public class HistoryDAO {
     public void writeHistoryToFile(String[][] historyEntry) {
         boolean generalError = false;
         StringBuilder writeString = new StringBuilder();
-        writeString.append("\n~File {\n");
+        writeString.append("\n-File {\n");
 
         for (int i = 0; i < historyEntry.length; i++) {
             if (historyEntry[i][1].contains("\n") || historyEntry[i][1].contains("~")) generalError = true;             // The value section cannot contain newline '\n' or tilde '~' characters

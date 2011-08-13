@@ -9,13 +9,13 @@ the IDAT (Icarrus DATa) specification with minor alterations to account for the 
     ------
 Given that the history information is of a tabular nature, slight alterations to the IDAT format have been taken for the History data
 storage. A standard history entry for a single file must match the schema as follows:
-    A) The indication of a file entry is "~File {" ending with a single newline '\n' character.
+    A) The indication of a file entry is "-File {" ending with a single newline '\n' character.
     B) The indication of the end of a file entry is "}" followed by a single newline '\n' character
     C) All parameters inside of the file entry block must meet the standard IDAT specification for parameters
     D) Following the IDAT specification, all unknown lines or parameters inside of the file entry block are to be ignored.
     E) If a read operation fails inside of a File block, the offending block is to be ignored and the parser should immediately proceed to the next available File block.
 
-~File {
+-File {
     ~filename:example.txt
     ~filesize:233
     ~fileurl:http~//icarrus.us/server~8080
