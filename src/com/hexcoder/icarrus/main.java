@@ -22,8 +22,5 @@ public class main {
     public static void main(String[] args) {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
 		catch (Exception e) {}
-
-        ControlPanelForm form = new ControlPanelForm();
-        form.setVisible(true);
     }
 }
