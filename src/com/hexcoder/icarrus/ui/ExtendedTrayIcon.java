@@ -1,6 +1,8 @@
 package com.hexcoder.icarrus.ui;
 
+import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dto.CredentialHandler;
+import com.hexcoder.icarrus.dto.MessageHandler;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import javax.swing.*;
@@ -26,10 +28,11 @@ public class ExtendedTrayIcon extends TrayIcon {
     private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
     private LoginForm loginForm;                                                                // Form to allow the user to login
     private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
+    private DropForm dropForm;                                                                  // Form that accepts the user's file drops
 
     public static void setLoginStatus(String status) {login.setText(status);}
 
-    public ExtendedTrayIcon(BufferedImage image) throws AWTException {
+    public ExtendedTrayIcon(BufferedImage image) {
         super(image);
         this.setImageAutoSize(false);
         this.addMouseListener(new trayMouseListener());
@@ -63,7 +66,16 @@ public class ExtendedTrayIcon extends TrayIcon {
         exit.addActionListener(new ExitListener());
         popupMenu.add(exit);
 
-        SystemTray.getSystemTray().add(this);
+        try {
+            SystemTray.getSystemTray().add(this);
+        } catch (AWTException e) {
+            MessageHandler.postMessage("System Tray Error", "The tray icon could not be added to your system tray.", LoggingDAO.FATAL_ERROR);
+        }
+
+        dropForm = new DropForm(this.getSize());                                               // Create new form to accept file drops
+        dropForm.setVisible(true);
+        // TODO: Create method to determine the location of the TrayIcon
+        // TODO: Initial calibration/positioning of dropForm
     }
 
     public void showPopupMenu(MouseEvent event) {

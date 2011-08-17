@@ -38,13 +38,8 @@ public class LoginForm extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);                                      // Only dispose of system resources used by this window upon close
         setTitle("Icarrus ~ Login");
         setResizable(false);
-        try {
-            setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));                              // Attempt to set the window's icon image
-        } catch (FileNotFoundException e) {
-            // Do nothing for this exception
-        } catch (IOException e) {
-            // Do nothing for this exception
-        }
+        setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));                                  // Attempt to set the window's icon image
+
     }
 
     private class LoginPanel extends JPanel {

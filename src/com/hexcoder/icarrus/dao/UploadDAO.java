@@ -3,6 +3,7 @@ package com.hexcoder.icarrus.dao;
 import com.hexcoder.icarrus.dto.CredentialHandler;
 import com.hexcoder.icarrus.dto.MessageHandler;
 import com.hexcoder.icarrus.dto.SettingsHandler;
+import com.hexcoder.icarrus.ui.DropForm;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.http.HttpEntity;
@@ -79,7 +80,7 @@ public class UploadDAO {
             MessageHandler.postMessage("Upload Error", "A connection could not be established with the server", LoggingDAO.ERROR);
         }
 
-
+        // TODO: Send upload information to HistoryDAO
         if (status.equals("valid")) {
             MessageHandler.postMessage("Upload Successful", "Your file(s) have uploaded successfully.", LoggingDAO.INFORMATION);
             new ClipboardDAO().copyURLToClipboard(url);                                                                 // Copy the URL of the uploaded file to the clipboard (if allowed)

@@ -44,11 +44,8 @@ public class ControlPanelForm extends JFrame {
         this.setLayout(null);
         this.setTitle("Icarrus ~ Settings");
         this.getContentPane().add(panel);                                                       // Add the JPanel with the form's contents
-        try {
-            this.setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));
-        } catch (IOException e) {
+        this.setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));
 
-        }
 
         /** Setup JMenuBar **/
         JMenuBar menuBar = new JMenuBar();

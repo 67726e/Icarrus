@@ -52,6 +52,8 @@ public class DropForm extends JDialog {
             DropTarget dropTarget = new DropTarget(dropTargetComponent, new DropTargetListenerImpl());                  // Implement the drop target listener on the drop component for this form
         }
 
+        // TODO: Create method to bring this dialog to the front of the screen
+
         private class DropTargetListenerImpl implements DropTargetListener {
             public void dragEnter(DropTargetDragEvent event) {}
             public void dragExit(DropTargetEvent event) {}
