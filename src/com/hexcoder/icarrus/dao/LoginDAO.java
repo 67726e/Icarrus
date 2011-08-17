@@ -20,7 +20,7 @@ import java.util.*;
  * Time: 2:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LoginServerDAO {
+public class LoginDAO {
     private boolean loginStatus = false;
 
     public boolean getLoginStatus() {return loginStatus;}
@@ -97,27 +97,27 @@ public class LoginServerDAO {
      * @param parameters is the HashMap containing all paramteter/value pairs provided in the login server's response
      */
     private void retrieveValues(HashMap<String, String> parameters) {
+        // TODO: Improve upon validation of correct responses from server. Verify the value for "status" is "valid" before any actions are taken
+
         Iterator iterator = parameters.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry)iterator.next();
             String key = (String)pair.getKey();
             String value = (String)pair.getValue();
 
-            System.out.println(key + " : " + value);
-
             if (key.equals("~status") && value.equals("valid")) loginStatus = true;             // Update the login status to true if we have a valid login
-            if (key.equals("~token")) CredentialHandler.setToken(value);                        // Set the value of the current upload token
+            else if (key.equals("~token")) CredentialHandler.setToken(value);                   // Set the value of the current upload token
         }
     }
 
     /**
-     * Constructor for LoginServerDAO and is used to connect and send the login data to the designated login server
+     * Constructor for LoginDAO and is used to connect and send the login data to the designated login server
      * and then retrieve the server response and parse it for the appropriate data.
      *
      * @param username is the username being sent to the server for login
      * @param password is the password used to authenticate the login
      */
-    public LoginServerDAO(String username, char[] password) {
+    public LoginDAO(String username, char[] password) {
         loginStatus = false;
         String passwordHash = "";
 

@@ -11,9 +11,11 @@ The format of the parameters passed to the login portion of the Icarrus server m
         ----------
 username    --  Required parameter. Will contain the username of the user attempting to login to the server.
 password    --  Required parameter. Will contain the password used to authenticate the user.
-file(s)     --  Optional parameter. Files being sent to the server as part of a one-time login/upload transaction. This parameter is to facilitate the user of a possible shell extension upload mechanism
+file(s)*    --  Optional parameter. Files being sent to the server as part of a one-time login/upload transaction. This parameter is to facilitate the user of a possible shell extension upload mechanism
                 where a user would be allowed to right click a file in the OS's file explorer system and select an option to upload to the server with a giver username/password set. This parameter is only
                 theoretical at the moment and is not currently supported by any Icarrus server implementation.
+
+* This parameter is currently not supported or used in any context. This is merely here for reference to possible uses in future releases.
 
     Reponse
     -------

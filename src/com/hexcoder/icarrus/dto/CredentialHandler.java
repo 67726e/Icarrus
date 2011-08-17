@@ -19,6 +19,8 @@ public class CredentialHandler {
     public static String getToken() {return token;}
     public static void setLoginStatus(boolean _loginStatus) {loginStatus = _loginStatus;}
     public static boolean getLoginStatus() {return loginStatus;}
+    public static String getUsername() {return username;}
+    public static String getPassword() {return password;}
 
     private CredentialHandler() {}
 }

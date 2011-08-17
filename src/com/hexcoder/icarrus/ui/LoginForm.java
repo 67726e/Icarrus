@@ -3,7 +3,7 @@ package com.hexcoder.icarrus.ui;
 import com.hexcoder.icarrus.dao.CredentialDAO;
 import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.LoggingDAO;
-import com.hexcoder.icarrus.dao.LoginServerDAO;
+import com.hexcoder.icarrus.dao.LoginDAO;
 import com.hexcoder.icarrus.dto.MessageHandler;
 
 import javax.swing.*;
@@ -92,7 +92,7 @@ public class LoginForm extends JFrame {
         }
 
         private void loginClicked() {
-            LoginServerDAO loginServerDAO = new LoginServerDAO(
+            LoginDAO loginServerDAO = new LoginDAO(
                         usernameField.getText(), passwordField.getPassword());                  // Create object to interface with the login server
             if (loginServerDAO.getLoginStatus()) {                                              // Check for a successful login
                 if (rememberMe.isSelected()) CredentialDAO.storeCredentials(
