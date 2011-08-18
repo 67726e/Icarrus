@@ -4,13 +4,12 @@ import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dto.MessageHandler;
 
 import javax.swing.*;
-import javax.tools.JavaCompiler;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
-import java.io.File;
-import java.io.IOException;
+import java.util.*;
+import java.util.Timer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,8 +50,6 @@ public class DropForm extends JDialog {
 
             DropTarget dropTarget = new DropTarget(dropTargetComponent, new DropTargetListenerImpl());                  // Implement the drop target listener on the drop component for this form
         }
-
-        // TODO: Create method to bring this dialog to the front of the screen
 
         private class DropTargetListenerImpl implements DropTargetListener {
             public void dragEnter(DropTargetDragEvent event) {}

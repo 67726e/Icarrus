@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import com.hexcoder.imagelocator.*;
 import java.security.PrivateKey;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,6 +80,16 @@ public class ExtendedTrayIcon extends TrayIcon {
         dropForm = new DropForm(this.getSize());                                                // Create new form to accept file drops
         dropForm.setVisible(true);
         calibrateDropForm();                                                                    // Determine the position of the TrayIcon and position the drop form over it
+
+        java.util.Timer timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (!popupMenu.isVisible()) {
+                    dropForm.toFront();
+                }
+            }
+        }, 0, 1000);
     }
 
     public void showPopupMenu(MouseEvent event) {
