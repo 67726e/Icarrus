@@ -1,5 +1,6 @@
 package com.hexcoder.icarrus.ui;
 
+import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dto.CredentialHandler;
 import com.hexcoder.icarrus.dto.MessageHandler;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import com.hexcoder.imagelocator.*;
 import java.security.PrivateKey;
 
 /**
@@ -72,10 +74,11 @@ public class ExtendedTrayIcon extends TrayIcon {
             MessageHandler.postMessage("System Tray Error", "The tray icon could not be added to your system tray.", LoggingDAO.FATAL_ERROR);
         }
 
-        dropForm = new DropForm(this.getSize());                                               // Create new form to accept file drops
+        controlPanelForm = new ControlPanelForm();                                              // Create form to display control data
+
+        dropForm = new DropForm(this.getSize());                                                // Create new form to accept file drops
         dropForm.setVisible(true);
-        // TODO: Create method to determine the location of the TrayIcon
-        // TODO: Initial calibration/positioning of dropForm
+        calibrateDropForm();                                                                    // Determine the position of the TrayIcon and position the drop form over it
     }
 
     public void showPopupMenu(MouseEvent event) {
@@ -90,6 +93,32 @@ public class ExtendedTrayIcon extends TrayIcon {
             popupDialog.setVisible(true);
             popupMenu.show(popupDialog.getContentPane(), 0, 0);
             popupDialog.toFront();
+        }
+    }
+
+    private void calibrateDropForm() {
+        dropForm.setVisible(false);                                                             // Hide the form so it doesn't interfere with location
+
+        int width = trayIcon.getSize().width;
+        int height = trayIcon.getSize().height;
+        BufferedImage compare = new RandomImage(width, height,
+                    RandomImage.ImageStyle.Stripe3Column).getImage();                           // Generate a random image to be used to locate the position of the tray icon
+
+        // TODO: Document this section
+        try {
+            Robot robot = new Robot();
+            trayIcon.setImage(compare);                                                         // Temporarily set the compare image to get a screenshot
+            BufferedImage base = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+            trayIcon.setImage(ImageDAO.getImage("tray_icon.png"));                              // Return the icon to the normal image
+
+            LocateImage locator = new LocateImage(base, compare);
+            locator.search(2);                                                                  // Search for the image with an RGB tolerance of +-2
+
+            dropForm.setLocation((int)locator.getFirstOccurrence().getX(), (int)locator.getFirstOccurrence().getY());
+            dropForm.setVisible(true);
+            dropForm.toFront();
+        } catch (Exception e) {
+            MessageHandler.postMessage("Locator Error", "The tray icon could not be properly located. Please ensure it is in on the taskbar.", LoggingDAO.ERROR);
         }
     }
 
@@ -127,8 +156,7 @@ public class ExtendedTrayIcon extends TrayIcon {
 
     private class CalibrateListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            // TODO: Create functionality to locate the TrayIcon
-            // TODO: Call method to relocate the TrayIcon
+            calibrateDropForm();
         }
     }
 
