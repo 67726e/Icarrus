@@ -77,28 +77,26 @@ public class ExtendedTrayIcon extends TrayIcon {
 
         controlPanelForm = new ControlPanelForm();                                              // Create form to display control data
 
-        dropForm = new DropForm(this.getSize());                                                // Create new form to accept file drops
+        dropForm = new DropForm(this.getSize(), this);                                          // Create new form to accept file drops
         dropForm.setVisible(true);
         calibrateDropForm();                                                                    // Determine the position of the TrayIcon and position the drop form over it
 
         java.util.Timer timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.scheduleAtFixedRate(new TimerTask() {                                             // Set a timer task to run every 1 second
             @Override
             public void run() {
-                if (!popupMenu.isVisible()) {
-                    dropForm.toFront();
+                if (!popupMenu.isVisible()) {                                                   // Check if the popupmenu is being shown
+                    dropForm.toFront();                                                         // If not, bring the drop form to the front of the screen
                 }
             }
         }, 0, 1000);
     }
 
     public void showPopupMenu(MouseEvent event) {
-        if (event.isPopupTrigger() && popupMenu != null) {
-            // TODO: Perform check to ensure the menu does not appear offscreen
-
+        if (event.getButton() == 3 && popupMenu != null) {
             Dimension size = popupMenu.getPreferredSize();
-            int x = event.getX();
-            int y = event.getY() - size.height;                                                 // Place the popupmenu so that it's bottom left coordinate is at the click location
+            int x = event.getXOnScreen();
+            int y = event.getYOnScreen() - size.height;                                         // Place the popupmenu so that it's bottom left coordinate is at the click location
 
             popupDialog.setLocation(x, y);
             popupDialog.setVisible(true);

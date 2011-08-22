@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.Timer;
 
@@ -19,13 +22,15 @@ import java.util.Timer;
  * To change this template use File | Settings | File Templates.
  */
 public class DropForm extends JDialog {
+    private ExtendedTrayIcon trayIcon;
 
     /**
      * Creates a new undecorated, non-focusing, ever-present form for use as a drop target
      *
      * @param size
      */
-    public DropForm(Dimension size) {
+    public DropForm(Dimension size, ExtendedTrayIcon trayIcon) {
+        this.trayIcon = trayIcon;
         // TODO: Determine mechanism to allow transparency on JRE 6 & 7
 
         this.setUndecorated(true);
@@ -46,9 +51,20 @@ public class DropForm extends JDialog {
             dropTargetComponent.setBounds(0, 0, size.width, size.height);
             dropTargetComponent.setEnabled(false);
             dropTargetComponent.setDragEnabled(true);
+            dropTargetComponent.addMouseListener(new DropMouseListener());
             this.add(dropTargetComponent);
 
             DropTarget dropTarget = new DropTarget(dropTargetComponent, new DropTargetListenerImpl());                  // Implement the drop target listener on the drop component for this form
+        }
+
+        private class DropMouseListener implements MouseListener {
+            public void mousePressed(MouseEvent event) {}
+            public void mouseReleased(MouseEvent event) {}
+            public void mouseExited(MouseEvent event) {}
+            public void mouseEntered(MouseEvent event) {}
+            public void mouseClicked(MouseEvent event) {
+                trayIcon.showPopupMenu(event);                                                                          // Pass on the event object to determine if the popup menu should be shown
+            }
         }
 
         private class DropTargetListenerImpl implements DropTargetListener {
