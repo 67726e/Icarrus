@@ -16,11 +16,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/5/11
  * Time: 10:20 PM
- * To change this template use File | Settings | File Templates.
  */
 public class LoginForm extends JFrame {
     private final int WIDTH = 300, HEIGHT = 200;

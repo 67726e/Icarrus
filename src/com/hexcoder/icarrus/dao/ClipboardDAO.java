@@ -7,11 +7,9 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/15/11
  * Time: 6:58 PM
- * To change this template use File | Settings | File Templates.
  */
 public class ClipboardDAO {
     public ClipboardDAO() {}

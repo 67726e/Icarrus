@@ -18,11 +18,9 @@ import java.security.PrivateKey;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/6/11
  * Time: 12:37 AM
- * To change this template use File | Settings | File Templates.
  */
 public class ExtendedTrayIcon extends TrayIcon {
     private JPopupMenu popupMenu;                                                               // Swing popupmenu used in lieu of the AWT popup menu used by TrayIcon

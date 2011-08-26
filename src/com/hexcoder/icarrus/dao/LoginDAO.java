@@ -14,11 +14,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/6/11
  * Time: 2:20 PM
- * To change this template use File | Settings | File Templates.
  */
 public class LoginDAO {
     private boolean loginStatus = false;
@@ -61,7 +59,7 @@ public class LoginDAO {
      * retrieves all useful data from the response and parses parameter/value pairs to be read for settings/user data
      * to validate the user's login.
      *
-     * @param loginServerConnection is the URL connection that provides the server respones from
+     * @param loginServerConnection is the URL connection that provides the server response
      */
     private void parseLoginServerResponse(URLConnection loginServerConnection) {
         HashMap<String, String> parameters = new HashMap<String, String>();
@@ -94,7 +92,7 @@ public class LoginDAO {
      * Private method is called to assign the proper parameter values to their corresponding setting variables for use
      * by the rest of the application.
      *
-     * @param parameters is the HashMap containing all paramteter/value pairs provided in the login server's response
+     * @param parameters is the HashMap containing all parameter/value pairs provided in the login server's response
      */
     private void retrieveValues(HashMap<String, String> parameters) {
         // TODO: Improve upon validation of correct responses from server. Verify the value for "status" is "valid" before any actions are taken

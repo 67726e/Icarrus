@@ -1,11 +1,9 @@
 package com.hexcoder.icarrus.dto;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/9/11
  * Time: 7:02 PM
- * To change this template use File | Settings | File Templates.
  */
 public class CredentialHandler {
     private static String username;

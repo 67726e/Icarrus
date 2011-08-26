@@ -1,11 +1,9 @@
 package com.hexcoder.icarrus.dao;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/6/11
  * Time: 11:02 AM
- * To change this template use File | Settings | File Templates.
  */
 public class LoggingDAO {
     public static final int INFORMATION = 0;

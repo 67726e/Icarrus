@@ -26,11 +26,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/13/11
  * Time: 10:09 PM
- * To change this template use File | Settings | File Templates.
  */
 public class UploadDAO {
     private String status;

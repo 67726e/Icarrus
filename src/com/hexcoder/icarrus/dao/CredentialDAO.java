@@ -8,11 +8,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/6/11
  * Time: 2:08 PM
- * To change this template use File | Settings | File Templates.
  */
 public class CredentialDAO {
     private static final File accountCredentialFile =
@@ -41,7 +39,6 @@ public class CredentialDAO {
             out.close();
         } catch (IOException e) {
             MessageHandler.postMessage("Credentials Storage Error", "Your account credentials could not stored. You will not be automatically logged in.", LoggingDAO.ERROR);
-            return;
         }
     }
 }

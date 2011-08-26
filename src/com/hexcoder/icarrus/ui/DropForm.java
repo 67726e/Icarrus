@@ -15,11 +15,9 @@ import java.util.*;
 import java.util.Timer;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/13/11
  * Time: 7:26 PM
- * To change this template use File | Settings | File Templates.
  */
 public class DropForm extends JDialog {
     private ExtendedTrayIcon trayIcon;
@@ -27,7 +25,8 @@ public class DropForm extends JDialog {
     /**
      * Creates a new undecorated, non-focusing, ever-present form for use as a drop target
      *
-     * @param size
+     * @param size is the size of the TrayIcon image as per the host OS
+     * @param trayIcon is the TrayIcon used by the application
      */
     public DropForm(Dimension size, ExtendedTrayIcon trayIcon) {
         this.trayIcon = trayIcon;

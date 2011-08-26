@@ -1,11 +1,9 @@
 package com.hexcoder.icarrus.dao;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/11/11
  * Time: 8:44 PM
- * To change this template use File | Settings | File Templates.
  */
 public class SettingsDAO {
 

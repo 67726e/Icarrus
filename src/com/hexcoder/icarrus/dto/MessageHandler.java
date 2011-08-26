@@ -6,11 +6,9 @@ import com.hexcoder.icarrus.dto.SettingsHandler;
 import java.util.Calendar;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/6/11
  * Time: 11:05 AM
- * To change this template use File | Settings | File Templates.
  */
 public class MessageHandler {
     private static Calendar calendar = Calendar.getInstance();                                  // Used to get a time stamp for the message

@@ -15,21 +15,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/5/11
  * Time: 10:17 PM
- * To change this template use File | Settings | File Templates.
  */
-public class main {
+public class Application {
     public static void main(String[] args) {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
-		catch (Exception e) {}
+		catch (Exception ignored) {}
 
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultDevice = environment.getDefaultScreenDevice();
-        if (defaultDevice.isWindowTranslucencySupported(
-                    GraphicsDevice.WindowTranslucency.TRANSLUCENT) == false) {                  // Check to see if the OS supports translucency
+        if (!defaultDevice.isWindowTranslucencySupported(
+                GraphicsDevice.WindowTranslucency.TRANSLUCENT)) {                               // Check to see if the OS supports translucency
             MessageHandler.postMessage("Unsupported Feature",
                     "Icarrus relies on features not provided by your current OS or configuration.", LoggingDAO.FATAL_ERROR);
         }

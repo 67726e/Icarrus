@@ -9,11 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/5/11
  * Time: 10:32 PM
- * To change this template use File | Settings | File Templates.
  */
 public class ImageDAO {
     private static final String rootPath = "data/images/";

@@ -1,11 +1,9 @@
 package com.hexcoder.icarrus.dto;
 
 /**
- * Created by IntelliJ IDEA.
  * User: 67726e
  * Date: 8/6/11
  * Time: 2:56 PM
- * To change this template use File | Settings | File Templates.
  */
 public class SettingsHandler {
     private static boolean saveMessagesToLog = true;
