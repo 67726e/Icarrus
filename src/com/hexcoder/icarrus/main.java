@@ -26,6 +26,14 @@ public class main {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
 		catch (Exception e) {}
 
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultDevice = environment.getDefaultScreenDevice();
+        if (defaultDevice.isWindowTranslucencySupported(
+                    GraphicsDevice.WindowTranslucency.TRANSLUCENT) == false) {                  // Check to see if the OS supports translucency
+            MessageHandler.postMessage("Unsupported Feature",
+                    "Icarrus relies on features not provided by your current OS or configuration.", LoggingDAO.FATAL_ERROR);
+        }
+
         ExtendedTrayIcon trayIcon = new ExtendedTrayIcon(ImageDAO.getImage("tray_icon.png"));                           // Create TrayIcon for the user to interact with
     }
 }
