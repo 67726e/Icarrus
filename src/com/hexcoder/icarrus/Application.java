@@ -24,13 +24,7 @@ public class Application {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
 		catch (Exception ignored) {}
 
-        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice defaultDevice = environment.getDefaultScreenDevice();
-        if (!defaultDevice.isWindowTranslucencySupported(
-                GraphicsDevice.WindowTranslucency.TRANSLUCENT)) {                               // Check to see if the OS supports translucency
-            MessageHandler.postMessage("Unsupported Feature",
-                    "Icarrus relies on features not provided by your current OS or configuration.", LoggingDAO.FATAL_ERROR);
-        }
+        // Find Java 6 way of determining if the OS supports translucency
 
         ExtendedTrayIcon trayIcon = new ExtendedTrayIcon(ImageDAO.getImage("tray_icon.png"));                           // Create TrayIcon for the user to interact with
     }

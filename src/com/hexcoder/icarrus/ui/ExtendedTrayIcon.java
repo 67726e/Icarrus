@@ -111,7 +111,6 @@ public class ExtendedTrayIcon extends TrayIcon {
         BufferedImage compare = new RandomImage(width, height,
                     RandomImage.ImageStyle.Stripe3Column).getImage();                           // Generate a random image to be used to locate the position of the tray icon
 
-        // TODO: Document this section
         try {
             Robot robot = new Robot();
             trayIcon.setImage(compare);                                                         // Temporarily set the compare image to get a screenshot

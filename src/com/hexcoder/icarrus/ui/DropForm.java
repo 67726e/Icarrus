@@ -11,6 +11,9 @@ import java.awt.dnd.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Timer;
 
@@ -31,6 +34,20 @@ public class DropForm extends JDialog {
     public DropForm(Dimension size, ExtendedTrayIcon trayIcon) {
         this.trayIcon = trayIcon;
         // TODO: Determine mechanism to allow transparency on JRE 6 & 7
+        try {
+            Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
+            Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
+            setWindowOpacity.invoke(null, this, 0.01f);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
 
         this.setUndecorated(true);
         this.setAlwaysOnTop(true);
