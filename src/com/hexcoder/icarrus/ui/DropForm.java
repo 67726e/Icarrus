@@ -33,7 +33,14 @@ public class DropForm extends JDialog {
      */
     public DropForm(Dimension size, ExtendedTrayIcon trayIcon) {
         this.trayIcon = trayIcon;
-        // TODO: Determine mechanism to allow transparency on JRE 6 & 7
+
+        this.setUndecorated(true);
+        this.setAlwaysOnTop(true);
+        this.setFocusable(false);
+        this.setFocusableWindowState(false);
+        this.setSize(size);
+        this.getContentPane().add(new DropPanel(size));
+
         try {
             Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
             Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
@@ -47,14 +54,6 @@ public class DropForm extends JDialog {
         } catch (IllegalAccessException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
-
-        this.setUndecorated(true);
-        this.setAlwaysOnTop(true);
-        this.setFocusable(false);
-        this.setFocusableWindowState(false);
-        this.setSize(size);
-        this.getContentPane().add(new DropPanel(size));
     }
 
 
