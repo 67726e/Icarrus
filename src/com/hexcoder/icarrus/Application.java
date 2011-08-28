@@ -26,7 +26,7 @@ public class Application {
 		catch (Exception ignored) {}
 
         if (!AWTUtilities.isTranslucencySupported(AWTUtilities.Translucency.TRANSLUCENT)) {                             // Determine if the host OS supports translucency
-            // TODO: Research alternate ways of dipslaying the DropFrom that do not require translucency
+            // TODO: Research alternate ways of displaying the DropFrom that do not require translucency
             MessageHandler.postMessage("Unsupported Feature",
                         "Your OS does not offer features required for Icarrus to run.", LoggingDAO.FATAL_ERROR);        // End the application with a fatal error due to lack of required feature
         } else {
