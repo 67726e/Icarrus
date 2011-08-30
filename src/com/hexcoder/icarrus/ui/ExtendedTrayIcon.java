@@ -79,6 +79,9 @@ public class ExtendedTrayIcon extends TrayIcon {
         dropForm.setVisible(true);
         calibrateDropForm();                                                                    // Determine the position of the TrayIcon and position the drop form over it
 
+        loginForm = new LoginForm();
+        loginForm.setVisible(true);
+
         java.util.Timer timer = new java.util.Timer();
         timer.scheduleAtFixedRate(new TimerTask() {                                             // Set a timer task to run every 1 second
             @Override
@@ -169,8 +172,7 @@ public class ExtendedTrayIcon extends TrayIcon {
     private class LoginListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if (login.getText().equals("Login")) {
-                if (loginForm != null) return;                                                  // Do nothing if the login form is already displayed
-                loginForm = new LoginForm();                                                    // Display the login form so the user may login
+                loginForm.setVisible(true);                                                     // Display the login form
             } else {
                 if (loginForm != null) loginForm.dispose();                                     // Get rid of the current login form if one is somehow still displayed
                 login.setText("Login");                                                         // Change the text to show we are no longer logged in

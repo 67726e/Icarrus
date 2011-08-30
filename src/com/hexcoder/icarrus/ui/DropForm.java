@@ -45,14 +45,8 @@ public class DropForm extends JDialog {
             Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
             Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
             setWindowOpacity.invoke(null, this, 0.01f);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDAO.FATAL_ERROR);
         }
     }
 

@@ -48,7 +48,7 @@ public class HistoryDAO {
                             if (parts[0].contains(" ") || parts[0].contains("\t")) continue;                            // Skip the line if it contains whitespace
 
                             parts[0] = parts[0].substring(1, parts[0].length());                                        // Strip the tilde from the key String
-                            parts[1] = parts[1].replaceAll("\\~", ":");                                                 // Replace all tildes '~' with colons ':' as per spec
+                            parts[1] = parts[1].replaceAll("~", ":");                                                   // Replace all tildes '~' with colons ':' as per spec
 
                             tmpList.add(parts);                                                                         // Add the valid key/value pair to the temporary file block List
                         }

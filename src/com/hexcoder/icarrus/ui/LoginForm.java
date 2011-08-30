@@ -37,7 +37,6 @@ public class LoginForm extends JFrame {
         setTitle("Icarrus ~ Login");
         setResizable(false);
         setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));                                  // Attempt to set the window's icon image
-
     }
 
     private class LoginPanel extends JPanel {
