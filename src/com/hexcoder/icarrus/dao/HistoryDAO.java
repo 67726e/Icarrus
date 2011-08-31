@@ -60,7 +60,7 @@ public class HistoryDAO {
                 in.close();
             }
         } catch (IOException e) {
-            MessageHandler.postMessage("History Read Error", "The upload history could not be read.", LoggingDAO.ERROR);
+            MessageHandler.postMessage("History Read Error", "The upload history could not be read.", LoggingDAO.Status.ERROR);
         }
 
         return historyRows;
@@ -90,14 +90,14 @@ public class HistoryDAO {
         writeString.append("}\n");
 
         if (generalError) {
-            MessageHandler.postMessage("History Content Error", "The history data was invalid and could not be written to file.", LoggingDAO.ERROR);
+            MessageHandler.postMessage("History Content Error", "The history data was invalid and could not be written to file.", LoggingDAO.Status.ERROR);
         }
 
         try { if (!historyFile.exists()) generalError = historyFile.createNewFile(); }                                  // Create a new history file if one does not exist
         catch (IOException e) { generalError = true; }
         if (generalError) {
             MessageHandler.postMessage("History File Error",
-                    "A new history file could not be created. The history will not be stored.", LoggingDAO.ERROR);      // Inform the user that the history data file could not be created.
+                    "A new history file could not be created. The history will not be stored.", LoggingDAO.Status.ERROR);      // Inform the user that the history data file could not be created.
             return;
         }
 
@@ -110,7 +110,7 @@ public class HistoryDAO {
                 out.close();
             }
         } catch (IOException e) {
-            MessageHandler.postMessage("History Write Error", "The upload history could not be written to file.", LoggingDAO.ERROR);
+            MessageHandler.postMessage("History Write Error", "The upload history could not be written to file.", LoggingDAO.Status.ERROR);
         }
     }
 }

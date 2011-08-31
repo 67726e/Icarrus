@@ -292,6 +292,7 @@ public class ControlPanelForm extends JFrame {
 
     private class HelpItemListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
+            // TODO: Create help documentation in the form of HTML
             // TODO: Implement code to open help documentation
         }
     }

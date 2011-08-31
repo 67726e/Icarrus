@@ -24,13 +24,13 @@ public class ImageDAO {
         File imageFile = new File(imageFileName);
 
         if (!imageFile.exists()) {                                                              // Confirm the existence of the file in question
-            MessageHandler.postMessage("Missing File", "The image file \"" + imageFile.getAbsolutePath() + "\" could not be found.", LoggingDAO.WARNING);
+            MessageHandler.postMessage("Missing File", "The image file \"" + imageFile.getAbsolutePath() + "\" could not be found.", LoggingDAO.Status.WARNING);
         }
 
         try {
             return ImageIO.read(imageFile);                                                     // Attempt to return a BufferedImage containing the file
         } catch (IOException e) {
-            MessageHandler.postMessage("Image IO Error", "Could not read the file \"" + imageFile.getAbsolutePath() + "\".", LoggingDAO.ERROR);
+            MessageHandler.postMessage("Image IO Error", "Could not read the file \"" + imageFile.getAbsolutePath() + "\".", LoggingDAO.Status.ERROR);
             return null;
         }
     }

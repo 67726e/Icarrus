@@ -25,7 +25,7 @@ public class MessageHandler {
         return calendar.getTime().toString();                                                   // Return a String representation of the Date object
     }
 
-    private static void displayMessageToUser(String title, String message, int messageType) {
+    private static void displayMessageToUser(String title, String message, LoggingDAO.Status messageType) {
         // TODO: Implement code to display messages to the user
     }
 
@@ -38,32 +38,13 @@ public class MessageHandler {
      * @param message the details of the message being sent. Should not be more than a line or two if being displayed.
      * @param messageType determines the severity of the message being sent. Use LoggingDAO's fields passing severity.
      */
-    public static void postMessage(String title, String message, int messageType) {
-        String severity;                                                                   // String representation of the level of severity of the message
-
-        switch (messageType) {
-        case LoggingDAO.INFORMATION:
-            severity = "INFORMATION";
-            break;
-        case LoggingDAO.WARNING:
-            severity = "WARNING";
-            break;
-        case LoggingDAO.ERROR:
-            severity = "ERROR";
-            break;
-        case LoggingDAO.FATAL_ERROR:
-            severity = "FATAL ERROR";
-            break;
-        default:
-            severity = "INFORMATION";
-        }
-
-        System.out.println("\t[" + severity + "] - " + title + ": " + message);                 // Print formatted message to command line
+    public static void postMessage(String title, String message, LoggingDAO.Status messageType) {
+        System.out.println("\t[" + messageType.toString()  + "] - " + title + ": " + message);  // Print formatted message to command line
         if (SettingsHandler.getDisplayMessagesToUser())
             displayMessageToUser(title, message, messageType);                                  // Call method to display the message to the user if applicable
         if (SettingsHandler.getSaveMessagesToLog())
             LoggingDAO.logToFile(title, message, messageType);                                  // Call logging method to write this message to the log
 
-        if (messageType == LoggingDAO.FATAL_ERROR) System.exit(-1);                             // Exit with a general error code upon a fatal error
+        if (messageType == LoggingDAO.Status.FATAL_ERROR) System.exit(-1);                      // Exit with a general error code upon a fatal error
     }
 }

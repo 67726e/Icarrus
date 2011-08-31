@@ -71,21 +71,21 @@ public class UploadDAO {
 
             parseResponse(responseEntity);                                                                              // Parse the response of the Icarrus server
         } catch (UnsupportedEncodingException e) {
-            MessageHandler.postMessage("Encoding Error", "The required data could not be properly encoded.", LoggingDAO.ERROR);
+            MessageHandler.postMessage("Encoding Error", "The required data could not be properly encoded.", LoggingDAO.Status.ERROR);
         } catch (ClientProtocolException e) {
-            MessageHandler.postMessage("Protocol Error", "An incorrect protocol is being used. Please check the upload URL.", LoggingDAO.ERROR);
+            MessageHandler.postMessage("Protocol Error", "An incorrect protocol is being used. Please check the upload URL.", LoggingDAO.Status.ERROR);
         } catch (IOException e) {
-            MessageHandler.postMessage("Upload Error", "A connection could not be established with the server", LoggingDAO.ERROR);
+            MessageHandler.postMessage("Upload Error", "A connection could not be established with the server", LoggingDAO.Status.ERROR);
         }
 
         // TODO: Send upload information to HistoryDAO
         if (status.equals("valid")) {
-            MessageHandler.postMessage("Upload Successful", "Your file(s) have uploaded successfully.", LoggingDAO.INFORMATION);
+            MessageHandler.postMessage("Upload Successful", "Your file(s) have uploaded successfully.", LoggingDAO.Status.INFORMATION);
             new ClipboardDAO().copyURLToClipboard(url);                                                                 // Copy the URL of the uploaded file to the clipboard (if allowed)
         } else {
             MessageHandler.postMessage("Upload Error",
                     (error == null) ? "The file(s) could not be uploaded to the server." : error,
-                    LoggingDAO.ERROR);
+                    LoggingDAO.Status.ERROR);
         }
     }
 
@@ -109,7 +109,7 @@ public class UploadDAO {
                 }
             } finally { in.close(); }
         } catch (IOException e) {
-            MessageHandler.postMessage("Upload Response Error", "The response from the Icarrus server could not be read.", LoggingDAO.ERROR);
+            MessageHandler.postMessage("Upload Response Error", "The response from the Icarrus server could not be read.", LoggingDAO.Status.ERROR);
         }
     }
 
