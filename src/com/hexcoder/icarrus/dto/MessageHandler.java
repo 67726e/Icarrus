@@ -1,8 +1,9 @@
 package com.hexcoder.icarrus.dto;
 
 import com.hexcoder.icarrus.dao.LoggingDAO;
-import com.hexcoder.icarrus.dto.SettingsHandler;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Calendar;
 
 /**
@@ -12,6 +13,7 @@ import java.util.Calendar;
  */
 public class MessageHandler {
     private static Calendar calendar = Calendar.getInstance();                                  // Used to get a time stamp for the message
+    private static TrayIcon trayIcon;                                                           // Pointer to the TrayIcon for messaging
 
     private MessageHandler() {}
 
@@ -25,8 +27,75 @@ public class MessageHandler {
         return calendar.getTime().toString();                                                   // Return a String representation of the Date object
     }
 
+	/**
+	 * Method converts a LoggingDAO message type into  a value usable by the JOptionPane
+	 *
+	 * @param messageType The LoggingDAO message type
+	 * @return an int mapping to the given LoggingDAO value
+	 */
+	private static int convertJOptionPane(LoggingDAO.Status messageType) {
+		int type = JOptionPane.INFORMATION_MESSAGE;
+
+		switch (messageType) {
+			case INFORMATION:
+				type = JOptionPane.INFORMATION_MESSAGE;
+				break;
+			case WARNING:
+				type = JOptionPane.WARNING_MESSAGE;
+				break;
+			case ERROR:
+			case FATAL_ERROR:
+				type = JOptionPane.ERROR_MESSAGE;
+				break;
+		}
+
+		return type;
+	}
+
+	/**
+	 * Method converts a LoggingDAO message type into a value usable by TrayIcon
+	 *
+	 * @param messageType The LoggingDAO message type
+	 * @return a TrayIcon.MessageType value mapping to the given LoggingDAO value
+	 */
+	private static TrayIcon.MessageType convertTrayIcon(LoggingDAO.Status messageType) {
+		TrayIcon.MessageType type = TrayIcon.MessageType.INFO;
+
+		switch (messageType) {
+			default:
+			case INFORMATION:
+				type = TrayIcon.MessageType.INFO;
+				break;
+			case WARNING:
+				type = TrayIcon.MessageType.WARNING;
+				break;
+			case ERROR:
+				type = TrayIcon.MessageType.ERROR;
+				break;
+		}
+
+		return type;
+	}
+
+    /**
+     * Method called as a part of the message logging process. A TrayIcon message (or JOptionPane message)
+     * is shown to inform the user of the message. The way the message is displayed is depended on application
+     * settings and rules.
+     *
+     * @param title The title of the message
+     * @param message The message content
+     * @param messageType The type of message such as an error or warning
+     */
     private static void displayMessageToUser(String title, String message, LoggingDAO.Status messageType) {
-        // TODO: Implement code to display messages to the user
+        boolean displayViaTray = true;                                                                                  // Determines the display via TrayIcon or JOptPane
+        if (messageType == LoggingDAO.Status.FATAL_ERROR) displayViaTray = false;
+        if (trayIcon == null) displayViaTray = false;
+
+        if (displayViaTray) {
+	    	trayIcon.displayMessage(title, message, convertTrayIcon(messageType));                                      // Display the message via the TrayIcon
+        } else {
+	        JOptionPane.showMessageDialog(null, message, title, convertJOptionPane(messageType));
+        }
     }
 
     /**

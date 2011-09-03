@@ -14,12 +14,17 @@ import java.util.List;
 public class HistoryDAO {
     private final File historyFile = new File("data/UploadHistory.idat");
 
-
-    public HistoryDAO() {}
+    public HistoryDAO() {
+        if (!historyFile.exists()) try {
+            historyFile.createNewFile();
+        } catch (IOException e) {
+            MessageHandler.postMessage("History File", "A new history file could not be created.", LoggingDAO.Status.ERROR);
+        }
+    }
 
     public List<List<String[]>> loadHistoryFromFile() {
         List<List<String[]>> historyRows = new LinkedList<List<String[]>>();
-        List<String[]> tmpList = new LinkedList<String[]>();                                                            // Temp list to hold the contents of a file block while it is being read
+        List<String[]> tmpList = new LinkedList<String[]>();                                                                   // Temp list to hold the contents of a file block while it is being read
 
         if (!historyFile.exists()) return historyRows;                                                                  // We can stop right here if there is no history file to read
 
@@ -73,6 +78,7 @@ public class HistoryDAO {
      * @param historyEntry is an array containing the key/value pairs for the history data
      */
     public void writeHistoryToFile(String[][] historyEntry) {
+        // TODO: Convert method to use List<String, String>
         boolean generalError = false;
         StringBuilder writeString = new StringBuilder();
         writeString.append("\n-File {\n");
@@ -97,7 +103,7 @@ public class HistoryDAO {
         catch (IOException e) { generalError = true; }
         if (generalError) {
             MessageHandler.postMessage("History File Error",
-                    "A new history file could not be created. The history will not be stored.", LoggingDAO.Status.ERROR);      // Inform the user that the history data file could not be created.
+                    "A new history file could not be created. The history will not be stored.", LoggingDAO.Status.ERROR);// Inform the user that the history data file could not be created.
             return;
         }
 

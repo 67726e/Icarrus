@@ -2,10 +2,6 @@ package com.hexcoder.icarrus.dao;
 
 import com.hexcoder.icarrus.dto.CredentialHandler;
 import com.hexcoder.icarrus.dto.MessageHandler;
-import com.hexcoder.icarrus.dto.SettingsHandler;
-import com.hexcoder.icarrus.ui.DropForm;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -15,12 +11,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.client.HttpClient;
-import sun.plugin2.message.Message;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.sql.ClientInfoStatus;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -35,7 +27,6 @@ public class UploadDAO {
     private String token;
     private String url;
     private String error;
-
     public UploadDAO() {}
 
     /**
@@ -89,6 +80,12 @@ public class UploadDAO {
         }
     }
 
+    /**
+     * Method receives an HttpResponse from the uploaded file. Takes the returned data and attempts to parse it into the
+     * key/value pairs to be used for data dissemination throughout the application.
+     *
+     * @param response the HTTP response given as a result of a file upload
+     */
     private void parseResponse(HttpEntity response) {
         try {
             HashMap<String, String> parameters = new HashMap<String, String>();
