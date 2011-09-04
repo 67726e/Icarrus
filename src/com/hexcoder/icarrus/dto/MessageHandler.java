@@ -17,6 +17,8 @@ public class MessageHandler {
 
     private MessageHandler() {}
 
+	public static void setTrayIcon(TrayIcon _trayIcon) {trayIcon = _trayIcon;}
+
     /**
      * Method called from in class as a utility method to get a String representation of the time that the
      * message was posted as part of the logging data.

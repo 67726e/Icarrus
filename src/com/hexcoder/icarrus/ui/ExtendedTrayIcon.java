@@ -4,7 +4,8 @@ import com.hexcoder.icarrus.dao.ImageDAO;
 import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dto.CredentialHandler;
 import com.hexcoder.icarrus.dto.MessageHandler;
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.hexcoder.imagelocator.LocateImage;
+import com.hexcoder.imagelocator.RandomImage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import com.hexcoder.imagelocator.*;
-import java.security.PrivateKey;
-import java.util.*;
+import java.util.TimerTask;
 
 /**
  * User: 67726e
@@ -91,6 +90,8 @@ public class ExtendedTrayIcon extends TrayIcon {
                 }
             }
         }, 0, 1000);
+
+	    MessageHandler.setTrayIcon(this);                                                       // Set the pointer to the TrayIcon for messaging
     }
 
     public void showPopupMenu(MouseEvent event) {
