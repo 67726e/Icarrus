@@ -94,8 +94,7 @@ public class UploadDAO {
 
             try {
                 while ((line = in.readLine()) != null) {
-                    // TODO: Log warning for invalid parameters
-                    // TODO: write utility function to combine this with the LoginDAO parsing methods
+                    // TODO: Convert this method to use util.idatUtils
 
                     if (line.length() < 4) continue;                                                                    // If the String is less than 4 characters (the minimum for a parameter line) then we can skip this line as unrecognized
                     if (line.charAt(0) != '~') continue;                                                                // Skip this line if it does not start with the designated parameter marker '~'
