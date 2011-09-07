@@ -2,15 +2,19 @@ package com.hexcoder.icarrus.ui;
 
 import com.hexcoder.icarrus.dao.HistoryDAO;
 import com.hexcoder.icarrus.dao.ImageDAO;
+import com.hexcoder.icarrus.dao.LoggingDAO;
 import com.hexcoder.icarrus.dao.SettingsDAO;
+import com.hexcoder.icarrus.dto.MessageHandler;
 import com.hexcoder.icarrus.dto.SettingsHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -22,8 +26,9 @@ public class ControlPanelForm extends JFrame {
     private final int WIDTH = 500, HEIGHT = 300;
     private JFrame form = this;                                                                 // Pointer to the JFrame for use by inner classes
     private ControlPanelPanel panel;                                                            // Pointer to the JPanel for this form
+	private String helpURL = "http://help.icarr.us/";                                           // URL to the Icarrus help pages
 
-    public enum ControlPanelTab {HISTORY, SETTINGS, ABOUT}                                     // Enum used to determine which tab to switch to
+    public enum ControlPanelTab {HISTORY, SETTINGS, ABOUT}                                      // Enum used to determine which tab to switch to
 
     public void switchToTab(ControlPanelTab tab) {panel.switchToTab(tab);}
 
@@ -292,8 +297,15 @@ public class ControlPanelForm extends JFrame {
 
     private class HelpItemListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            // TODO: Create help documentation in the form of HTML
-            // TODO: Implement code to open help documentation
+            if (!Desktop.isDesktopSupported())
+	            MessageHandler.postMessage("Help Error",
+			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.WARNING);                // Check if a web browser can be opened
+            try {
+	            Desktop.getDesktop().browse(new URI(helpURL));                                                          // Open the default browser to the Icarrus Help pages
+            } catch (Exception e) {
+	            MessageHandler.postMessage("Help Error",
+			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.WARNING);                // Inform the user he/she has to manually visit the help pages
+            }
         }
     }
 }

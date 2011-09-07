@@ -92,8 +92,6 @@ public class LoginForm extends JFrame {
                 form_pointer.dispose();                                                         // Clear up resources used by this form
                 ExtendedTrayIcon.setLoginStatus("Logout");
                 MessageHandler.postMessage("Logged In", "You have been successfully logged in.", LoggingDAO.Status.INFORMATION);
-            } else {
-                MessageHandler.postMessage("Login Error", "There was a problem logging in. Please try again.", LoggingDAO.Status.ERROR);
             }
         }
 

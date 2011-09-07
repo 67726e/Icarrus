@@ -78,7 +78,6 @@ public class HistoryDAO {
      * @param historyEntry is an array containing the key/value pairs for the history data
      */
     public void writeHistoryToFile(String[][] historyEntry) {
-        // TODO: Convert method to use List<String, String>
         boolean generalError = false;
         StringBuilder writeString = new StringBuilder();
         writeString.append("\n-File {\n");
