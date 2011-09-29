@@ -11,23 +11,16 @@ The format of the parameters passed to the upload portion of the Icarrus server 
         ----------
 username    --  Required parameter. Contains the username of the user attempting to upload a file to the Icarrus server. This is used to validate the user and log his/her actions.
 password    --  Required parameter. Contains the MD5 hash of the user's password to validate the account transaction thus denying unauthorized attempts to login.
-token*      --  Required parameter. Contains a random token used to validate the upload. This will thwart most attempts to share an account.
 file        --  Required parameter. Contains the multipart chunked binary data of the file being uploaded to the Icarrus server.
-
-* This parameter is under consideration for removal from the next Icarrus release.
 
     Response
     --------
         Format
         ------
-To allow for the expansion of parameters while maintaining backwards compatibility, the Icarrus server's response schema is to follow the IDAT File specification. No modifications to this specification
-are being taken at this time.
+To allow for backwards compatibility, the response should be standard XML. All unknown parameters in the response are ignored by the parser.
 
         Parameters
         ----------
 status      --  Required Parameter. Contains the status of the upload. Will return "valid" if the upload was successfully completed or "invalid" if there was a problem on the server's part of the transaction.
-token*      --  Optional Parameter. Contains a unique identifier to allow the user to perform a new upload transaction with the server.
 url         --  Optional Parameter. Contains the URL of the file that was uploaded to the Icarrus server. This will only return if the status is "valid"
 error       --  Optional Parameter. Contains an error message regarding the failure on the server's end. May not exist even when the transaction was "invalid".
-
-* This parameter is under consideration for removal from the next Icarrus release.

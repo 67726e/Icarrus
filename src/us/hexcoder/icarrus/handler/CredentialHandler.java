@@ -1,4 +1,4 @@
-package us.hexcoder.icarrus.dto;
+package us.hexcoder.icarrus.handler;
 
 /**
  * User: 67726e
@@ -8,13 +8,10 @@ package us.hexcoder.icarrus.dto;
 public class CredentialHandler {
     private static String username;
     private static String password;
-    private static String token;
     private static boolean loginStatus;
 
     public static void setUsername(String _username) {username = _username;}
     public static void setPassword(String _password) {password = _password;}
-    public static void setToken(String _token) {token = _token;}
-    public static String getToken() {return token;}
     public static void setLoginStatus(boolean _loginStatus) {loginStatus = _loginStatus;}
     public static boolean getLoginStatus() {return loginStatus;}
     public static String getUsername() {return username;}

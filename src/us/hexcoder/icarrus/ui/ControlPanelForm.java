@@ -4,8 +4,8 @@ import us.hexcoder.icarrus.dao.HistoryDAO;
 import us.hexcoder.icarrus.dao.ImageDAO;
 import us.hexcoder.icarrus.dao.LoggingDAO;
 import us.hexcoder.icarrus.dao.SettingsDAO;
-import us.hexcoder.icarrus.dto.MessageHandler;
-import us.hexcoder.icarrus.dto.SettingsHandler;
+import us.hexcoder.icarrus.handler.MessageHandler;
+import us.hexcoder.icarrus.handler.SettingsHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

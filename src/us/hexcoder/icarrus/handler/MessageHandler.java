@@ -1,4 +1,4 @@
-package us.hexcoder.icarrus.dto;
+package us.hexcoder.icarrus.handler;
 
 import us.hexcoder.icarrus.dao.LoggingDAO;
 

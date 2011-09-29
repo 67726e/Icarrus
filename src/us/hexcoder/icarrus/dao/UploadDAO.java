@@ -1,7 +1,7 @@
 package us.hexcoder.icarrus.dao;
 
-import us.hexcoder.icarrus.dto.CredentialHandler;
-import us.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.handler.CredentialHandler;
+import us.hexcoder.icarrus.handler.MessageHandler;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -45,12 +45,10 @@ public class UploadDAO {
             FileBody binary = new FileBody(file);
             StringBody username = new StringBody(CredentialHandler.getUsername());
             StringBody password = new StringBody(CredentialHandler.getPassword());
-            StringBody token = new StringBody(CredentialHandler.getToken());
 
             MultipartEntity request = new MultipartEntity();
             request.addPart("file", binary);
             request.addPart("username", username);
-            request.addPart("token", token);
             request.addPart("password", password);
 
             HttpClient client = new DefaultHttpClient();

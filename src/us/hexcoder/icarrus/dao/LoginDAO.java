@@ -1,8 +1,8 @@
 package us.hexcoder.icarrus.dao;
 
-import us.hexcoder.icarrus.dto.CredentialHandler;
-import us.hexcoder.icarrus.dto.MessageHandler;
-import us.hexcoder.icarrus.dto.SettingsHandler;
+import us.hexcoder.icarrus.handler.CredentialHandler;
+import us.hexcoder.icarrus.handler.MessageHandler;
+import us.hexcoder.icarrus.handler.SettingsHandler;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -69,9 +69,7 @@ public class LoginDAO {
             String line = "";
 
             while ((line = in.readLine()) != null) {
-                // TODO: Log warnings for invalid server parameter strings/values
-
-                if (line.length() < 4) continue;                                                // If the String is less than 4 characters (the minimum for a parameter line) then we can skip this line as unrecognized
+	            if (line.length() < 4) continue;                                                // If the String is less than 4 characters (the minimum for a parameter line) then we can skip this line as unrecognized
                 if (line.charAt(0) != '~') continue;                                            // Skip this line if it does not start with the designated parameter marker '~'
                 String[] arguments = line.split(":");                                           // Split the line along the delimiter
                 if (arguments.length > 2) continue;                                             // We have illegal parameters
@@ -95,16 +93,13 @@ public class LoginDAO {
      * @param parameters is the HashMap containing all parameter/value pairs provided in the login server's response
      */
     private void retrieveValues(HashMap<String, String> parameters) {
-        // TODO: Improve upon validation of correct responses from server. Verify the value for "status" is "valid" before any actions are taken
-
-        Iterator iterator = parameters.entrySet().iterator();
+	    Iterator iterator = parameters.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry)iterator.next();
             String key = (String)pair.getKey();
             String value = (String)pair.getValue();
 
             if (key.equals("~status") && value.equals("valid")) loginStatus = true;             // Update the login status to true if we have a valid login
-            else if (key.equals("~token")) CredentialHandler.setToken(value);                   // Set the value of the current upload token
         }
     }
 

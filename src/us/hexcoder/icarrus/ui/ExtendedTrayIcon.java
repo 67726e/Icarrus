@@ -2,8 +2,8 @@ package us.hexcoder.icarrus.ui;
 
 import us.hexcoder.icarrus.dao.ImageDAO;
 import us.hexcoder.icarrus.dao.LoggingDAO;
-import us.hexcoder.icarrus.dto.CredentialHandler;
-import us.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.handler.CredentialHandler;
+import us.hexcoder.icarrus.handler.MessageHandler;
 import com.hexcoder.imagelocator.LocateImage;
 import com.hexcoder.imagelocator.RandomImage;
 

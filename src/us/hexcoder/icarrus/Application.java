@@ -2,7 +2,7 @@ package us.hexcoder.icarrus;
 
 import us.hexcoder.icarrus.dao.ImageDAO;
 import us.hexcoder.icarrus.dao.LoggingDAO;
-import us.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.handler.MessageHandler;
 import us.hexcoder.icarrus.ui.ExtendedTrayIcon;
 import com.sun.awt.AWTUtilities;
 
@@ -16,7 +16,10 @@ import java.awt.*;
  */
 public class Application {
     public static void main(String[] args) {
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
+        // TODO: Convert IDAT file format to use standard XML
+	    // TODO: Convert IDAT readers to XPATH
+
+	    try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }            // Set the UI as the System's UI
 		catch (Exception ignored) {}
 
         if (!AWTUtilities.isTranslucencySupported(AWTUtilities.Translucency.TRANSLUCENT)) {                             // Determine if the host OS supports translucency

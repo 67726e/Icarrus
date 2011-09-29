@@ -1,7 +1,7 @@
 package us.hexcoder.icarrus.ui;
 
 import us.hexcoder.icarrus.dao.LoggingDAO;
-import us.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.handler.MessageHandler;
 
 import javax.swing.*;
 import java.awt.*;

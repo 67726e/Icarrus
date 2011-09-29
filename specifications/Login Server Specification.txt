@@ -21,23 +21,22 @@ file(s)*    --  Optional parameter. Files being sent to the server as part of a 
     -------
         Format
         ------
-To allow for the expansion of parameters while maintaining backwards compatibility, the Icarrus server's generic response schema is as follows:
-    A) All lines containing parameters must start with a tilde '~' and the name of the parameter followed by a colon
-    B) The value of the parameter is to immediately follow the colon.
-    C) The value segment is to be terminated by a single newline character '\n'
-    D) Whitespace is not allowed prior to the instance of the colon and the first character in the value segment may not be whitespace.
-    E) To maintain backwards compatibility, any unknown parameter or line that does not start with the identifying tilde '~' is to be ignored and treated as if it were not there.
-    F) Invalid characters inside of a parameter's value string include: colon ':',
+The format of the response is to be standard XML.
 
         Parameters
         ----------
 status      --  Required parameter. A string containing the status of the login transaction. Acceptable values will either be "valid" or "invalid" where "valid" is a successful login to the server and "invalid" indicates some
                 problem with either the username, password, or error on the server's part that caused the login to not be valid.
-token       --  Optional parameter. A string that is the unique identifier for the next allowable transaction with the file upload functionality of the Icarrus server. A valid token will be granted upon:
-                    A) A successful login
-                    B) A successful file upload
-                    C) An invalid file upload where the cause of failure was not an invalid token
-                If an invalid token is passed to the server the user will be forced to manually generate a new token. This system is used to deter the use of multiple user's using the same account at a given
-                time.
 error       --  Optional parameter. A string describing the reason the server returned an "invalid" status for a login. This is used in the logging to aid as a source of reference for solutions to problems
                 users may have with the Icarrus platform.
+
+<response>
+	<status>valid</status>
+</response>
+
+-- or --
+
+<response>
+	<status>invalid</status>
+	<error>Invalid username or password.</error>
+</response>
