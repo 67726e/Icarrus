@@ -1,19 +1,13 @@
-package com.hexcoder.icarrus;
+package us.hexcoder.icarrus;
 
-import com.hexcoder.icarrus.dao.ImageDAO;
-import com.hexcoder.icarrus.dao.LoggingDAO;
-import com.hexcoder.icarrus.dto.MessageHandler;
-import com.hexcoder.icarrus.ui.ControlPanelForm;
-import com.hexcoder.icarrus.ui.DropForm;
-import com.hexcoder.icarrus.ui.ExtendedTrayIcon;
-import com.hexcoder.icarrus.ui.LoginForm;
+import us.hexcoder.icarrus.dao.ImageDAO;
+import us.hexcoder.icarrus.dao.LoggingDAO;
+import us.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.ui.ExtendedTrayIcon;
 import com.sun.awt.AWTUtilities;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * User: 67726e

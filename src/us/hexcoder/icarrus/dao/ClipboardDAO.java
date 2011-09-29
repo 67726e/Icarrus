@@ -1,6 +1,6 @@
-package com.hexcoder.icarrus.dao;
+package us.hexcoder.icarrus.dao;
 
-import com.hexcoder.icarrus.dto.SettingsHandler;
+import us.hexcoder.icarrus.dto.SettingsHandler;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

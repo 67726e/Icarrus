@@ -1,10 +1,10 @@
-package com.hexcoder.icarrus.ui;
+package us.hexcoder.icarrus.ui;
 
-import com.hexcoder.icarrus.dao.CredentialDAO;
-import com.hexcoder.icarrus.dao.ImageDAO;
-import com.hexcoder.icarrus.dao.LoggingDAO;
-import com.hexcoder.icarrus.dao.LoginDAO;
-import com.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.dao.CredentialDAO;
+import us.hexcoder.icarrus.dao.ImageDAO;
+import us.hexcoder.icarrus.dao.LoggingDAO;
+import us.hexcoder.icarrus.dao.LoginDAO;
+import us.hexcoder.icarrus.dto.MessageHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * User: 67726e

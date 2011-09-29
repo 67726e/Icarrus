@@ -1,7 +1,7 @@
-package com.hexcoder.icarrus.dao;
+package us.hexcoder.icarrus.dao;
 
-import com.hexcoder.icarrus.dto.CredentialHandler;
-import com.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.dto.CredentialHandler;
+import us.hexcoder.icarrus.dto.MessageHandler;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;

@@ -1,6 +1,6 @@
-package com.hexcoder.icarrus.dao;
+package us.hexcoder.icarrus.dao;
 
-import com.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.dto.MessageHandler;
 
 import java.io.*;
 import java.util.LinkedList;

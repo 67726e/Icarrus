@@ -1,4 +1,4 @@
-package com.hexcoder.icarrus.dao;
+package us.hexcoder.icarrus.dao;
 
 import java.io.File;
 import java.io.FileWriter;

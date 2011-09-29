@@ -1,4 +1,4 @@
-package com.hexcoder.icarrus.dto;
+package us.hexcoder.icarrus.dto;
 
 /**
  * User: 67726e

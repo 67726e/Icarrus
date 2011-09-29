@@ -1,11 +1,10 @@
-package com.hexcoder.icarrus.dao;
+package us.hexcoder.icarrus.dao;
 
-import com.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.dto.MessageHandler;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**

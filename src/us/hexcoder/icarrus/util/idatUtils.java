@@ -1,4 +1,4 @@
-package com.hexcoder.icarrus.util;
+package us.hexcoder.icarrus.util;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

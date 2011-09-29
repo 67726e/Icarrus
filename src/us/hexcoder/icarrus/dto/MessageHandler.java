@@ -1,6 +1,6 @@
-package com.hexcoder.icarrus.dto;
+package us.hexcoder.icarrus.dto;
 
-import com.hexcoder.icarrus.dao.LoggingDAO;
+import us.hexcoder.icarrus.dao.LoggingDAO;
 
 import javax.swing.*;
 import java.awt.*;

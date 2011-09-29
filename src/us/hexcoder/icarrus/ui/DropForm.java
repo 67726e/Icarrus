@@ -1,21 +1,16 @@
-package com.hexcoder.icarrus.ui;
+package us.hexcoder.icarrus.ui;
 
-import com.hexcoder.icarrus.dao.LoggingDAO;
-import com.hexcoder.icarrus.dto.MessageHandler;
+import us.hexcoder.icarrus.dao.LoggingDAO;
+import us.hexcoder.icarrus.dto.MessageHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Rectangle2D;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
-import java.util.Timer;
 
 /**
  * User: 67726e
