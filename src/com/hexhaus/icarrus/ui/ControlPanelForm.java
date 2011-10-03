@@ -1,11 +1,11 @@
-package us.hexcoder.icarrus.ui;
+package com.hexhaus.icarrus.ui;
 
-import us.hexcoder.icarrus.dao.HistoryDAO;
-import us.hexcoder.icarrus.dao.ImageDAO;
-import us.hexcoder.icarrus.dao.LoggingDAO;
-import us.hexcoder.icarrus.dao.SettingsDAO;
-import us.hexcoder.icarrus.handler.MessageHandler;
-import us.hexcoder.icarrus.handler.SettingsHandler;
+import com.hexhaus.icarrus.dao.HistoryDAO;
+import com.hexhaus.icarrus.dao.ImageDAO;
+import com.hexhaus.icarrus.dao.LoggingDAO;
+import com.hexhaus.icarrus.dao.SettingsDAO;
+import com.hexhaus.icarrus.handler.MessageHandler;
+import com.hexhaus.icarrus.handler.SettingsHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

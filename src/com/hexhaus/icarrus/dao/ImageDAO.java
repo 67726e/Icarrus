@@ -1,6 +1,6 @@
-package us.hexcoder.icarrus.dao;
+package com.hexhaus.icarrus.dao;
 
-import us.hexcoder.icarrus.handler.MessageHandler;
+import com.hexhaus.icarrus.handler.MessageHandler;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -1,8 +1,8 @@
-package us.hexcoder.icarrus.dao;
+package com.hexhaus.icarrus.dao;
 
-import us.hexcoder.icarrus.handler.CredentialHandler;
-import us.hexcoder.icarrus.handler.MessageHandler;
-import us.hexcoder.icarrus.handler.SettingsHandler;
+import com.hexhaus.icarrus.handler.CredentialHandler;
+import com.hexhaus.icarrus.handler.MessageHandler;
+import com.hexhaus.icarrus.handler.SettingsHandler;
 
 import java.io.*;
 import java.math.BigInteger;

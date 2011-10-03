@@ -1,9 +1,9 @@
-package us.hexcoder.icarrus;
+package com.hexhaus.icarrus;
 
-import us.hexcoder.icarrus.dao.ImageDAO;
-import us.hexcoder.icarrus.dao.LoggingDAO;
-import us.hexcoder.icarrus.handler.MessageHandler;
-import us.hexcoder.icarrus.ui.ExtendedTrayIcon;
+import com.hexhaus.icarrus.dao.ImageDAO;
+import com.hexhaus.icarrus.dao.LoggingDAO;
+import com.hexhaus.icarrus.handler.MessageHandler;
+import com.hexhaus.icarrus.ui.ExtendedTrayIcon;
 import com.sun.awt.AWTUtilities;
 
 import javax.swing.*;
