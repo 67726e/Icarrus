@@ -41,7 +41,7 @@ public class DropForm extends JDialog {
             Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
             setWindowOpacity.invoke(null, this, 0.01f);
         } catch (Exception e) {
-            MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDAO.Status.FATAL_ERROR);
+            MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDAO.Status.FatalError);
         }
     }
 
@@ -86,7 +86,7 @@ public class DropForm extends JDialog {
 
                         try { data = (java.util.List)transferable.getTransferData(flavor); }                            // Create a list of all the files dropped
                         catch (Exception e) {
-                            MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDAO.Status.ERROR);
+                            MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDAO.Status.Error);
                             event.rejectDrop();                                                                         // Reject an invalid drop operation
                             return;
                         }

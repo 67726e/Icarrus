@@ -29,56 +29,6 @@ public class MessageHandler {
         return calendar.getTime().toString();                                                   // Return a String representation of the Date object
     }
 
-	/**
-	 * Method converts a LoggingDAO message type into  a value usable by the JOptionPane
-	 *
-	 * @param messageType The LoggingDAO message type
-	 * @return an int mapping to the given LoggingDAO value
-	 */
-	private static int convertJOptionPane(LoggingDAO.Status messageType) {
-		int type = JOptionPane.INFORMATION_MESSAGE;
-
-		switch (messageType) {
-			case INFORMATION:
-				type = JOptionPane.INFORMATION_MESSAGE;
-				break;
-			case WARNING:
-				type = JOptionPane.WARNING_MESSAGE;
-				break;
-			case ERROR:
-			case FATAL_ERROR:
-				type = JOptionPane.ERROR_MESSAGE;
-				break;
-		}
-
-		return type;
-	}
-
-	/**
-	 * Method converts a LoggingDAO message type into a value usable by TrayIcon
-	 *
-	 * @param messageType The LoggingDAO message type
-	 * @return a TrayIcon.MessageType value mapping to the given LoggingDAO value
-	 */
-	private static TrayIcon.MessageType convertTrayIcon(LoggingDAO.Status messageType) {
-		TrayIcon.MessageType type = TrayIcon.MessageType.INFO;
-
-		switch (messageType) {
-			default:
-			case INFORMATION:
-				type = TrayIcon.MessageType.INFO;
-				break;
-			case WARNING:
-				type = TrayIcon.MessageType.WARNING;
-				break;
-			case ERROR:
-				type = TrayIcon.MessageType.ERROR;
-				break;
-		}
-
-		return type;
-	}
-
     /**
      * Method called as a part of the message logging process. A TrayIcon message (or JOptionPane message)
      * is shown to inform the user of the message. The way the message is displayed is depended on application
@@ -90,13 +40,13 @@ public class MessageHandler {
      */
     private static void displayMessageToUser(String title, String message, LoggingDAO.Status messageType) {
         boolean displayViaTray = true;                                                                                  // Determines the display via TrayIcon or JOptPane
-        if (messageType == LoggingDAO.Status.FATAL_ERROR) displayViaTray = false;
+        if (messageType == LoggingDAO.Status.FatalError) displayViaTray = false;
         if (trayIcon == null) displayViaTray = false;
 
         if (displayViaTray) {
-	    	trayIcon.displayMessage(title, message, convertTrayIcon(messageType));                                      // Display the message via the TrayIcon
+	    	trayIcon.displayMessage(title, message, messageType.toTrayType());                                          // Display the message via the TrayIcon
         } else {
-	        JOptionPane.showMessageDialog(null, message, title, convertJOptionPane(messageType));
+	        JOptionPane.showMessageDialog(null, message, title, messageType.toPaneType());                              // Display the message via a dialog
         }
     }
 
@@ -116,6 +66,6 @@ public class MessageHandler {
         if (SettingsHandler.getSaveMessagesToLog())
             LoggingDAO.logToFile(title, message, messageType);                                  // Call logging method to write this message to the log
 
-        if (messageType == LoggingDAO.Status.FATAL_ERROR) System.exit(-1);                      // Exit with a general error code upon a fatal error
+        if (messageType == LoggingDAO.Status.FatalError) System.exit(-1);                       // Exit with a general error code upon a fatal error
     }
 }

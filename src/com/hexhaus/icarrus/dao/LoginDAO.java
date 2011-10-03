@@ -20,7 +20,6 @@ import java.util.*;
  */
 public class LoginDAO {
     private boolean loginStatus = false;
-
     public boolean getLoginStatus() {return loginStatus;}
 
     /**
@@ -36,7 +35,7 @@ public class LoginDAO {
         try {
             loginServerURL = new URL(SettingsHandler.getLoginServerURL());                      // Attempt to form the URL for the login server
         } catch (MalformedURLException e) {
-            MessageHandler.postMessage("Login URL Error", "The URL provided was invalid. Please check the URL in the settings.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("Login URL Error", "The URL provided was invalid. Please check the URL in the settings.", LoggingDAO.Status.Error);
         }
 
         try {
@@ -49,7 +48,7 @@ public class LoginDAO {
 
             this.parseLoginServerResponse(loginServerConnection);
         } catch (IOException e) {
-            MessageHandler.postMessage("Unable To Login", "Icarrus is unable to write to the login server.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("Unable To Login", "Icarrus is unable to write to the login server.", LoggingDAO.Status.Error);
         }
     }
 
@@ -79,7 +78,7 @@ public class LoginDAO {
 
             in.close();
         } catch (IOException e) {
-            MessageHandler.postMessage("Login Error", "An invalid response was given by the login server. You could not be logged in.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("Login Error", "An invalid response was given by the login server. You could not be logged in.", LoggingDAO.Status.Error);
             return;
         }
 
@@ -121,7 +120,7 @@ public class LoginDAO {
             passwordHasher.update(passwordHash.getBytes(), 0, password.length);                 // Create the password hash
             passwordHash = new BigInteger(1, passwordHasher.digest()).toString(16);             // Get hexadecimal String representation of hash
         } catch (NoSuchAlgorithmException e) {
-            MessageHandler.postMessage("Login Error", "There was a problem logging in. Please try again.", LoggingDAO.Status.WARNING);
+            MessageHandler.postMessage("Login Error", "There was a problem logging in. Please try again.", LoggingDAO.Status.Warning);
             return;
         }
 

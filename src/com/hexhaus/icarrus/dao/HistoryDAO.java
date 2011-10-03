@@ -18,7 +18,7 @@ public class HistoryDAO {
         if (!historyFile.exists()) try {
             historyFile.createNewFile();
         } catch (IOException e) {
-            MessageHandler.postMessage("History File", "A new history file could not be created.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("History File", "A new history file could not be created.", LoggingDAO.Status.Error);
         }
     }
 
@@ -65,7 +65,7 @@ public class HistoryDAO {
                 in.close();
             }
         } catch (IOException e) {
-            MessageHandler.postMessage("History Read Error", "The upload history could not be read.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("History Read Error", "The upload history could not be read.", LoggingDAO.Status.Error);
         }
 
         return historyRows;
@@ -95,14 +95,14 @@ public class HistoryDAO {
         writeString.append("}\n");
 
         if (generalError) {
-            MessageHandler.postMessage("History Content Error", "The history data was invalid and could not be written to file.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("History Content Error", "The history data was invalid and could not be written to file.", LoggingDAO.Status.Error);
         }
 
         try { if (!historyFile.exists()) generalError = historyFile.createNewFile(); }                                  // Create a new history file if one does not exist
         catch (IOException e) { generalError = true; }
         if (generalError) {
             MessageHandler.postMessage("History File Error",
-                    "A new history file could not be created. The history will not be stored.", LoggingDAO.Status.ERROR);// Inform the user that the history data file could not be created.
+                    "A new history file could not be created. The history will not be stored.", LoggingDAO.Status.Error);// Inform the user that the history data file could not be created.
             return;
         }
 
@@ -115,7 +115,7 @@ public class HistoryDAO {
                 out.close();
             }
         } catch (IOException e) {
-            MessageHandler.postMessage("History Write Error", "The upload history could not be written to file.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("History Write Error", "The upload history could not be written to file.", LoggingDAO.Status.Error);
         }
     }
 }

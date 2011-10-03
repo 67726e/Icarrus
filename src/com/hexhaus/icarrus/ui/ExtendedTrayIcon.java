@@ -69,7 +69,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         try {
             SystemTray.getSystemTray().add(this);
         } catch (AWTException e) {
-            MessageHandler.postMessage("System Tray Error", "The tray icon could not be added to your system tray.", LoggingDAO.Status.FATAL_ERROR);
+            MessageHandler.postMessage("System Tray Error", "The tray icon could not be added to your system tray.", LoggingDAO.Status.FatalError);
         }
 
         controlPanelForm = new ControlPanelForm();                                              // Create form to display control data
@@ -128,7 +128,7 @@ public class ExtendedTrayIcon extends TrayIcon {
             dropForm.setVisible(true);
             dropForm.toFront();
         } catch (Exception e) {
-            MessageHandler.postMessage("Locator Error", "The tray icon could not be properly located. Please ensure it is in on the taskbar.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("Locator Error", "The tray icon could not be properly located. Please ensure it is in on the taskbar.", LoggingDAO.Status.Error);
         }
     }
 
@@ -179,7 +179,6 @@ public class ExtendedTrayIcon extends TrayIcon {
                 login.setText("Login");                                                         // Change the text to show we are no longer logged in
 
                 CredentialHandler.setLoginStatus(false);                                        // Clear last logged in user's credentials
-                CredentialHandler.setToken("");
                 CredentialHandler.setUsername("");
                 CredentialHandler.setPassword("");
             }

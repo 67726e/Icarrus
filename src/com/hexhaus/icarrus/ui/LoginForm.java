@@ -89,7 +89,7 @@ public class LoginForm extends JFrame {
                         usernameField.getText(), passwordField.getPassword());                  // Store the username and password in a file for automatic login
                 form_pointer.dispose();                                                         // Clear up resources used by this form
                 ExtendedTrayIcon.setLoginStatus("Logout");
-                MessageHandler.postMessage("Logged In", "You have been successfully logged in.", LoggingDAO.Status.INFORMATION);
+                MessageHandler.postMessage("Logged In", "You have been successfully logged in.", LoggingDAO.Status.Info);
             }
         }
 

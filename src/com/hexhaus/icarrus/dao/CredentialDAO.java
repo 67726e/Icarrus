@@ -28,7 +28,7 @@ public class CredentialDAO {
             passwordHasher.update(passwordHash.getBytes(), 0, password.length);                 // Create the password hash
             passwordHash = new BigInteger(1, passwordHasher.digest()).toString(16);             // Get hexadecimal String representation of hash
         } catch (NoSuchAlgorithmException e) {
-            MessageHandler.postMessage("Credentials Storage Error", "Your account credentials could not be securely stored. You will not be automatically logged in", LoggingDAO.Status.WARNING);
+            MessageHandler.postMessage("Credentials Storage Error", "Your account credentials could not be securely stored. You will not be automatically logged in", LoggingDAO.Status.Warning);
             return;
         }
 
@@ -38,7 +38,7 @@ public class CredentialDAO {
             out.write("~Password: " + passwordHash + "\n");
             out.close();
         } catch (IOException e) {
-            MessageHandler.postMessage("Credentials Storage Error", "Your account credentials could not stored. You will not be automatically logged in.", LoggingDAO.Status.ERROR);
+            MessageHandler.postMessage("Credentials Storage Error", "Your account credentials could not stored. You will not be automatically logged in.", LoggingDAO.Status.Error);
         }
     }
 }

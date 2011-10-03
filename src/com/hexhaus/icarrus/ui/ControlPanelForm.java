@@ -299,12 +299,12 @@ public class ControlPanelForm extends JFrame {
         public void actionPerformed(ActionEvent event) {
             if (!Desktop.isDesktopSupported())
 	            MessageHandler.postMessage("Help Error",
-			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.WARNING);                // Check if a web browser can be opened
+			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.Warning);                // Check if a web browser can be opened
             try {
 	            Desktop.getDesktop().browse(new URI(helpURL));                                                          // Open the default browser to the Icarrus Help pages
             } catch (Exception e) {
 	            MessageHandler.postMessage("Help Error",
-			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.WARNING);                // Inform the user he/she has to manually visit the help pages
+			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.Warning);                // Inform the user he/she has to manually visit the help pages
             }
         }
     }
