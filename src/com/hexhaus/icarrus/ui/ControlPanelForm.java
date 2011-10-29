@@ -1,9 +1,6 @@
 package com.hexhaus.icarrus.ui;
 
-import com.hexhaus.icarrus.dao.HistoryDAO;
-import com.hexhaus.icarrus.dao.ImageDAO;
-import com.hexhaus.icarrus.dao.LoggingDAO;
-import com.hexhaus.icarrus.dao.SettingsDAO;
+import com.hexhaus.icarrus.dao.*;
 import com.hexhaus.icarrus.handler.MessageHandler;
 import com.hexhaus.icarrus.handler.SettingsHandler;
 
@@ -14,8 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: 67726e
@@ -102,72 +101,6 @@ public class ControlPanelForm extends JFrame {
             tabbedPane.addTab("Settings", new SettingsTab());
             tabbedPane.addTab("About", new AboutTab());
             this.add(tabbedPane);
-        }
-    }
-
-    private class HistoryTab extends JPanel {
-        private JTable historyTable;
-        private DefaultTableModel tableModel;
-        private final int SCROLL_WIDTH = 440, SCROLL_HEIGHT = 150;
-
-        public HistoryTab() {
-            this.setLayout(null);
-
-            java.util.List<List<String[]>> history = new HistoryDAO().loadHistoryFromFile();                            // Get a List containing all of the history data
-            Object[][] data = listToObject(history);                                                                    // Convert the List to a properly formatted Object array for the JTable
-            String[] columns = {"File Name", "URL", "Size", "Date"};
-
-            tableModel = new DefaultTableModel(data, columns);
-            historyTable = new JTable(tableModel);
-            historyTable.setPreferredScrollableViewportSize(new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT));
-            historyTable.setFillsViewportHeight(true);
-            historyTable.addMouseListener(new HistoryMouseListener());
-
-            JScrollPane scrollPane = new JScrollPane(historyTable);
-            scrollPane.setBounds(20, 20, SCROLL_WIDTH, SCROLL_HEIGHT);
-            this.add(scrollPane);
-        }
-
-        public void insertRow(Object[] data) {tableModel.insertRow(0, data);}
-        public void clearTable() {tableModel.getDataVector().removeAllElements();}
-
-        /**
-         * Private utility method used to convert the List containing history entries into a format readable
-         * by the JTable that displays the history. Function iterates through the key/value pairs and places
-         * the value in the corresponding slot of the array.
-         *
-         * @param list contains the key/value pairs for each row in the history table
-         * @return Object[][] containing the data for the rows of the JTable
-         */
-        private Object[][] listToObject(List<List<String[]>> list) {
-            Object[][] data = new Object[list.size()][0];
-
-            int rowCount = 0;
-            for (List<String[]> row : list) {
-                Object[] rowObject = {"", "", "", ""};                                                                  // Current temporary row object
-                for (String[] pair : row) {                                                                             // Iterate through the key/value pair to determine what column it belongs in
-                    if (pair[0].equals("filename")) {
-                        rowObject[0] = pair[1];
-                    } else if (pair[0].equals("fileurl")) {
-                        rowObject[1] = pair[1];
-                    } else if (pair[0].equals("filesize")) {
-                        rowObject[2] = pair[1];
-                    } else if (pair[0].equals("uploaddate")) {
-                        rowObject[3] = pair[1];
-                    }
-                }
-                data[rowCount++] = rowObject;                                                                           // Pass the new Object[] for the current row into the final row object
-            }
-
-            return data;
-        }
-
-        private class HistoryMouseListener implements MouseListener {
-            public void mouseClicked(MouseEvent event) {}
-            public void mouseEntered(MouseEvent event) {}
-            public void mouseExited(MouseEvent event) {}
-            public void mousePressed(MouseEvent event) {}
-            public void mouseReleased(MouseEvent event) {}
         }
     }
 

@@ -1,0 +1,20 @@
+<project name="Icarrus" basedir=".">
+	<target name="clean">
+		<delete dir="out"/>
+		<delete dir="dist"/>
+		<delete dir="build"/>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="dist"/>
+		<mkdir dir="build/classes"/>
+	</target>
+
+	<target name="compile" depends="init">
+
+	</target>
+
+	<target name="jar" depends="compile">
+
+	</target>
+</project>

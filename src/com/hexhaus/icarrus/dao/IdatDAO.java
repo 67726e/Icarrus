@@ -37,8 +37,6 @@ public class IdatDAO {
 			in = new BufferedReader(new FileReader(idatFile));
 
 			while ((line = in.readLine()) != null) {
-				line = line.trim();
-
 				if (inBlock) {
 					if (line.equals("}")) {												// Check if the current block has ended
 						inBlock = false;
@@ -49,8 +47,8 @@ public class IdatDAO {
 						if (index == -1 || index == 0 || line.length()  < 3 ||
 								(line.length() - index) == 1) continue;					// Skip this line if it doesn't contain a valid key/value pair
 
-						String key = line.substring(0, index);
-						String value = line.substring(index + 1, line.length());
+						String key = line.substring(0, index).trim();
+						String value = line.substring(index + 1, line.length()).trim();
 						block.put(key, value);
 					}
 				} else {
@@ -60,9 +58,6 @@ public class IdatDAO {
 					}
 				}
 			}
-		} catch (IOException e) {
-			// TODO: Log the inablility to read the IDAT file
-			throw e;
 		} finally {
 			try { if (in != null) in.close(); }
 			catch (Exception e) {}
@@ -79,6 +74,7 @@ public class IdatDAO {
 	 * @throws IOException Thrown if an exception occurs while writing the data to the IDAT file
 	 */
 	public void appendBlock(Map<String, String> block) throws IOException {
+		if (!idatFile.exists()) idatFile.createNewFile();					// Create the IDAT file if it does not already exist
 		BufferedWriter out = null;
 
 		try {
