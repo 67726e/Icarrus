@@ -10,8 +10,8 @@ public class SettingsHandler {
     private static boolean saveHistoryToFile = true;
     private static boolean displayMessagesToUser = true;
     private static boolean copyURLToClipboard = true;
-    private static String loginServerURL = "http://127.0.0.1/Icarrus/app/login.php";
-    private static String uploadServerURL = "http://127.0.0.1/Icarrus/app/upload.php";
+    private static String loginServerURL = "http://icarrusserver/app/login.php";
+    private static String uploadServerURL = "http://icarrusserver/app/upload.php";
     // TODO: Point default loginServerURL to HexCoder run Icarrus server
     // TODO: Point default uploadServerURL to HexCoder run Icarrus server
 

@@ -67,18 +67,7 @@ public class LoginDAO {
         try {
             in = new BufferedReader(new InputStreamReader(loginServerConnection.getInputStream()));
 
-			response = IdatDAO.readIdatFromBuffer(in, "Response");
-
-			/*String line = "";
-
-            while ((line = in.readLine()) != null) {
-	            if (line.length() < 4) continue;                                                // If the String is less than 4 characters (the minimum for a parameter line) then we can skip this line as unrecognized
-                if (line.charAt(0) != '~') continue;                                            // Skip this line if it does not start with the designated parameter marker '~'
-                String[] arguments = line.split(":");                                           // Split the line along the delimiter
-                if (arguments.length > 2) continue;                                             // We have illegal parameters
-
-                parameters.put(arguments[0], arguments[1]);                                     // Place the parameter/value in the HashMap as it has passed all applicable checks
-            }*/
+			response = IdatDAO.readIdatFromBuffer(in, "Response {");
 
             in.close();
         } catch (IOException e) {
@@ -113,7 +102,7 @@ public class LoginDAO {
      */
     public LoginDAO(String username, char[] password) {
         loginStatus = false;
-        String passwordHash = "";
+        /*String passwordHash = "";
 
         for (char c : password) { passwordHash += c; }
 
@@ -124,12 +113,12 @@ public class LoginDAO {
         } catch (NoSuchAlgorithmException e) {
             MessageHandler.postMessage("Login Error", "There was a problem logging in. Please try again.", LoggingDAO.Status.Warning);
             return;
-        }
+        }*/
 
-        this.sendLoginServerRequest(username, passwordHash);
+        this.sendLoginServerRequest(username, new String(password));
         if (loginStatus) {
             CredentialHandler.setUsername(username);                                            // Set the current username upon a successful login
-            CredentialHandler.setPassword(passwordHash);
+            CredentialHandler.setPassword(new String(password));
         }
     }
 }
