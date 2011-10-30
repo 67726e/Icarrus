@@ -46,7 +46,7 @@ public class LoginDAO {
             loginServerWriter.write("username=" + username + "&password=" + password);
             loginServerWriter.close();
 
-            this.parseLoginServerResponse(loginServerConnection);
+        	parseLoginServerResponse(loginServerConnection);
         } catch (IOException e) {
             MessageHandler.postMessage("Unable To Login", "Icarrus is unable to write to the login server.", LoggingDAO.Status.Error);
         }
@@ -61,11 +61,15 @@ public class LoginDAO {
      * @param loginServerConnection is the URL connection that provides the server response
      */
     private void parseLoginServerResponse(URLConnection loginServerConnection) {
-        HashMap<String, String> parameters = new HashMap<String, String>();
+        List<Map<String, String>> response;
         BufferedReader in = null;
+
         try {
             in = new BufferedReader(new InputStreamReader(loginServerConnection.getInputStream()));
-            String line = "";
+
+			response = IdatDAO.readIdatFromBuffer(in, "Response");
+
+			/*String line = "";
 
             while ((line = in.readLine()) != null) {
 	            if (line.length() < 4) continue;                                                // If the String is less than 4 characters (the minimum for a parameter line) then we can skip this line as unrecognized
@@ -74,7 +78,7 @@ public class LoginDAO {
                 if (arguments.length > 2) continue;                                             // We have illegal parameters
 
                 parameters.put(arguments[0], arguments[1]);                                     // Place the parameter/value in the HashMap as it has passed all applicable checks
-            }
+            }*/
 
             in.close();
         } catch (IOException e) {
@@ -82,24 +86,22 @@ public class LoginDAO {
             return;
         }
 
-        this.retrieveValues(parameters);
+        if (response != null) retrieveValues(response);
     }
 
     /**
      * Private method is called to assign the proper parameter values to their corresponding setting variables for use
      * by the rest of the application.
      *
-     * @param parameters is the HashMap containing all parameter/value pairs provided in the login server's response
+     * @param response
      */
-    private void retrieveValues(HashMap<String, String> parameters) {
-	    Iterator iterator = parameters.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry)iterator.next();
-            String key = (String)pair.getKey();
-            String value = (String)pair.getValue();
+    private void retrieveValues(List<Map<String, String>> response) {
+		Map<String, String> map = response.get(0);
 
-            if (key.equals("~status") && value.equals("valid")) loginStatus = true;             // Update the login status to true if we have a valid login
-        }
+		loginStatus = (map.containsKey("status") && map.get("status").equals("valid"));			// Set the logged-in status to true if it was a valid login attempt
+		// TODO: Determine how to handle other possible parameters
+		// TODO: Update Icarrus Server to write out the properly formatted response
+		// TODO: Write a specification for the new IDAT data/file format
     }
 
     /**

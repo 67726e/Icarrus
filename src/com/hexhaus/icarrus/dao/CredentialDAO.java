@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 public class CredentialDAO {
     private static final File accountCredentialFile =
                 new File("../data/AccountCredentials.idat");                                    // Default file for all user account credentials
-
+	
     private CredentialDAO() {}
 
     public static void storeCredentials(String username, char[] password) {
