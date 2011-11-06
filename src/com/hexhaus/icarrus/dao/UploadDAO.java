@@ -2,6 +2,9 @@ package com.hexhaus.icarrus.dao;
 
 import com.hexhaus.icarrus.handler.CredentialHandler;
 import com.hexhaus.icarrus.handler.MessageHandler;
+import com.hexhaus.icarrus.handler.SettingsHandler;
+import com.hexhaus.icarrus.ui.HistoryTab;
+import com.sun.xml.internal.ws.api.message.Message;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -13,6 +16,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.client.HttpClient;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -54,12 +59,13 @@ public class UploadDAO {
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost();
             post.setEntity(request);
+			post.setURI(new URI(SettingsHandler.getUploadServerURL()));
 
             HttpResponse response = client.execute(post);
             HttpEntity responseEntity = response.getEntity();
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(responseEntity.getContent()));					// Create reader for the parser
-			responseData = IdatDAO.readIdatFromBuffer(in, "Reponse {");													// Parse out the response from the server
+			responseData = IdatDAO.readIdatFromBuffer(in, "Response {");												// Parse out the response from the server
 			in.close();
         } catch (UnsupportedEncodingException e) {
             MessageHandler.postMessage("Encoding Error", "The required data could not be properly encoded.", LoggingDAO.Status.Error);
@@ -67,23 +73,24 @@ public class UploadDAO {
             MessageHandler.postMessage("Protocol Error", "An incorrect protocol is being used. Please check the upload URL.", LoggingDAO.Status.Error);
         } catch (IOException e) {
             MessageHandler.postMessage("Upload Error", "A connection could not be established with the server", LoggingDAO.Status.Error);
-        }
+        } catch (URISyntaxException e) {
+			MessageHandler.postMessage("URL Error", "The upload URL is invalid.", LoggingDAO.Status.Error);
+		}
 
-        // TODO: Send upload information to HistoryDAO
+
+		// Evaluate server response
         Map<String, String> responseBlock = null;
 		if (responseData != null && responseData.size() > 0) responseBlock = responseData.get(0);						// Retrieve the response data if it is available
 		
-		if (responseBlock != null && responseBlock.containsKey("status") &&
-				responseBlock.get("status").equals("valid")) {															// Check if there was a parsed response and it returned valid
+		if (responseBlock != null &&
+				responseBlock.containsKey("status") && responseBlock.get("status").equals("valid")) {					// Check if the response was parsed, and contains the valid status indicator
+			// TODO: Send upload data to HistoryTab
 
-            MessageHandler.postMessage("Upload Successful",
-					"Your file(s) have uploaded successfully.", LoggingDAO.Status.Info);
-            new ClipboardDAO().copyURLToClipboard((responseBlock.get("url") == null) ? "" : responseBlock.get("url"));	// Copy the URL of the uploaded file to the clipboard (if allowed)
-        } else {
-            MessageHandler.postMessage("Upload Error",
-                    (responseBlock.get("error") == null) ?
-							"The file(s) could not be uploaded to the server." : responseBlock.get("error"),
-                    LoggingDAO.Status.Error);																			// Output the error if there was an invalid upload or response
-        }
+			MessageHandler.postMessage("Successful Upload",
+					"Your file(s) have been uploaded successfully.", LoggingDAO.Status.Info);							// Inform the user of the valid upload
+		} else {
+			System.out.println("ERROR");
+			// TODO: Form proper error message
+		}
     }
 }
