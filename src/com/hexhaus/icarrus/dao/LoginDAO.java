@@ -62,7 +62,7 @@ public class LoginDAO {
      */
     private void parseLoginServerResponse(URLConnection loginServerConnection) {
         List<Map<String, String>> response;
-        BufferedReader in = null;
+        BufferedReader in;
 
         try {
             in = new BufferedReader(new InputStreamReader(loginServerConnection.getInputStream()));
@@ -87,7 +87,7 @@ public class LoginDAO {
     private void retrieveValues(List<Map<String, String>> response) {
 		Map<String, String> map = response.get(0);
 
-		loginStatus = (map.containsKey("status") && map.get("status").equals("valid"));			// Set the logged-in status to true if it was a valid login attempt
+		this.loginStatus = (map.containsKey("status") && map.get("status").equals("valid"));		// Set the logged-in status to true if it was a valid login attempt
 		// TODO: Determine how to handle other possible parameters
 		// TODO: Update Icarrus Server to write out the properly formatted response
 		// TODO: Write a specification for the new IDAT data/file format
@@ -101,22 +101,10 @@ public class LoginDAO {
      * @param password is the password used to authenticate the login
      */
     public LoginDAO(String username, char[] password) {
-        loginStatus = false;
-        /*String passwordHash = "";
-
-        for (char c : password) { passwordHash += c; }
-
-        try {
-            MessageDigest passwordHasher = MessageDigest.getInstance("MD5");
-            passwordHasher.update(passwordHash.getBytes(), 0, password.length);                 // Create the password hash
-            passwordHash = new BigInteger(1, passwordHasher.digest()).toString(16);             // Get hexadecimal String representation of hash
-        } catch (NoSuchAlgorithmException e) {
-            MessageHandler.postMessage("Login Error", "There was a problem logging in. Please try again.", LoggingDAO.Status.Warning);
-            return;
-        }*/
+        this.loginStatus = false;
 
         this.sendLoginServerRequest(username, new String(password));
-        if (loginStatus) {
+        if (this.loginStatus) {
             CredentialHandler.setUsername(username);                                            // Set the current username upon a successful login
             CredentialHandler.setPassword(new String(password));
         }

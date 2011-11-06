@@ -15,6 +15,7 @@ import org.apache.http.client.HttpClient;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +25,6 @@ import java.util.Map;
  */
 public class UploadDAO {
     private String status;
-    private String token;
     private String url;
     private String error;
     public UploadDAO() {}
@@ -37,9 +37,9 @@ public class UploadDAO {
      */
     public void uploadFile(File file) {
         status = "";
-        token = "";
         url = "";
         error = "";
+		List<Map<String, String>> responseData = null;
 
         try {
             FileBody binary = new FileBody(file);
@@ -58,7 +58,9 @@ public class UploadDAO {
             HttpResponse response = client.execute(post);
             HttpEntity responseEntity = response.getEntity();
 
-            parseResponse(responseEntity);                                                                              // Parse the response of the Icarrus server
+			BufferedReader in = new BufferedReader(new InputStreamReader(responseEntity.getContent()));					// Create reader for the parser
+			responseData = IdatDAO.readIdatFromBuffer(in, "Reponse {");													// Parse out the response from the server
+			in.close();
         } catch (UnsupportedEncodingException e) {
             MessageHandler.postMessage("Encoding Error", "The required data could not be properly encoded.", LoggingDAO.Status.Error);
         } catch (ClientProtocolException e) {
@@ -68,56 +70,20 @@ public class UploadDAO {
         }
 
         // TODO: Send upload information to HistoryDAO
-        if (status.equals("valid")) {
-            MessageHandler.postMessage("Upload Successful", "Your file(s) have uploaded successfully.", LoggingDAO.Status.Info);
-            new ClipboardDAO().copyURLToClipboard(url);                                                                 // Copy the URL of the uploaded file to the clipboard (if allowed)
+        Map<String, String> responseBlock = null;
+		if (responseData != null && responseData.size() > 0) responseBlock = responseData.get(0);						// Retrieve the response data if it is available
+		
+		if (responseBlock != null && responseBlock.containsKey("status") &&
+				responseBlock.get("status").equals("valid")) {															// Check if there was a parsed response and it returned valid
+
+            MessageHandler.postMessage("Upload Successful",
+					"Your file(s) have uploaded successfully.", LoggingDAO.Status.Info);
+            new ClipboardDAO().copyURLToClipboard((responseBlock.get("url") == null) ? "" : responseBlock.get("url"));	// Copy the URL of the uploaded file to the clipboard (if allowed)
         } else {
             MessageHandler.postMessage("Upload Error",
-                    (error == null) ? "The file(s) could not be uploaded to the server." : error,
-                    LoggingDAO.Status.Error);
-        }
-    }
-
-    /**
-     * Method receives an HttpResponse from the uploaded file. Takes the returned data and attempts to parse it into the
-     * key/value pairs to be used for data dissemination throughout the application.
-     *
-     * @param response the HTTP response given as a result of a file upload
-     */
-    private void parseResponse(HttpEntity response) {
-        try {
-            HashMap<String, String> parameters = new HashMap<String, String>();
-            BufferedReader in = new BufferedReader(new InputStreamReader(response.getContent()));
-            String line = "";
-
-            try {
-                while ((line = in.readLine()) != null) {
-                    // TODO: Convert this method to use util.idatUtils
-
-                    if (line.length() < 4) continue;                                                                    // If the String is less than 4 characters (the minimum for a parameter line) then we can skip this line as unrecognized
-                    if (line.charAt(0) != '~') continue;                                                                // Skip this line if it does not start with the designated parameter marker '~'
-                    String[] arguments = line.split(":");                                                               // Split the line along the delimiter
-                    if (arguments.length > 2) continue;                                                                 // We have illegal parameters
-
-                    parameters.put(arguments[0], arguments[1]);                                                         // Place the parameter/value in the HashMap as it has passed all applicable checks
-                }
-            } finally { in.close(); }
-        } catch (IOException e) {
-            MessageHandler.postMessage("Upload Response Error", "The response from the Icarrus server could not be read.", LoggingDAO.Status.Error);
-        }
-    }
-
-    private void retrieveValues(HashMap<String, String> parameters) {
-        Iterator iterator = parameters.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry)iterator.next();
-            String key = (String)pair.getKey();
-            String value = (String)pair.getValue();
-
-            if (key.equals("~status") && value.equals("valid")) status = value;
-            else if (key.equals("~token")) token = value;
-            else if (key.equals("~url")) url = value;
-            else if (key.equals("~error")) error = value;
+                    (responseBlock.get("error") == null) ?
+							"The file(s) could not be uploaded to the server." : responseBlock.get("error"),
+                    LoggingDAO.Status.Error);																			// Output the error if there was an invalid upload or response
         }
     }
 }

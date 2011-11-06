@@ -109,6 +109,7 @@ public class ExtendedTrayIcon extends TrayIcon {
 
     private void calibrateDropForm() {
         dropForm.setVisible(false);                                                             // Hide the form so it doesn't interfere with location
+		// TODO: Determine the monitor the drop icon resides in and place the form there
 
         int width = trayIcon.getSize().width;
         int height = trayIcon.getSize().height;

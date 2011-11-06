@@ -27,6 +27,7 @@ public class IdatDAO {
 	 * @throws IOException Thrown if an error occurs while reading the IDAT file
 	 */
 	public List<Map<String, String>> readIdatFile() throws IOException {
+		if (!idatFile.exists()) return null;
 		List<Map<String, String>> blocks = new LinkedList<Map<String, String>>();
 
 		BufferedReader in = null;
@@ -61,7 +62,6 @@ public class IdatDAO {
 				if (line.equals("}")) {												// Check if the current block has ended
 					inBlock = false;
 					if (block != null) blocks.add(block);							// Add the prior block to the list of blocks for storage
-					continue;														// Continue parsing with the next line
 				} else {
 					int index = line.indexOf("=");
 					if (index == -1 || index == 0 || line.length()  < 3 ||
@@ -104,16 +104,15 @@ public class IdatDAO {
 
 			out.write("}");													// Close the IDAT block
 
-		} catch (IOException e) {
-			// TODO: Log output exception
-			throw e;
 		} finally {
 			try {
 				if (out != null) {
 					out.flush();
 					out.close();
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				// TODO: Log unable to close output stream
+			}
 		}
 	}
 }

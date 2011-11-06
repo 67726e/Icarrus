@@ -1,6 +1,7 @@
 package com.hexhaus.icarrus.ui;
 
 import com.hexhaus.icarrus.dao.LoggingDAO;
+import com.hexhaus.icarrus.dao.UploadDAO;
 import com.hexhaus.icarrus.handler.MessageHandler;
 
 import javax.swing.*;
@@ -10,7 +11,11 @@ import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.*;
+import java.util.List;
 
 /**
  * User: 67726e
@@ -39,7 +44,7 @@ public class DropForm extends JDialog {
         try {
             Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
             Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
-            setWindowOpacity.invoke(null, this, 0.01f);
+            setWindowOpacity.invoke(null, this, 1f);
         } catch (Exception e) {
             MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDAO.Status.FatalError);
         }
@@ -72,6 +77,8 @@ public class DropForm extends JDialog {
         }
 
         private class DropTargetListenerImpl implements DropTargetListener {
+			private UploadDAO uploadDAO = new UploadDAO();
+
             public void dragEnter(DropTargetDragEvent event) {}
             public void dragExit(DropTargetEvent event) {}
             public void dragOver(DropTargetDragEvent event) {}
@@ -82,16 +89,20 @@ public class DropForm extends JDialog {
                 for (DataFlavor flavor : flavors) {
                     if (flavor.isFlavorJavaFileListType()) {
                         event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                        java.util.List<?> data = null;
+						
+						try {
+							List<File> files = (List<File>)transferable.getTransferData(flavor);						// Acquire a list of all the dropped files
 
-                        try { data = (java.util.List)transferable.getTransferData(flavor); }                            // Create a list of all the files dropped
+							if (files.size() == 1) uploadDAO.uploadFile(files.get(0));									// If there is a singular file, upload it
+							//else if (files.size() > 1) uploadDAO.uploadFiles(files);
+							// TODO: Create method to allow a list of files to be passed in and uploaded
+						}
                         catch (Exception e) {
-                            MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDAO.Status.Error);
+                            e.printStackTrace();
+							MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDAO.Status.Error);
                             event.rejectDrop();                                                                         // Reject an invalid drop operation
                             return;
                         }
-
-                        // TODO: Develop specification for uploading multiple files
                     }
                 }
             }

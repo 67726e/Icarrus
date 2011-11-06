@@ -21,12 +21,12 @@ public class HistoryTab extends JPanel {
 	private static JTable historyTable;
     private static DefaultTableModel tableModel;
     private final int SCROLL_WIDTH = 440, SCROLL_HEIGHT = 150;
-	private IdatDAO historyDao;
+	private static IdatDAO historyDao;
 
     public HistoryTab() {
     	this.setLayout(null);
 
-		historyDao = new IdatDAO("File", "data/UploadHistory.idat");		// Create DAO for reading/writing to the history file
+		historyDao = new IdatDAO("File", "data/history.idat");				// Create DAO for reading/writing to the history file
 		List<Map<String, String>> history = null;
 		try { history = historyDao.readIdatFile(); }						// Convert the IDAT data into a format readable by the JTable
 		catch (IOException ignore) {ignore.printStackTrace();}
@@ -46,7 +46,7 @@ public class HistoryTab extends JPanel {
         this.add(scrollPane);
     }
 
-    public void insertRow(Object[] data) {
+    private static void insertRow(Object[] data) {
 		tableModel.insertRow(0, data);
 
 		Map<String, String> block = new HashMap<String, String>();		// Convert the Object into a Map to be written to the IDAT file
