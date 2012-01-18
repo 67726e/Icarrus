@@ -5,12 +5,9 @@ import com.hexhaus.icarrus.handler.MessageHandler;
 import com.hexhaus.icarrus.handler.SettingsHandler;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -18,7 +15,7 @@ import java.util.*;
  * Date: 8/6/11
  * Time: 2:20 PM
  */
-public class LoginDAO {
+public class LoginDao {
     private boolean loginStatus = false;
     public boolean getLoginStatus() {return loginStatus;}
 
@@ -33,13 +30,16 @@ public class LoginDAO {
         URL loginServerURL = null;
 
         try {
-            loginServerURL = new URL(SettingsHandler.getLoginServerURL());                      // Attempt to form the URL for the login server
+            // Attempt to form the URL for the login server
+            loginServerURL = new URL(SettingsHandler.getLoginServerURL());
         } catch (MalformedURLException e) {
-            MessageHandler.postMessage("Login URL Error", "The URL provided was invalid. Please check the URL in the settings.", LoggingDAO.Status.Error);
+            MessageHandler.postMessage("Login URL Error",
+                    "The URL provided was invalid. Please check the URL in the settings.", LoggingDao.Status.Error);
         }
 
         try {
-            URLConnection loginServerConnection = loginServerURL.openConnection();              // Open the connection to the login server
+            // Open the connection to the login server
+            URLConnection loginServerConnection = loginServerURL.openConnection();
             loginServerConnection.setDoOutput(true);
 
             OutputStreamWriter loginServerWriter = new OutputStreamWriter(loginServerConnection.getOutputStream());
@@ -48,7 +48,8 @@ public class LoginDAO {
 
         	parseLoginServerResponse(loginServerConnection);
         } catch (IOException e) {
-            MessageHandler.postMessage("Unable To Login", "Icarrus is unable to write to the login server.", LoggingDAO.Status.Error);
+            MessageHandler.postMessage("Unable To Login",
+                    "Icarrus is unable to write to the login server.", LoggingDao.Status.Error);
         }
     }
 
@@ -67,11 +68,12 @@ public class LoginDAO {
         try {
             in = new BufferedReader(new InputStreamReader(loginServerConnection.getInputStream()));
 
-			response = IdatDAO.readIdatFromBuffer(in, "Response {");
+			response = IdatDao.readIdatFromBuffer(in, "Response {");
 
             in.close();
         } catch (IOException e) {
-            MessageHandler.postMessage("Login Error", "An invalid response was given by the login server. You could not be logged in.", LoggingDAO.Status.Error);
+            MessageHandler.postMessage("Login Error",
+                    "An invalid response was given by the login server. You could not be logged in.", LoggingDao.Status.Error);
             return;
         }
 
@@ -87,7 +89,8 @@ public class LoginDAO {
     private void retrieveValues(List<Map<String, String>> response) {
 		Map<String, String> map = response.get(0);
 
-		this.loginStatus = (map.containsKey("status") && map.get("status").equals("valid"));		// Set the logged-in status to true if it was a valid login attempt
+        // Set the logged-in status to true if it was a valid login attempt
+		this.loginStatus = (map.containsKey("status") && map.get("status").equals("valid"));
 		// TODO: Determine how to handle other possible parameters
 		// TODO: Update Icarrus Server to write out the properly formatted response
 		// TODO: Write a specification for the new IDAT data/file format
@@ -100,12 +103,13 @@ public class LoginDAO {
      * @param username is the username being sent to the server for login
      * @param password is the password used to authenticate the login
      */
-    public LoginDAO(String username, char[] password) {
+    public LoginDao(String username, char[] password) {
         this.loginStatus = false;
 
         this.sendLoginServerRequest(username, new String(password));
         if (this.loginStatus) {
-            CredentialHandler.setUsername(username);                                            // Set the current username upon a successful login
+            // Set the current username upon a successful login
+            CredentialHandler.setUsername(username);
             CredentialHandler.setPassword(new String(password));
         }
     }

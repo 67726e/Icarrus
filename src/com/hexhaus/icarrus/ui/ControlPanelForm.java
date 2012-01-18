@@ -5,16 +5,10 @@ import com.hexhaus.icarrus.handler.MessageHandler;
 import com.hexhaus.icarrus.handler.SettingsHandler;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
 
 /**
  * User: 67726e
@@ -46,7 +40,7 @@ public class ControlPanelForm extends JFrame {
         this.setLayout(null);
         this.setTitle("Icarrus ~ Settings");
         this.getContentPane().add(panel);                                                       // Add the JPanel with the form's contents
-        this.setIconImage(ImageDAO.getImage("wingIcon-32x32.png"));
+        this.setIconImage(ImageDao.getImage("wingIcon-32x32.png"));
 
 
         /** Setup JMenuBar **/
@@ -110,7 +104,7 @@ public class ControlPanelForm extends JFrame {
 
         public SettingsTab() {
             this.setLayout(null);
-            new SettingsDAO().loadSettingsFromFile();                                                                   // Load the settings from the Settings file for a proper display of user settings
+            new SettingsDao().loadSettingsFromFile();                                                                   // Load the settings from the Settings file for a proper display of user settings
 
             deleteHistory = new JCheckBox("Delete History", false);
             deleteHistory.setBounds(20, 20, 100, 20);
@@ -175,7 +169,7 @@ public class ControlPanelForm extends JFrame {
             SettingsHandler.setSaveMessagesToLog(saveLog.isSelected());
             SettingsHandler.setUploadServerURL(uploadURL.getText());
 
-            new SettingsDAO().writeSettingsToFile();                                            // Write out the newly updated settings to the Settings file
+            new SettingsDao().writeSettingsToFile();                                            // Write out the newly updated settings to the Settings file
         }
 
         /**
@@ -232,12 +226,12 @@ public class ControlPanelForm extends JFrame {
         public void actionPerformed(ActionEvent event) {
             if (!Desktop.isDesktopSupported())
 	            MessageHandler.postMessage("Help Error",
-			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.Warning);                // Check if a web browser can be opened
+			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDao.Status.Warning);                // Check if a web browser can be opened
             try {
 	            Desktop.getDesktop().browse(new URI(helpURL));                                                          // Open the default browser to the Icarrus Help pages
             } catch (Exception e) {
 	            MessageHandler.postMessage("Help Error",
-			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDAO.Status.Warning);                // Inform the user he/she has to manually visit the help pages
+			            "Could not open Icarrus Help pages. See " + helpURL, LoggingDao.Status.Warning);                // Inform the user he/she has to manually visit the help pages
             }
         }
     }

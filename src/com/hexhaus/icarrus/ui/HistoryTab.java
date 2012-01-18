@@ -1,6 +1,6 @@
 package com.hexhaus.icarrus.ui;
 
-import com.hexhaus.icarrus.dao.IdatDAO;
+import com.hexhaus.icarrus.dao.IdatDao;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,12 +21,12 @@ public class HistoryTab extends JPanel {
 	private static JTable historyTable;
     private static DefaultTableModel tableModel;
     private final int SCROLL_WIDTH = 440, SCROLL_HEIGHT = 150;
-	private static IdatDAO historyDao;
+	private static IdatDao historyDao;
 
     public HistoryTab() {
     	this.setLayout(null);
 
-		historyDao = new IdatDAO("File", "data/history.idat");				// Create DAO for reading/writing to the history file
+		historyDao = new IdatDao("File", "data/history.idat");				// Create DAO for reading/writing to the history file
 		List<Map<String, String>> history = null;
 		try { history = historyDao.readIdatFile(); }						// Convert the IDAT data into a format readable by the JTable
 		catch (IOException ignore) {ignore.printStackTrace();}

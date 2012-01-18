@@ -1,7 +1,7 @@
 package com.hexhaus.icarrus.ui;
 
-import com.hexhaus.icarrus.dao.LoggingDAO;
-import com.hexhaus.icarrus.dao.UploadDAO;
+import com.hexhaus.icarrus.dao.LoggingDao;
+import com.hexhaus.icarrus.dao.UploadDao;
 import com.hexhaus.icarrus.handler.MessageHandler;
 
 import javax.swing.*;
@@ -12,9 +12,7 @@ import java.awt.dnd.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.List;
 
 /**
@@ -46,7 +44,7 @@ public class DropForm extends JDialog {
             Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
             setWindowOpacity.invoke(null, this, 1f);
         } catch (Exception e) {
-            MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDAO.Status.FatalError);
+            MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDao.Status.FatalError);
         }
     }
 
@@ -77,7 +75,7 @@ public class DropForm extends JDialog {
         }
 
         private class DropTargetListenerImpl implements DropTargetListener {
-			private UploadDAO uploadDAO = new UploadDAO();
+			private UploadDao uploadDAO = new UploadDao();
 
             public void dragEnter(DropTargetDragEvent event) {}
             public void dragExit(DropTargetEvent event) {}
@@ -99,7 +97,7 @@ public class DropForm extends JDialog {
 						}
                         catch (Exception e) {
                             e.printStackTrace();
-							MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDAO.Status.Error);
+							MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDao.Status.Error);
                             event.rejectDrop();                                                                         // Reject an invalid drop operation
                             return;
                         }

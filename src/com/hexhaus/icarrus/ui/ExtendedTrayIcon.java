@@ -1,7 +1,7 @@
 package com.hexhaus.icarrus.ui;
 
-import com.hexhaus.icarrus.dao.ImageDAO;
-import com.hexhaus.icarrus.dao.LoggingDAO;
+import com.hexhaus.icarrus.dao.ImageDao;
+import com.hexhaus.icarrus.dao.LoggingDao;
 import com.hexhaus.icarrus.handler.CredentialHandler;
 import com.hexhaus.icarrus.handler.MessageHandler;
 import com.hexcoder.imagelocator.LocateImage;
@@ -69,7 +69,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         try {
             SystemTray.getSystemTray().add(this);
         } catch (AWTException e) {
-            MessageHandler.postMessage("System Tray Error", "The tray icon could not be added to your system tray.", LoggingDAO.Status.FatalError);
+            MessageHandler.postMessage("System Tray Error", "The tray icon could not be added to your system tray.", LoggingDao.Status.FatalError);
         }
 
         controlPanelForm = new ControlPanelForm();                                              // Create form to display control data
@@ -120,7 +120,7 @@ public class ExtendedTrayIcon extends TrayIcon {
             Robot robot = new Robot();
             trayIcon.setImage(compare);                                                         // Temporarily set the compare image to get a screenshot
             BufferedImage base = robot.createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-            trayIcon.setImage(ImageDAO.getImage("tray_icon.png"));                              // Return the icon to the normal image
+            trayIcon.setImage(ImageDao.getImage("tray_icon.png"));                              // Return the icon to the normal image
 
             LocateImage locator = new LocateImage(base, compare);
             locator.search(2);                                                                  // Search for the image with an RGB tolerance of +-2
@@ -129,7 +129,7 @@ public class ExtendedTrayIcon extends TrayIcon {
             dropForm.setVisible(true);
             dropForm.toFront();
         } catch (Exception e) {
-            MessageHandler.postMessage("Locator Error", "The tray icon could not be properly located. Please ensure it is in on the taskbar.", LoggingDAO.Status.Error);
+            MessageHandler.postMessage("Locator Error", "The tray icon could not be properly located. Please ensure it is in on the taskbar.", LoggingDao.Status.Error);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.hexhaus.icarrus.handler;
 
-import com.hexhaus.icarrus.dao.LoggingDAO;
+import com.hexhaus.icarrus.dao.LoggingDao;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +12,10 @@ import java.util.Calendar;
  * Time: 11:05 AM
  */
 public class MessageHandler {
-    private static Calendar calendar = Calendar.getInstance();                                  // Used to get a time stamp for the message
-    private static TrayIcon trayIcon;                                                           // Pointer to the TrayIcon for messaging
+    // Used to get a time stamp for the message
+    private static Calendar calendar = Calendar.getInstance();
+    // Pointer to the TrayIcon for messaging
+    private static TrayIcon trayIcon;
 
     private MessageHandler() {}
 
@@ -26,7 +28,8 @@ public class MessageHandler {
      * @return A String representation of the current date and time of the message being posted
      */
     private static String getTimeStamp() {
-        return calendar.getTime().toString();                                                   // Return a String representation of the Date object
+        // Return a String representation of the Date object
+        return calendar.getTime().toString();
     }
 
     /**
@@ -38,15 +41,18 @@ public class MessageHandler {
      * @param message The message content
      * @param messageType The type of message such as an error or warning
      */
-    private static void displayMessageToUser(String title, String message, LoggingDAO.Status messageType) {
-        boolean displayViaTray = true;                                                                                  // Determines the display via TrayIcon or JOptPane
-        if (messageType == LoggingDAO.Status.FatalError) displayViaTray = false;
+    private static void displayMessageToUser(String title, String message, LoggingDao.Status messageType) {
+        boolean displayViaTray = true;
+        // Determines the display via TrayIcon or JOptPane
+        if (messageType == LoggingDao.Status.FatalError) displayViaTray = false;
         if (trayIcon == null) displayViaTray = false;
 
         if (displayViaTray) {
-	    	trayIcon.displayMessage(title, message, messageType.toTrayType());                                          // Display the message via the TrayIcon
+            // Display the message via the TrayIcon
+	    	trayIcon.displayMessage(title, message, messageType.toTrayType());
         } else {
-	        JOptionPane.showMessageDialog(null, message, title, messageType.toPaneType());                              // Display the message via a dialog
+            // Display the message via a dialog
+	        JOptionPane.showMessageDialog(null, message, title, messageType.toPaneType());
         }
     }
 
@@ -59,13 +65,16 @@ public class MessageHandler {
      * @param message the details of the message being sent. Should not be more than a line or two if being displayed.
      * @param messageType determines the severity of the message being sent. Use LoggingDAO's fields passing severity.
      */
-    public static void postMessage(String title, String message, LoggingDAO.Status messageType) {
-        System.out.println("\t[" + messageType.toString()  + "] - " + title + ": " + message);  // Print formatted message to command line
+    public static void postMessage(String title, String message, LoggingDao.Status messageType) {
+        // Print formatted message to command line
+        System.out.println("\t[" + messageType.toString()  + "] - " + title + ": " + message);
         if (SettingsHandler.getDisplayMessagesToUser())
-            displayMessageToUser(title, message, messageType);                                  // Call method to display the message to the user if applicable
+            // Call method to display the message to the user if applicable
+            displayMessageToUser(title, message, messageType);
         if (SettingsHandler.getSaveMessagesToLog())
-            LoggingDAO.logToFile(title, message, messageType);                                  // Call logging method to write this message to the log
-
-        if (messageType == LoggingDAO.Status.FatalError) System.exit(-1);                       // Exit with a general error code upon a fatal error
+            // Call logging method to write this message to the log
+            LoggingDao.logToFile(title, message, messageType);
+        // Exit with a general error code upon a fatal error
+        if (messageType == LoggingDao.Status.FatalError) System.exit(-1);
     }
 }

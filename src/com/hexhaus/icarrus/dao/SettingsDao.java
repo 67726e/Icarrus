@@ -5,9 +5,9 @@ package com.hexhaus.icarrus.dao;
  * Date: 8/11/11
  * Time: 8:44 PM
  */
-public class SettingsDAO {
+public class SettingsDao {
 
-    public SettingsDAO() {
+    public SettingsDao() {
         // TODO: Write "Settings File Storage" specification
     }
 

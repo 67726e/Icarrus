@@ -1,5 +1,7 @@
 package com.hexhaus.icarrus.dao;
 
+import com.hexhaus.icarrus.handler.MessageHandler;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,11 +13,11 @@ import java.util.Map;
  * Date: 10/27/11
  * Time: 1:26 PM
  */
-public class IdatDAO {
+public class IdatDao {
 	private String blockStart;
 	private File idatFile;
 
-	public IdatDAO(String blockName, String idatFileName) {
+	public IdatDao(String blockName, String idatFileName) {
 		this.blockStart = blockName + " {";
 		this.idatFile = new File(idatFileName);
 	}
@@ -59,22 +61,27 @@ public class IdatDAO {
 
 		while ((line = in.readLine()) != null) {
 			if (inBlock) {
-				if (line.equals("}")) {												// Check if the current block has ended
+                // Check if the current block has ended
+				if (line.equals("}")) {
 					inBlock = false;
-					if (block != null) blocks.add(block);							// Add the prior block to the list of blocks for storage
+                    // Add the prior block to the list of blocks for storage
+					if (block != null) blocks.add(block);
 				} else {
 					int index = line.indexOf("=");
+                    // Skip this line if it doesn't contain a valid key/value pair
 					if (index == -1 || index == 0 || line.length()  < 3 ||
-							(line.length() - index) == 1) continue;					// Skip this line if it doesn't contain a valid key/value pair
+							(line.length() - index) == 1) continue;
 
 					String key = line.substring(0, index).trim();
 					String value = line.substring(index + 1, line.length()).trim();
 					block.put(key, value);
 				}
 			} else {
-				if (line.equals(blockStart)) {										// Check if the parser has entered a new block
+                // Check if the parser has entered a new block
+				if (line.equals(blockStart)) {
 					inBlock = true;
-					block = new HashMap<String, String>();							// Create a new Map to hold the new block
+                    // Create a new Map to hold the new block
+					block = new HashMap<String, String>();
 				}
 			}
 		}
@@ -91,18 +98,22 @@ public class IdatDAO {
 	 * @throws IOException Thrown if an exception occurs while writing the data to the IDAT file
 	 */
 	public void appendBlock(Map<String, String> block) throws IOException {
-		if (!idatFile.exists()) idatFile.createNewFile();					// Create the IDAT file if it does not already exist
+        // Create the IDAT file if it does not already exist
+		if (!idatFile.exists()) idatFile.createNewFile();
 		BufferedWriter out = null;
 
 		try {
 			out = new BufferedWriter(new FileWriter(idatFile));
 
-			out.write("\n" + blockStart);									// Start the IDAT block
+            // Start the IDAT block
+			out.write("\n" + blockStart);
 			for (Map.Entry<String, String> entry : block.entrySet()) {
-				out.write("\n" + entry.getKey() + "=" + entry.getValue());	// Write out the key/value pairs
+                // Write out the key/value pairs
+				out.write("\n" + entry.getKey() + "=" + entry.getValue());
 			}
 
-			out.write("}");													// Close the IDAT block
+            // Close the IDAT block
+			out.write("}");
 
 		} finally {
 			try {
@@ -111,7 +122,8 @@ public class IdatDAO {
 					out.close();
 				}
 			} catch (Exception e) {
-				// TODO: Log unable to close output stream
+				MessageHandler.postMessage("IO Error",
+                        "Unable to close output stream for " + idatFile.getName(), LoggingDao.Status.Error);
 			}
 		}
 	}

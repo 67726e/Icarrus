@@ -1,7 +1,7 @@
 package com.hexhaus.icarrus;
 
-import com.hexhaus.icarrus.dao.ImageDAO;
-import com.hexhaus.icarrus.dao.LoggingDAO;
+import com.hexhaus.icarrus.dao.ImageDao;
+import com.hexhaus.icarrus.dao.LoggingDao;
 import com.hexhaus.icarrus.handler.MessageHandler;
 import com.hexhaus.icarrus.ui.ExtendedTrayIcon;
 import com.sun.awt.AWTUtilities;
@@ -25,7 +25,7 @@ public class Application {
         if (!AWTUtilities.isTranslucencySupported(AWTUtilities.Translucency.TRANSLUCENT)) {                             // Determine if the host OS supports translucency
             // TODO: Research alternate ways of displaying the DropFrom that do not require translucency
             MessageHandler.postMessage("Unsupported Feature",
-                        "Your OS does not offer features required for Icarrus to run.", LoggingDAO.Status.FatalError);  // End the application with a fatal error due to lack of required feature
+                        "Your OS does not offer features required for Icarrus to run.", LoggingDao.Status.FatalError);  // End the application with a fatal error due to lack of required feature
         } else {
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice[] devices = environment.getScreenDevices();                                                  // Get a list of graphics devices being used to determine if the OS is translucency capable
@@ -46,10 +46,10 @@ public class Application {
 
             if (!isTranslucencyCapable) MessageHandler.postMessage("Disabled Feature",
                         "You must enable translucency in your graphics configurations to use Icarrus.",
-                        LoggingDAO.Status.FatalError);                                                                  // Inform the user of the need to have translucency enabled, exit with fatal error
+                        LoggingDao.Status.FatalError);                                                                  // Inform the user of the need to have translucency enabled, exit with fatal error
         }
 
 
-        ExtendedTrayIcon trayIcon = new ExtendedTrayIcon(ImageDAO.getImage("tray_icon.png"));                           // Create TrayIcon for the user to interact with
+        ExtendedTrayIcon trayIcon = new ExtendedTrayIcon(ImageDao.getImage("tray_icon.png"));                           // Create TrayIcon for the user to interact with
     }
 }
