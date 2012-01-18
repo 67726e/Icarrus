@@ -13,5 +13,5 @@ across all platforms.
 
 Requirements
 ------------
-*JRE 6
-*OS Capable of Alpha Transparency
+*   JRE 6
+*   OS Capable of Alpha Transparency
