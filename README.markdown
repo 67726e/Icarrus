@@ -8,9 +8,10 @@ suite to use, setup, and manage your files the way you want them to be managed.
 
 Why
 ---
-Why Icarrus? Icarrus was written to allow a simplistic file storing solution "in the cloud" with a consistent interface across all platforms.
+Why Icarrus? Icarrus was written to allow a simplistic file storing solution "in the cloud" with a consistent interface
+across all platforms.
 
 Requirements
 ------------
-JRE 6
-OS Capable of Alpha Transparency
+*JRE 6
+*OS Capable of Alpha Transparency
