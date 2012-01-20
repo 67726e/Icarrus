@@ -1,5 +1,30 @@
 <project name="Icarrus" basedir=".">
-	<target name="clean">
+	<path id="buildLibs">
+        <fileset dir="lib/build">
+            <include name="*.jar" />
+        </fileset>
+	</path>
+
+    <path id="testLibs">
+        <fileset dir="lib/test">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+    <path id="runLibs">
+        <fileset dir="lib/run">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+    <echo message="All Libs Defined" />
+
+    <property name="buildClasspath" refid="buildLibs" />
+    <property name="runClasspath" refid="runLibs" />
+    <property name="testClasspath" refid="testLibs" />
+<!-- END OF PROPERTIES -->
+
+
+    <target name="clean">
 		<delete dir="out"/>
 		<delete dir="dist"/>
 		<delete dir="build"/>
@@ -11,10 +36,26 @@
 	</target>
 
 	<target name="compile" depends="init">
+        <!-- Compile application code -->
+        <javac srcdir="src"
+               includeantruntime="false"
+               includedestclasses="false"
+               destdir="build/classes"
+               classpath="buildClasspath"/>
 
-	</target>
+        <!-- TODO: Compile test code -->
+    </target>
 
 	<target name="jar" depends="compile">
-
+        <!-- Build application JAR -->
+        <jar destfile="out/Icarrus.jar"
+             basedir="build/classes"
+             manifest="manifest.mf"
+             includes="runClasspath"/>
 	</target>
+
+    <!-- TODO: Run all JUnit tests -->
+    <target name="test" depends="compile">
+
+    </target>
 </project>
