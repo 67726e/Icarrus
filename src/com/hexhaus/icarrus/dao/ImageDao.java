@@ -3,9 +3,12 @@ package com.hexhaus.icarrus.dao;
 import com.hexhaus.icarrus.handler.MessageHandler;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * User: 67726e
@@ -17,24 +20,22 @@ public class ImageDao {
 
     private ImageDao() {}
 
-    public static BufferedImage getImage(String imageFileName) {
-        // Add the full path to the resources if it is not available
-        if (!imageFileName.startsWith(rootPath)) imageFileName = rootPath + imageFileName;
-        File imageFile = new File(imageFileName);
+    public static Image getImage(String imageFileName) {
+        File imageFile = new File(rootPath + imageFileName);
+        Image image;
 
-        // Confirm the existence of the file in question
-        if (!imageFile.exists()) {
-            MessageHandler.postMessage("Missing File",
-                    "The image file \"" + imageFile.getAbsolutePath() + "\" could not be found.", LoggingDao.Status.Warning);
+        if (imageFile.exists()) {
+            image = Toolkit.getDefaultToolkit().getImage(rootPath + imageFileName);
+        } else {
+            try {
+                image = ImageIO.read(ClassLoader.getSystemResource(rootPath + imageFileName));
+            } catch (Exception e) {
+                MessageHandler.postMessage("IO Error",
+                        "Could not load image: " + rootPath + imageFileName, LoggingDao.Status.Error);
+                image = new BufferedImage(0, 0, BufferedImage.TYPE_INT_RGB);
+            }
         }
 
-        // Attempt to return a BufferedImage containing the file
-        try {
-            return ImageIO.read(imageFile);
-        } catch (IOException e) {
-            MessageHandler.postMessage("Image IO Error",
-                    "Could not read the file \"" + imageFile.getAbsolutePath() + "\".", LoggingDao.Status.Error);
-            return null;
-        }
+        return image;
     }
 }

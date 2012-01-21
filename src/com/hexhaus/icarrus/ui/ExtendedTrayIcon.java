@@ -1,11 +1,11 @@
 package com.hexhaus.icarrus.ui;
 
+import com.hexcoder.imagelocator.LocateImage;
+import com.hexcoder.imagelocator.RandomImage;
 import com.hexhaus.icarrus.dao.ImageDao;
 import com.hexhaus.icarrus.dao.LoggingDao;
 import com.hexhaus.icarrus.handler.CredentialHandler;
 import com.hexhaus.icarrus.handler.MessageHandler;
-import com.hexcoder.imagelocator.LocateImage;
-import com.hexcoder.imagelocator.RandomImage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class ExtendedTrayIcon extends TrayIcon {
 
     public static void setLoginStatus(String status) {login.setText(status);}
 
-    public ExtendedTrayIcon(BufferedImage image) {
+    public ExtendedTrayIcon(Image image) {
         super(image);
         this.setImageAutoSize(false);
         this.addMouseListener(new trayMouseListener());

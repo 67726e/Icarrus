@@ -16,42 +16,60 @@
             <include name="*.jar" />
         </fileset>
     </path>
-    <echo message="All Libs Defined" />
 
     <property name="buildClasspath" refid="buildLibs" />
     <property name="runClasspath" refid="runLibs" />
     <property name="testClasspath" refid="testLibs" />
+
+    <property name="build.src" value="src/" />
+    <property name="build.test" value="test/" />
+    <property name="build.output" value="out/" />
+    <property name="build.root" value="build/" />
+    <property name="build.libs" value="${build.root}lib/" />
+    <property name="build.resource" value="${build.root}resource/" />
+
 <!-- END OF PROPERTIES -->
 
 
     <target name="clean">
-		<delete dir="out"/>
-		<delete dir="dist"/>
-		<delete dir="build"/>
+		<delete dir="${build.libs}" />
+        <delete dir="${build.root}" />
+        <delete dir="${build.output}" />
 	</target>
 
 	<target name="init" depends="clean">
-		<mkdir dir="dist"/>
-		<mkdir dir="build/classes"/>
-	</target>
+        <mkdir dir="${build.output}" />
+        <mkdir dir="${build.root}" />
+        <mkdir dir="${build.libs}" />
+    </target>
 
 	<target name="compile" depends="init">
         <!-- Compile application code -->
+        <echo message="${buildClasspath}" />
+        
         <javac srcdir="src"
                includeantruntime="false"
                includedestclasses="false"
-               destdir="build/classes"
-               classpath="buildClasspath"/>
+               destdir="${build.root}"
+               classpath="${buildClasspath}"/>
 
         <!-- TODO: Compile test code -->
     </target>
 
 	<target name="jar" depends="compile">
+        <!-- Copy over required libs -->
+        <copy todir="${build.libs}">
+            <fileset dir="lib/run/" />
+        </copy>
+        <copy todir="${build.resource}">
+            <fileset dir="resource/" />
+        </copy>
+
         <!-- Build application JAR -->
         <jar destfile="out/Icarrus.jar"
-             basedir="build/classes"
-             manifest="manifest.mf"
-             includes="runClasspath"/>
+             basedir="${build.root}"
+             manifest="manifest.mf"/>
+
 	</target>
 
     <!-- TODO: Run all JUnit tests -->

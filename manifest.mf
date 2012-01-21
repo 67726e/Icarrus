@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: /lib/*
+Main-Class: com.hexhaus.icarrus.Application
+
