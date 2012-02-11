@@ -29,8 +29,8 @@ class DropForm extends JDialog {
      * @param size is the size of the TrayIcon image as per the host OS
      * @param trayIcon is the TrayIcon used by the application
      */
-    public DropForm(Dimension size, ExtendedTrayIcon trayIcon, GraphicsDevice device) {
-        super(null, "", ModalityType.MODELESS, device.getDefaultConfiguration());
+    public DropForm(Dimension size, ExtendedTrayIcon trayIcon) {
+        //super(null, "", ModalityType.MODELESS, device.getDefaultConfiguration());
         this.trayIcon = trayIcon;
 
         this.setUndecorated(true);

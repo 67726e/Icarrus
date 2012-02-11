@@ -24,7 +24,6 @@ public class ExtendedTrayIcon extends TrayIcon {
     private LoginForm loginForm;                                                                // Form to allow the user to login
     private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
     private DropForm dropForm;                                                                  // Form that accepts the user's file drops
-    private GraphicsDevice priorDevice;
     private ImageLocator imageLocator;
 
     public static void setLoginStatus(String status) {login.setText(status);}
@@ -106,7 +105,6 @@ public class ExtendedTrayIcon extends TrayIcon {
     private GraphicsDevice getDeviceWithTrayIcon() throws RuntimeException {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = environment.getScreenDevices();
-        Robot robot;
         
         for (GraphicsDevice device : devices) {
             if (deviceContainsTrayIcon(device))
@@ -146,20 +144,12 @@ public class ExtendedTrayIcon extends TrayIcon {
             GraphicsDevice device = getDeviceWithTrayIcon();
 
             if (device != null) {
-                if (device == priorDevice) {
-                    dropForm.setLocation(imageLocator.getFirstOccurrence());
-                } else {
-                    priorDevice = device;
-
-                    if (dropForm != null) {
-                        dropForm.setVisible(false);
-                        dropForm.dispose();
-                    }
-
-                    dropForm = new DropForm(this.getSize(), this, device);
-                    dropForm.setLocation(((int)(imageLocator.getFirstOccurrence().getX() + device.getDefaultConfiguration().getBounds().getX())),
-                        (int)(imageLocator.getFirstOccurrence().getY() + device.getDefaultConfiguration().getBounds().getY()));
+                if (dropForm == null) {
+                    dropForm = new DropForm(this.getSize(), this);
                 }
+
+                dropForm.setLocation(((int)(imageLocator.getFirstOccurrence().getX() + device.getDefaultConfiguration().getBounds().getX())),
+                        (int)(imageLocator.getFirstOccurrence().getY() + device.getDefaultConfiguration().getBounds().getY()));
             }
         } catch (RuntimeException e) {
             MessageHandler.postMessage("Runtime Exception",
@@ -176,7 +166,6 @@ public class ExtendedTrayIcon extends TrayIcon {
             showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
         }
     }
-
 
 
     /****** Event Listener Classes *******/
