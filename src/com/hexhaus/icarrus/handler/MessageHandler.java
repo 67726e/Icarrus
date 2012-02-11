@@ -63,7 +63,7 @@ public class MessageHandler {
      *
      * @param title the overall topic of the message being posted.
      * @param message the details of the message being sent. Should not be more than a line or two if being displayed.
-     * @param messageType determines the severity of the message being sent. Use LoggingDAO's fields passing severity.
+     * @param messageType determines the severity of the message being sent. Use LoggingDao's fields passing severity.
      */
     public static void postMessage(String title, String message, LoggingDao.Status messageType) {
         // Print formatted message to command line

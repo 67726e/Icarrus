@@ -11,7 +11,7 @@ import java.awt.datatransfer.StringSelection;
  * Date: 8/15/11
  * Time: 6:58 PM
  */
-public class ClipboardDao {
+class ClipboardDao {
     public ClipboardDao() {}
 
     /**

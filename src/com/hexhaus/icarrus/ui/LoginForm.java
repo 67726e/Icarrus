@@ -18,7 +18,7 @@ import java.awt.event.KeyListener;
  * Date: 8/5/11
  * Time: 10:20 PM
  */
-public class LoginForm extends JFrame {
+class LoginForm extends JFrame {
     private final int WIDTH = 300, HEIGHT = 200;
     private LoginForm form_pointer = this;                                                      // Pointer used to access this JFrame
 

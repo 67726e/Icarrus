@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.util.TimerTask;
 
 public class ExtendedTrayIcon extends TrayIcon {
-    private JPopupMenu popupMenu;                                                               // Swing popupmenu used in lieu of the AWT popup menu used by TrayIcon
+    private JPopupMenu popupMenu;                                                               // Swing popup-menu used in lieu of the AWT popup menu used by TrayIcon
     private JDialog popupDialog;
     private static JMenuItem login;
     private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
@@ -81,7 +81,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         timer.scheduleAtFixedRate(new TimerTask() {                                             // Set a timer task to run every 1 second
             @Override
             public void run() {
-                if (!popupMenu.isVisible()) {                                                   // Check if the popupmenu is being shown
+                if (!popupMenu.isVisible()) {                                                   // Check if the popup-menu is being shown
                     dropForm.toFront();                                                         // If not, bring the drop form to the front of the screen
                 }
             }
@@ -94,7 +94,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         if (event.getButton() == 3 && popupMenu != null) {
             Dimension size = popupMenu.getPreferredSize();
             int x = event.getXOnScreen();
-            int y = event.getYOnScreen() - size.height;                                         // Place the popupmenu so that it's bottom left coordinate is at the click location
+            int y = event.getYOnScreen() - size.height;                                         // Place the popup-menu so that it's bottom left coordinate is at the click location
 
             popupDialog.setLocation(x, y);
             popupDialog.setVisible(true);
@@ -138,11 +138,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         imageLocator = new ImageLocator(screenCapture, randomImage);
         imageLocator.search(2);
 
-        if (imageLocator.isImageFound()) {
-            return true;
-        }
-
-        return false;
+        return imageLocator.isImageFound();
     }
 
     private void calibrateDropForm() {
@@ -161,6 +157,8 @@ public class ExtendedTrayIcon extends TrayIcon {
                     }
 
                     dropForm = new DropForm(this.getSize(), this, device);
+                    dropForm.setLocation(((int)(imageLocator.getFirstOccurrence().getX() + device.getDefaultConfiguration().getBounds().getX())),
+                        (int)(imageLocator.getFirstOccurrence().getY() + device.getDefaultConfiguration().getBounds().getY()));
                 }
             }
         } catch (RuntimeException e) {
@@ -175,7 +173,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         public void mouseExited(MouseEvent event) {}
         public void mousePressed(MouseEvent event) {}
         public void mouseReleased(MouseEvent event) {
-            showPopupMenu(event);                                                               // Call action to show the Swing based popupmenu
+            showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
         }
     }
 

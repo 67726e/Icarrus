@@ -17,7 +17,7 @@ import java.util.Map;
  * Date: 10/29/11
  * Time: 3:02 PM
  */
-public class HistoryTab extends JPanel {
+class HistoryTab extends JPanel {
 	private static JTable historyTable;
     private static DefaultTableModel tableModel;
     private final int SCROLL_WIDTH = 440, SCROLL_HEIGHT = 150;

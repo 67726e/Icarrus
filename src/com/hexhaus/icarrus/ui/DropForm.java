@@ -20,7 +20,7 @@ import java.util.List;
  * Date: 8/13/11
  * Time: 7:26 PM
  */
-public class DropForm extends JDialog {
+class DropForm extends JDialog {
     private ExtendedTrayIcon trayIcon;
 
     /**
@@ -39,11 +39,12 @@ public class DropForm extends JDialog {
         this.setFocusableWindowState(false);
         this.setSize(size);
         this.getContentPane().add(new DropPanel(size));
+        this.setVisible(true);
 
         try {
             Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
             Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
-            setWindowOpacity.invoke(null, this, 1f);
+            //setWindowOpacity.invoke(null, this, 1f);
         } catch (Exception e) {
             MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDao.Status.FatalError);
         }
