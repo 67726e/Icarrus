@@ -17,50 +17,21 @@ import java.awt.image.BufferedImage;
 import java.util.TimerTask;
 
 public class ExtendedTrayIcon extends TrayIcon {
-    private JPopupMenu popupMenu;                                                               // Swing popup-menu used in lieu of the AWT popup menu used by TrayIcon
-    private JDialog popupDialog;
-    private static JMenuItem login;
     private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
     private LoginForm loginForm;                                                                // Form to allow the user to login
     private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
     private DropForm dropForm;                                                                  // Form that accepts the user's file drops
     private ImageLocator imageLocator;
+    private ExtendedPopupMenu popupMenu;
 
-    public static void setLoginStatus(String status) {login.setText(status);}
+    public static void setLoginStatus(String status) {
+        //login.setText(status);
+    }
 
     public ExtendedTrayIcon(Image image) {
         super(image);
         this.setImageAutoSize(false);
         this.addMouseListener(new trayMouseListener());
-
-        popupDialog = new JDialog();
-        popupDialog.setAlwaysOnTop(true);
-        popupDialog.setUndecorated(true);
-
-        popupMenu = new JPopupMenu();
-
-        // Create UI for the popupMenu
-        SettingsMenuListener settingsMenuListener = new SettingsMenuListener();
-        JMenu settingsMenu = new JMenu("Settings");
-            JMenuItem history = new JMenuItem("History");
-            history.addActionListener(settingsMenuListener);
-            settingsMenu.add(history);
-            JMenuItem settings = new JMenuItem("Settings");
-            settings.addActionListener(settingsMenuListener);
-            settingsMenu.add(settings);
-            JMenuItem about = new JMenuItem("About");
-            about.addActionListener(settingsMenuListener);
-            settingsMenu.add(about);
-        popupMenu.add(settingsMenu);
-        JMenuItem calibrate = new JMenuItem("Calibrate");
-        calibrate.addActionListener(new CalibrateListener());
-        popupMenu.add(calibrate);
-        login = new JMenuItem("Login");
-        login.addActionListener(new LoginListener());
-        popupMenu.add(login);
-        JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(new ExitListener());
-        popupMenu.add(exit);
 
         try {
             SystemTray.getSystemTray().add(this);
@@ -69,43 +40,36 @@ public class ExtendedTrayIcon extends TrayIcon {
                     "The tray icon could not be added to your system tray.", LoggingDao.Status.FatalError);
         }
 
-        controlPanelForm = new ControlPanelForm();                                              // Create form to display control data
+        // Create and position the dialog used to catch file drops
+        calibrateDropForm();
 
-        calibrateDropForm();                                                                    // Determine the position of the TrayIcon and position the drop form over it
+        controlPanelForm = new ControlPanelForm();
 
-        loginForm = new LoginForm();
+        // Used as in lieu of the standard AWT popup menu used by TrayIcon
+        popupMenu = ExtendedPopupMenu.getExtendedPopupMenu(this, controlPanelForm);
+
+        loginForm = LoginForm.getLoginForm();
         loginForm.setVisible(true);
 
+        // Brings the tray icon to the front of the display
         java.util.Timer timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {                                             // Set a timer task to run every 1 second
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (!popupMenu.isVisible()) {                                                   // Check if the popup-menu is being shown
-                    dropForm.toFront();                                                         // If not, bring the drop form to the front of the screen
+                if (!popupMenu.isVisible()) {
+                    dropForm.toFront();
                 }
             }
         }, 0, 1000);
 
-	    MessageHandler.setTrayIcon(this);                                                       // Set the pointer to the TrayIcon for messaging
-    }
-
-    public void showPopupMenu(MouseEvent event) {
-        if (event.getButton() == 3 && popupMenu != null) {
-            Dimension size = popupMenu.getPreferredSize();
-            int x = event.getXOnScreen();
-            int y = event.getYOnScreen() - size.height;                                         // Place the popup-menu so that it's bottom left coordinate is at the click location
-
-            popupDialog.setLocation(x, y);
-            popupDialog.setVisible(true);
-            popupMenu.show(popupDialog.getContentPane(), 0, 0);
-            popupDialog.toFront();
-        }
+        // Provide the message handler the tray icon for displaying tray icon messages
+	    MessageHandler.setTrayIcon(this);
     }
 
     private GraphicsDevice getDeviceWithTrayIcon() throws RuntimeException {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = environment.getScreenDevices();
-        
+
         for (GraphicsDevice device : devices) {
             if (deviceContainsTrayIcon(device))
                 return device;
@@ -139,7 +103,11 @@ public class ExtendedTrayIcon extends TrayIcon {
         return imageLocator.isImageFound();
     }
 
-    private void calibrateDropForm() {
+    public void calibrateDropForm() {
+        if (dropForm != null) {
+            dropForm.setVisible(false);
+        }
+
         try {
             GraphicsDevice device = getDeviceWithTrayIcon();
 
@@ -155,6 +123,10 @@ public class ExtendedTrayIcon extends TrayIcon {
             MessageHandler.postMessage("Runtime Exception",
                     "Could not locate the system tray icon", LoggingDao.Status.Error);
         }
+
+        if (dropForm != null) {
+            dropForm.setVisible(true);
+        }
     }
 
     private class trayMouseListener implements MouseListener {
@@ -163,56 +135,7 @@ public class ExtendedTrayIcon extends TrayIcon {
         public void mouseExited(MouseEvent event) {}
         public void mousePressed(MouseEvent event) {}
         public void mouseReleased(MouseEvent event) {
-            showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
-        }
-    }
-
-
-    /****** Event Listener Classes *******/
-
-    private class SettingsMenuListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            JMenuItem item = (JMenuItem)event.getSource();
-            String text = item.getText();                                                       // Get the text of the item to determine which item was clicked
-
-            if (text.equals("About")) {                                                         // Determine which item was clicked and switch to the appropriate panel
-                controlPanelForm.switchToTab(ControlPanelForm.ControlPanelTab.ABOUT);
-            } else if (text.equals("History")) {
-                controlPanelForm.switchToTab(ControlPanelForm.ControlPanelTab.HISTORY);
-            } else {
-                controlPanelForm.switchToTab(ControlPanelForm.ControlPanelTab.SETTINGS);
-            }
-
-            controlPanelForm.setVisible(true);
-            controlPanelForm.toFront();
-        }
-    }
-
-    private class CalibrateListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            calibrateDropForm();
-        }
-    }
-
-    private class LoginListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            if (login.getText().equals("Login")) {
-                loginForm.setVisible(true);                                                     // Display the login form
-            } else {
-                if (loginForm != null) loginForm.dispose();                                     // Get rid of the current login form if one is somehow still displayed
-                login.setText("Login");                                                         // Change the text to show we are no longer logged in
-
-                CredentialHandler.setLoginStatus(false);                                        // Clear last logged in user's credentials
-                CredentialHandler.setUsername("");
-                CredentialHandler.setPassword("");
-            }
-        }
-    }
-
-    private class ExitListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            SystemTray.getSystemTray().remove(trayIcon);                                        // Remove the TrayIcon from the system's tray
-            System.exit(0);                                                                     // Clean exit
+            popupMenu.showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
         }
     }
 }

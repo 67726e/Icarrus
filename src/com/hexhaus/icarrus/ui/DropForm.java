@@ -72,7 +72,7 @@ class DropForm extends JDialog {
             public void mouseExited(MouseEvent event) {}
             public void mouseEntered(MouseEvent event) {}
             public void mouseClicked(MouseEvent event) {
-                trayIcon.showPopupMenu(event);                                                                          // Pass on the event object to determine if the popup menu should be shown
+                ExtendedPopupMenu.showPopupMenu(event);
             }
         }
 

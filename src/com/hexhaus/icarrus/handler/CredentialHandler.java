@@ -12,7 +12,14 @@ public class CredentialHandler {
 
     public static void setUsername(String _username) {username = _username;}
     public static void setPassword(String _password) {password = _password;}
-    public static void setLoginStatus(boolean _loginStatus) {loginStatus = _loginStatus;}
+    public static void setLoginStatus(boolean _loginStatus) {
+        loginStatus = _loginStatus;
+
+        if (!loginStatus) {
+            username = "";
+            password = "";
+        }
+    }
     public static boolean getLoginStatus() {return loginStatus;}
     public static String getUsername() {return username;}
     public static String getPassword() {return password;}

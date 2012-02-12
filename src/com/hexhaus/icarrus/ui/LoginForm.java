@@ -20,21 +20,41 @@ import java.awt.event.KeyListener;
  */
 class LoginForm extends JFrame {
     private final int WIDTH = 300, HEIGHT = 200;
-    private LoginForm form_pointer = this;                                                      // Pointer used to access this JFrame
+    private static LoginForm loginForm;
 
-    public LoginForm() {
+    public static LoginForm getLoginForm() {
+        if (loginForm == null) {
+            loginForm = new LoginForm();
+        }
+
+        return loginForm;
+    }
+
+    public static void display(boolean status) {
+        if (loginForm != null) {
+            loginForm.setVisible(true);
+        }
+    }
+
+    public static void destroy() {
+        if (loginForm != null) {
+            loginForm.dispose();
+        }
+    }
+
+    private LoginForm() {
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice device = environment.getDefaultScreenDevice();
         DisplayMode displayMode = device.getDisplayMode();                                      // Get object containing the size of the available screen real estate
         int windowX = ((displayMode.getWidth() - WIDTH) / 2);                                   // Calculate X coordinate so the window is horizontally centered
-        int windowY = ((displayMode.getHeight() - HEIGHT) / 2);                                 // Calculate Y coordinate so the window is vertically centered
+        int windowY = ((displayMode.getHeight() - HEIGHT) / 2);
 
-        getContentPane().add(new LoginPanel());                                                 // Add in LoginPanel object containing layout for this dialog
+        getContentPane().add(new LoginPanel());
         setBounds(windowX, windowY, WIDTH, HEIGHT);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);                                      // Only dispose of system resources used by this window upon close
-        setTitle("Icarrus ~ Login");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("Login");
         setResizable(false);
-        setIconImage(ImageDao.getImage("wingIcon-32x32.png"));                                  // Attempt to set the window's icon image
+        setIconImage(ImageDao.getImage("wingIcon-32x32.png"));
     }
 
     private class LoginPanel extends JPanel {
@@ -87,7 +107,7 @@ class LoginForm extends JFrame {
             if (loginServerDAO.getLoginStatus()) {                                              // Check for a successful login
                 if (rememberMe.isSelected()) CredentialDao.storeCredentials(
                         usernameField.getText(), passwordField.getPassword());                  // Store the username and password in a file for automatic login
-                form_pointer.dispose();                                                         // Clear up resources used by this form
+                loginForm.dispose();                                                            // Clear up resources used by this form
                 ExtendedTrayIcon.setLoginStatus("Logout");
                 MessageHandler.postMessage("Logged In", "You have been successfully logged in.", LoggingDao.Status.Info);
             }
