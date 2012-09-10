@@ -12,19 +12,20 @@ import java.awt.datatransfer.StringSelection;
  * Time: 6:58 PM
  */
 class ClipboardDao {
-    public ClipboardDao() {}
+	public ClipboardDao() {
+	}
 
-    /**
-     * Method copies the contents of a String to the user's clipboard if the user has specified this as allowable via settings.
-     *
-     * @param contents the String to be copied to the clipboard
-     */
-    public void copyURLToClipboard(String contents) {
-        // Do not perform any action if the user does not have this setting as active.
-        if (!SettingsHandler.getCopyURLToClipboard()) return;
+	/**
+	 * Method copies the contents of a String to the user's clipboard if the user has specified this as allowable via settings.
+	 *
+	 * @param contents the String to be copied to the clipboard
+	 */
+	public void copyURLToClipboard(String contents) {
+		// Do not perform any action if the user does not have this setting as active.
+		if (!SettingsHandler.getCopyURLToClipboard()) return;
 
-        StringSelection selection = new StringSelection(contents);
-        Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
-        board.setContents(selection, null);
-    }
+		StringSelection selection = new StringSelection(contents);
+		Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
+		board.setContents(selection, null);
+	}
 }

@@ -17,125 +17,133 @@ import java.awt.image.BufferedImage;
 import java.util.TimerTask;
 
 public class ExtendedTrayIcon extends TrayIcon {
-    private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
-    private LoginForm loginForm;                                                                // Form to allow the user to login
-    private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
-    private DropForm dropForm;                                                                  // Form that accepts the user's file drops
-    private ImageLocator imageLocator;
-    private ExtendedPopupMenu popupMenu;
+	private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
+	private LoginForm loginForm;                                                                // Form to allow the user to login
+	private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
+	private DropForm dropForm;                                                                  // Form that accepts the user's file drops
+	private ImageLocator imageLocator;
+	private ExtendedPopupMenu popupMenu;
 
-    public static void setLoginStatus(String status) {
-        //login.setText(status);
-    }
+	public static void setLoginStatus(String status) {
+		//login.setText(status);
+	}
 
-    public ExtendedTrayIcon(Image image) {
-        super(image);
-        this.setImageAutoSize(false);
-        this.addMouseListener(new trayMouseListener());
+	public ExtendedTrayIcon(Image image) {
+		super(image);
+		this.setImageAutoSize(false);
+		this.addMouseListener(new trayMouseListener());
 
-        try {
-            SystemTray.getSystemTray().add(this);
-        } catch (AWTException e) {
-            MessageHandler.postMessage("System Tray Error",
-                    "The tray icon could not be added to your system tray.", LoggingDao.Status.FatalError);
-        }
+		try {
+			SystemTray.getSystemTray().add(this);
+		} catch (AWTException e) {
+			MessageHandler.postMessage("System Tray Error",
+					"The tray icon could not be added to your system tray.", LoggingDao.Status.FatalError);
+		}
 
-        // Create and position the dialog used to catch file drops
-        calibrateDropForm();
+		// Create and position the dialog used to catch file drops
+		calibrateDropForm();
 
-        controlPanelForm = new ControlPanelForm();
+		controlPanelForm = new ControlPanelForm();
 
-        // Used as in lieu of the standard AWT popup menu used by TrayIcon
-        popupMenu = ExtendedPopupMenu.getExtendedPopupMenu(this, controlPanelForm);
+		// Used as in lieu of the standard AWT popup menu used by TrayIcon
+		popupMenu = ExtendedPopupMenu.getExtendedPopupMenu(this, controlPanelForm);
 
-        loginForm = LoginForm.getLoginForm();
-        loginForm.setVisible(true);
+		loginForm = LoginForm.getLoginForm();
+		loginForm.setVisible(true);
 
-        // Brings the tray icon to the front of the display
-        java.util.Timer timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (!popupMenu.isVisible()) {
-                    dropForm.toFront();
-                }
-            }
-        }, 0, 1000);
+		// Brings the tray icon to the front of the display
+		java.util.Timer timer = new java.util.Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if (!popupMenu.isVisible()) {
+					dropForm.toFront();
+				}
+			}
+		}, 0, 1000);
 
-        // Provide the message handler the tray icon for displaying tray icon messages
-	    MessageHandler.setTrayIcon(this);
-    }
+		// Provide the message handler the tray icon for displaying tray icon messages
+		MessageHandler.setTrayIcon(this);
+	}
 
-    private GraphicsDevice getDeviceWithTrayIcon() throws RuntimeException {
-        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice[] devices = environment.getScreenDevices();
+	private GraphicsDevice getDeviceWithTrayIcon() throws RuntimeException {
+		GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] devices = environment.getScreenDevices();
 
-        for (GraphicsDevice device : devices) {
-            if (deviceContainsTrayIcon(device))
-                return device;
-        }
+		for (GraphicsDevice device : devices) {
+			if (deviceContainsTrayIcon(device))
+				return device;
+		}
 
-        throw new RuntimeException("Could not locate the tray icon!");
-    }
-    
-    private boolean deviceContainsTrayIcon(GraphicsDevice device) {
-        Robot robot;
-        try {
-            robot = new Robot(device);
-        } catch (AWTException e) {
-            MessageHandler.postMessage("Robot Failure", "Could not create a screen capture.", LoggingDao.Status.Error);
-            return false;
-        }
+		throw new RuntimeException("Could not locate the tray icon!");
+	}
 
-        int trayWidth = trayIcon.getSize().width;
-        int trayHeight = trayIcon.getSize().height;
-        BufferedImage randomImage = new RandomImage(trayWidth, trayHeight,
-                RandomImage.ImageStyle.Stripe3Column).getImage();
+	private boolean deviceContainsTrayIcon(GraphicsDevice device) {
+		Robot robot;
+		try {
+			robot = new Robot(device);
+		} catch (AWTException e) {
+			MessageHandler.postMessage("Robot Failure", "Could not create a screen capture.", LoggingDao.Status.Error);
+			return false;
+		}
 
-        trayIcon.setImage(randomImage);
-        BufferedImage screenCapture = robot.createScreenCapture(
-                new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-        trayIcon.setImage(ImageDao.getImage("tray_icon.png"));
+		int trayWidth = trayIcon.getSize().width;
+		int trayHeight = trayIcon.getSize().height;
+		BufferedImage randomImage = new RandomImage(trayWidth, trayHeight,
+				RandomImage.ImageStyle.Stripe3Column).getImage();
 
-        imageLocator = new ImageLocator(screenCapture, randomImage);
-        imageLocator.search(2);
+		trayIcon.setImage(randomImage);
+		BufferedImage screenCapture = robot.createScreenCapture(
+				new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+		trayIcon.setImage(ImageDao.getImage("tray_icon.png"));
 
-        return imageLocator.isImageFound();
-    }
+		imageLocator = new ImageLocator(screenCapture, randomImage);
+		imageLocator.search(2);
 
-    public void calibrateDropForm() {
-        if (dropForm != null) {
-            dropForm.setVisible(false);
-        }
+		return imageLocator.isImageFound();
+	}
 
-        try {
-            GraphicsDevice device = getDeviceWithTrayIcon();
+	public void calibrateDropForm() {
+		if (dropForm != null) {
+			dropForm.setVisible(false);
+		}
 
-            if (device != null) {
-                if (dropForm == null) {
-                    dropForm = new DropForm(this.getSize(), this);
-                }
+		try {
+			GraphicsDevice device = getDeviceWithTrayIcon();
 
-                dropForm.setLocation(((int)(imageLocator.getFirstOccurrence().getX() + device.getDefaultConfiguration().getBounds().getX())),
-                        (int)(imageLocator.getFirstOccurrence().getY() + device.getDefaultConfiguration().getBounds().getY()));
-            }
-        } catch (RuntimeException e) {
-            MessageHandler.postMessage("Runtime Exception",
-                    "Could not locate the system tray icon", LoggingDao.Status.Error);
-        }
+			if (device != null) {
+				if (dropForm == null) {
+					dropForm = new DropForm(this.getSize(), this);
+				}
 
-        if (dropForm != null) {
-            dropForm.setVisible(true);
-        }
-    }
+				dropForm.setLocation(((int) (imageLocator.getFirstOccurrence().getX() + device.getDefaultConfiguration().getBounds().getX())),
+						(int) (imageLocator.getFirstOccurrence().getY() + device.getDefaultConfiguration().getBounds().getY()));
+			}
+		} catch (RuntimeException e) {
+			MessageHandler.postMessage("Runtime Exception",
+					"Could not locate the system tray icon", LoggingDao.Status.Error);
+		}
 
-    private class trayMouseListener implements MouseListener {
-        public void mouseClicked(MouseEvent event) {}
-        public void mouseEntered(MouseEvent event) {}
-        public void mouseExited(MouseEvent event) {}
-        public void mousePressed(MouseEvent event) {}
-        public void mouseReleased(MouseEvent event) {
-            popupMenu.showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
-        }
-    }
+		if (dropForm != null) {
+			dropForm.setVisible(true);
+		}
+	}
+
+	private class trayMouseListener implements MouseListener {
+		public void mouseClicked(MouseEvent event) {
+		}
+
+		public void mouseEntered(MouseEvent event) {
+		}
+
+		public void mouseExited(MouseEvent event) {
+		}
+
+		public void mousePressed(MouseEvent event) {
+		}
+
+		public void mouseReleased(MouseEvent event) {
+			popupMenu.showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
+		}
+	}
 }

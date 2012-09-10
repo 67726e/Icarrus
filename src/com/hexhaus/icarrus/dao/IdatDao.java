@@ -37,8 +37,11 @@ public class IdatDao {
 			in = new BufferedReader(new FileReader(idatFile));
 			blocks = readIdatFromBuffer(in, blockStart);
 		} finally {
-			try { if (in != null) in.close(); }
-			catch (Exception e) {e.printStackTrace();}
+			try {
+				if (in != null) in.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		return blocks;
@@ -48,7 +51,7 @@ public class IdatDao {
 	 * Method used to read in an IDAT file from a reader and parses it into blocks
 	 * in a standardized format.
 	 *
-	 * @param in The reader from which the parser gets its content
+	 * @param in         The reader from which the parser gets its content
 	 * @param blockStart The name for the start of an IDAT block
 	 * @return A List/Map object containing the parsed data, or null if it could not be read
 	 * @throws IOException Thrown if there is a problem reading the IDAT data
@@ -61,15 +64,15 @@ public class IdatDao {
 
 		while ((line = in.readLine()) != null) {
 			if (inBlock) {
-                // Check if the current block has ended
+				// Check if the current block has ended
 				if (line.equals("}")) {
 					inBlock = false;
-                    // Add the prior block to the list of blocks for storage
+					// Add the prior block to the list of blocks for storage
 					if (block != null) blocks.add(block);
 				} else {
 					int index = line.indexOf("=");
-                    // Skip this line if it doesn't contain a valid key/value pair
-					if (index == -1 || index == 0 || line.length()  < 3 ||
+					// Skip this line if it doesn't contain a valid key/value pair
+					if (index == -1 || index == 0 || line.length() < 3 ||
 							(line.length() - index) == 1) continue;
 
 					String key = line.substring(0, index).trim();
@@ -77,10 +80,10 @@ public class IdatDao {
 					block.put(key, value);
 				}
 			} else {
-                // Check if the parser has entered a new block
+				// Check if the parser has entered a new block
 				if (line.equals(blockStart)) {
 					inBlock = true;
-                    // Create a new Map to hold the new block
+					// Create a new Map to hold the new block
 					block = new HashMap<String, String>();
 				}
 			}
@@ -89,7 +92,7 @@ public class IdatDao {
 		return blocks;
 	}
 
-	
+
 	/**
 	 * Method writes out an IDAT data block to the IDAT file for this object from the provided key/value map
 	 * and the existing block data information.
@@ -98,21 +101,21 @@ public class IdatDao {
 	 * @throws IOException Thrown if an exception occurs while writing the data to the IDAT file
 	 */
 	public void appendBlock(Map<String, String> block) throws IOException {
-        // Create the IDAT file if it does not already exist
+		// Create the IDAT file if it does not already exist
 		if (!idatFile.exists()) idatFile.createNewFile();
 		BufferedWriter out = null;
 
 		try {
 			out = new BufferedWriter(new FileWriter(idatFile));
 
-            // Start the IDAT block
+			// Start the IDAT block
 			out.write("\n" + blockStart);
 			for (Map.Entry<String, String> entry : block.entrySet()) {
-                // Write out the key/value pairs
+				// Write out the key/value pairs
 				out.write("\n" + entry.getKey() + "=" + entry.getValue());
 			}
 
-            // Close the IDAT block
+			// Close the IDAT block
 			out.write("}");
 
 		} finally {
@@ -123,7 +126,7 @@ public class IdatDao {
 				}
 			} catch (Exception e) {
 				MessageHandler.postMessage("IO Error",
-                        "Unable to close output stream for " + idatFile.getName(), LoggingDao.Status.Error);
+						"Unable to close output stream for " + idatFile.getName(), LoggingDao.Status.Error);
 			}
 		}
 	}

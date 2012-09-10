@@ -19,48 +19,58 @@ import java.util.Map;
  */
 class HistoryTab extends JPanel {
 	private static JTable historyTable;
-    private static DefaultTableModel tableModel;
-    private final int SCROLL_WIDTH = 440, SCROLL_HEIGHT = 150;
+	private static DefaultTableModel tableModel;
+	private final int SCROLL_WIDTH = 440, SCROLL_HEIGHT = 150;
 	private static IdatDao historyDao;
 
-    public HistoryTab() {
-    	this.setLayout(null);
+	public HistoryTab() {
+		this.setLayout(null);
 
-		historyDao = new IdatDao("File", "data/history.idat");				// Create DAO for reading/writing to the history file
+		historyDao = new IdatDao("File", "data/history.idat");                // Create DAO for reading/writing to the history file
 		List<Map<String, String>> history = null;
-		try { history = historyDao.readIdatFile(); }						// Convert the IDAT data into a format readable by the JTable
-		catch (IOException ignore) {ignore.printStackTrace();}
+		try {
+			history = historyDao.readIdatFile();
+		}                        // Convert the IDAT data into a format readable by the JTable
+		catch (IOException ignore) {
+			ignore.printStackTrace();
+		}
 		// TODO: Log error and announce to user
 
 		Object[][] data = toTableData(history);
-        String[] columns = {"File Name", "URL", "Size", "Date"};
+		String[] columns = {"File Name", "URL", "Size", "Date"};
 
-        tableModel = new DefaultTableModel(data, columns);
-        historyTable = new JTable(tableModel);
-        historyTable.setPreferredScrollableViewportSize(new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT));
-        historyTable.setFillsViewportHeight(true);
-        historyTable.addMouseListener(new HistoryMouseListener());
+		tableModel = new DefaultTableModel(data, columns);
+		historyTable = new JTable(tableModel);
+		historyTable.setPreferredScrollableViewportSize(new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT));
+		historyTable.setFillsViewportHeight(true);
+		historyTable.addMouseListener(new HistoryMouseListener());
 
-        JScrollPane scrollPane = new JScrollPane(historyTable);
-        scrollPane.setBounds(20, 20, SCROLL_WIDTH, SCROLL_HEIGHT);
-        this.add(scrollPane);
-    }
+		JScrollPane scrollPane = new JScrollPane(historyTable);
+		scrollPane.setBounds(20, 20, SCROLL_WIDTH, SCROLL_HEIGHT);
+		this.add(scrollPane);
+	}
 
-    private static void insertRow(Object[] data) {
+	private static void insertRow(Object[] data) {
 		tableModel.insertRow(0, data);
 
-		Map<String, String> block = new HashMap<String, String>();		// Convert the Object into a Map to be written to the IDAT file
-		block.put("name", (String)data[0]);
-		block.put("url", (String)data[1]);
-		block.put("size", (String)data[2]);
-		block.put("date", (String)data[3]);
+		Map<String, String> block = new HashMap<String, String>();        // Convert the Object into a Map to be written to the IDAT file
+		block.put("name", (String) data[0]);
+		block.put("url", (String) data[1]);
+		block.put("size", (String) data[2]);
+		block.put("date", (String) data[3]);
 
-		try { historyDao.appendBlock(block); }							// Write out the Map data to the IDAT history file
-		catch (IOException e) {e.printStackTrace();}
+		try {
+			historyDao.appendBlock(block);
+		}                            // Write out the Map data to the IDAT history file
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 		// TODO: Log this exception
 	}
 
-	public void clearTable() {tableModel.getDataVector().removeAllElements();}
+	public void clearTable() {
+		tableModel.getDataVector().removeAllElements();
+	}
 
 
 	/**
@@ -70,8 +80,10 @@ class HistoryTab extends JPanel {
 	 * @param list Object containing the parsed history IDAT file
 	 * @return An Object[][] if data is available, null otherwise
 	 */
-     private Object[][] toTableData(List<Map<String, String>> list) {
-     	if (list == null) { return null; }
+	private Object[][] toTableData(List<Map<String, String>> list) {
+		if (list == null) {
+			return null;
+		}
 		Object[][] data = new Object[list.size()][0];
 
 		for (int i = 0; i < data.length; i++) {
@@ -86,14 +98,23 @@ class HistoryTab extends JPanel {
 			data[i] = blockData;
 		}
 
-        return data;
-     }
+		return data;
+	}
 
-     private class HistoryMouseListener implements MouseListener {
-     	public void mouseClicked(MouseEvent event) {}
-        public void mouseEntered(MouseEvent event) {}
-        public void mouseExited(MouseEvent event) {}
-        public void mousePressed(MouseEvent event) {}
-        public void mouseReleased(MouseEvent event) {}
-     }
+	private class HistoryMouseListener implements MouseListener {
+		public void mouseClicked(MouseEvent event) {
+		}
+
+		public void mouseEntered(MouseEvent event) {
+		}
+
+		public void mouseExited(MouseEvent event) {
+		}
+
+		public void mousePressed(MouseEvent event) {
+		}
+
+		public void mouseReleased(MouseEvent event) {
+		}
+	}
 }

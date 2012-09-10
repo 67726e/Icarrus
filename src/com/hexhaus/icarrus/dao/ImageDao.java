@@ -16,26 +16,27 @@ import java.util.logging.Logger;
  * Time: 10:32 PM
  */
 public class ImageDao {
-    private static final String rootPath = "resource/images/";
+	private static final String rootPath = "resource/images/";
 
-    private ImageDao() {}
+	private ImageDao() {
+	}
 
-    public static Image getImage(String imageFileName) {
-        File imageFile = new File(rootPath + imageFileName);
-        Image image;
+	public static Image getImage(String imageFileName) {
+		File imageFile = new File(rootPath + imageFileName);
+		Image image;
 
-        if (imageFile.exists()) {
-            image = Toolkit.getDefaultToolkit().getImage(rootPath + imageFileName);
-        } else {
-            try {
-                image = ImageIO.read(ClassLoader.getSystemResource(rootPath + imageFileName));
-            } catch (Exception e) {
-                MessageHandler.postMessage("IO Error",
-                        "Could not load image: " + rootPath + imageFileName, LoggingDao.Status.Error);
-                image = new BufferedImage(0, 0, BufferedImage.TYPE_INT_RGB);
-            }
-        }
+		if (imageFile.exists()) {
+			image = Toolkit.getDefaultToolkit().getImage(rootPath + imageFileName);
+		} else {
+			try {
+				image = ImageIO.read(ClassLoader.getSystemResource(rootPath + imageFileName));
+			} catch (Exception e) {
+				MessageHandler.postMessage("IO Error",
+						"Could not load image: " + rootPath + imageFileName, LoggingDao.Status.Error);
+				image = new BufferedImage(0, 0, BufferedImage.TYPE_INT_RGB);
+			}
+		}
 
-        return image;
-    }
+		return image;
+	}
 }

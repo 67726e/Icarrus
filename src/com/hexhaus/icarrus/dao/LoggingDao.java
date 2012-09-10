@@ -27,17 +27,21 @@ public class LoggingDao {
 			this.paneType = paneType;
 		}
 
-		public TrayIcon.MessageType toTrayType() {return this.trayType;}
-		public int toPaneType() {return this.paneType;}
+		public TrayIcon.MessageType toTrayType() {
+			return this.trayType;
+		}
+
+		public int toPaneType() {
+			return this.paneType;
+		}
 	}
 
 	/**
-	 *
 	 * @param title
 	 * @param message
 	 * @param status
 	 */
 	public static void logToFile(String title, String message, LoggingDao.Status status) {
-        
+
 	}
 }
