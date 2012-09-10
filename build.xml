@@ -18,7 +18,6 @@
     </path>
 
     <property name="buildClasspath" refid="buildLibs" />
-    <property name="runClasspath" refid="runLibs" />
     <property name="testClasspath" refid="testLibs" />
 
     <property name="build.src" value="src/" />
@@ -59,7 +58,7 @@
 	<target name="jar" depends="compile">
         <!-- Copy over required libs -->
         <copy todir="${build.libs}">
-            <fileset dir="lib/run/" />
+            <fileset dir="build/" />
         </copy>
         <copy todir="${build.resource}">
             <fileset dir="resource/" />
