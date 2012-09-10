@@ -19,7 +19,7 @@ import java.awt.event.KeyListener;
  * Time: 10:20 PM
  */
 class LoginForm extends JFrame {
-	private final int WIDTH = 300, HEIGHT = 200;
+	private static final int WIDTH = 300, HEIGHT = 200;
 	private static LoginForm loginForm;
 
 	public static LoginForm getLoginForm() {
@@ -32,7 +32,7 @@ class LoginForm extends JFrame {
 
 	public static void display(boolean status) {
 		if (loginForm != null) {
-			loginForm.setVisible(true);
+			loginForm.setVisible(status);
 		}
 	}
 
@@ -45,8 +45,10 @@ class LoginForm extends JFrame {
 	private LoginForm() {
 		GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device = environment.getDefaultScreenDevice();
-		DisplayMode displayMode = device.getDisplayMode();                                      // Get object containing the size of the available screen real estate
-		int windowX = ((displayMode.getWidth() - WIDTH) / 2);                                   // Calculate X coordinate so the window is horizontally centered
+		// Get object containing the size of the available screen real estate
+		DisplayMode displayMode = device.getDisplayMode();
+		// Calculate X coordinate so the window is horizontally centered
+		int windowX = ((displayMode.getWidth() - WIDTH) / 2);
 		int windowY = ((displayMode.getHeight() - HEIGHT) / 2);
 
 		getContentPane().add(new LoginPanel());
@@ -63,7 +65,8 @@ class LoginForm extends JFrame {
 		private JCheckBox rememberMe;
 
 		public LoginPanel() {
-			EnterListener enterListener = new EnterListener();                                  // Listener object for all login initiating events
+			// Listener object for all login initiating events
+			EnterListener enterListener = new EnterListener();
 			this.setLayout(null);
 
 			JLabel username = new JLabel("Username:");
@@ -86,7 +89,7 @@ class LoginForm extends JFrame {
 			this.add(passwordField);
 
 			rememberMe = new JCheckBox("Remember Me");
-			rememberMe.setBounds(127, 90, 95, 20);
+			rememberMe.setBounds(127, 90, 120, 20);
 			this.add(rememberMe);
 
 			JButton login = new JButton("Login");
@@ -96,18 +99,25 @@ class LoginForm extends JFrame {
 
 			JButton cancel = new JButton("Cancel");
 			cancel.setBounds(150, 135, 80, 25);
+			cancel.addActionListener(new CancelListener());
 			this.add(cancel);
 
-			usernameField.requestFocusInWindow();                                               // Start off the first field with focus for one of those UX niceties
+			// Start off the first field with focus for one of those UX niceties
+			usernameField.requestFocusInWindow();
 		}
 
 		private void loginClicked() {
-			LoginDao loginServerDAO = new LoginDao(
-					usernameField.getText(), passwordField.getPassword());                  // Create object to interface with the login server
-			if (loginServerDAO.getLoginStatus()) {                                              // Check for a successful login
-				if (rememberMe.isSelected()) CredentialDao.storeCredentials(
-						usernameField.getText(), passwordField.getPassword());                  // Store the username and password in a file for automatic login
-				loginForm.dispose();                                                            // Clear up resources used by this form
+			// Create object to interface with the login server
+			LoginDao loginServerDAO = new LoginDao(usernameField.getText(), passwordField.getPassword());
+			// Check for a successful login
+			if (loginServerDAO.getLoginStatus()) {
+				if (rememberMe.isSelected()) {
+					// Store the username and password in a file for automatic login
+					CredentialDao.storeCredentials(usernameField.getText(), passwordField.getPassword());
+				}
+
+				// Clear up resources used by this form
+				loginForm.dispose();
 				ExtendedTrayIcon.setLoginStatus("Logout");
 				MessageHandler.postMessage("Logged In", "You have been successfully logged in.", LoggingDao.Status.Info);
 			}
@@ -121,13 +131,16 @@ class LoginForm extends JFrame {
 			}
 
 			public void keyPressed(KeyEvent event) {
-				if (event.getKeyCode() == KeyEvent.VK_ENTER) {                                  // Check if the key pressed was ENTER
-					loginClicked();                                                             // Initiate a login if ENTER was pressed
+				// Check if the key pressed was ENTER
+				if (event.getKeyCode() == KeyEvent.VK_ENTER) {
+					// Initiate a login if ENTER was pressed
+					loginClicked();
 				}
 			}
 
 			public void actionPerformed(ActionEvent event) {
-				loginClicked();                                                                 // Initiate a login action when the button is clicked
+				// Initiate a login action when the button is clicked
+				loginClicked();
 			}
 		}
 
