@@ -17,10 +17,10 @@ import java.awt.image.BufferedImage;
 import java.util.TimerTask;
 
 public class ExtendedTrayIcon extends TrayIcon {
-	private TrayIcon trayIcon = this;                                                           // Get a pointer to the TrayIcon so it can be removed on exit
-	private LoginForm loginForm;                                                                // Form to allow the user to login
-	private ControlPanelForm controlPanelForm;                                                  // Form for upload history, application settings, and application about page
-	private DropForm dropForm;                                                                  // Form that accepts the user's file drops
+	private TrayIcon trayIcon = this;
+	private LoginForm loginForm;
+	private ControlPanelForm controlPanelForm;
+	private DropForm dropForm;
 	private ImageLocator imageLocator;
 	private ExtendedPopupMenu popupMenu;
 
@@ -31,7 +31,7 @@ public class ExtendedTrayIcon extends TrayIcon {
 	public ExtendedTrayIcon(Image image) {
 		super(image);
 		this.setImageAutoSize(false);
-		this.addMouseListener(new trayMouseListener());
+		this.addMouseListener(new TrayMouseListener());
 
 		try {
 			SystemTray.getSystemTray().add(this);
@@ -129,8 +129,9 @@ public class ExtendedTrayIcon extends TrayIcon {
 		}
 	}
 
-	private class trayMouseListener implements MouseListener {
+	private class TrayMouseListener implements MouseListener {
 		public void mouseClicked(MouseEvent event) {
+			System.out.println("CLICKED");
 		}
 
 		public void mouseEntered(MouseEvent event) {
@@ -143,7 +144,8 @@ public class ExtendedTrayIcon extends TrayIcon {
 		}
 
 		public void mouseReleased(MouseEvent event) {
-			popupMenu.showPopupMenu(event);                                                               // Call action to show the Swing based popup-menu
+			// Call action to show the Swing based popup-menu
+			ExtendedPopupMenu.showPopupMenu(event);
 		}
 	}
 }

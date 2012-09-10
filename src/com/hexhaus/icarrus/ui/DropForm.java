@@ -21,7 +21,6 @@ import java.util.List;
  * Time: 7:26 PM
  */
 class DropForm extends JDialog {
-	private ExtendedTrayIcon trayIcon;
 
 	/**
 	 * Creates a new undecorated, non-focusing, ever-present form for use as a drop target
@@ -31,7 +30,6 @@ class DropForm extends JDialog {
 	 */
 	public DropForm(Dimension size, ExtendedTrayIcon trayIcon) {
 		//super(null, "", ModalityType.MODELESS, device.getDefaultConfiguration());
-		this.trayIcon = trayIcon;
 
 		this.setUndecorated(true);
 		this.setAlwaysOnTop(true);
@@ -44,9 +42,10 @@ class DropForm extends JDialog {
 		try {
 			Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
 			Method setWindowOpacity = awtUtilities.getMethod("setWindowOpacity", Window.class, float.class);
-			//setWindowOpacity.invoke(null, this, 1f);
+			setWindowOpacity.invoke(null, this, 1f);
 		} catch (Exception e) {
-			MessageHandler.postMessage("Translucency Error", "Required translucency methods could not be accessed.", LoggingDao.Status.FatalError);
+			MessageHandler.postMessage("Translucency Error",
+					"Required translucency methods could not be accessed.", LoggingDao.Status.FatalError);
 		}
 	}
 
@@ -63,7 +62,8 @@ class DropForm extends JDialog {
 			dropTargetComponent.addMouseListener(new DropMouseListener());
 			this.add(dropTargetComponent);
 
-			DropTarget dropTarget = new DropTarget(dropTargetComponent, new DropTargetListenerImpl());                  // Implement the drop target listener on the drop component for this form
+			// Implement the drop target listener on the drop component for this form
+			new DropTarget(dropTargetComponent, new DropTargetListenerImpl());
 		}
 
 		private class DropMouseListener implements MouseListener {
@@ -99,6 +99,7 @@ class DropForm extends JDialog {
 			public void dropActionChanged(DropTargetDragEvent event) {
 			}
 
+			@SuppressWarnings("unchecked")
 			public void drop(DropTargetDropEvent event) {
 				Transferable transferable = event.getTransferable();
 				java.util.List<DataFlavor> flavors = event.getCurrentDataFlavorsAsList();
@@ -107,16 +108,21 @@ class DropForm extends JDialog {
 						event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 
 						try {
-							List<File> files = (List<File>) transferable.getTransferData(flavor);                        // Acquire a list of all the dropped files
+							// Acquire a list of all the dropped files
+							List<File> files = (List<File>) transferable.getTransferData(flavor);
 
-							if (files.size() == 1)
-								uploadDAO.uploadFile(files.get(0));                                    // If there is a singular file, upload it
+							if (files.size() == 1) {
+								// If there is a singular file, upload it
+								uploadDAO.uploadFile(files.get(0));
+							}
 							//else if (files.size() > 1) uploadDAO.uploadFiles(files);
 							// TODO: Create method to allow a list of files to be passed in and uploaded
 						} catch (Exception e) {
 							e.printStackTrace();
-							MessageHandler.postMessage("Drop Error", "The dropped file(s) could not be processed.", LoggingDao.Status.Error);
-							event.rejectDrop();                                                                         // Reject an invalid drop operation
+							MessageHandler.postMessage("Drop Error",
+									"The dropped file(s) could not be processed.", LoggingDao.Status.Error);
+							// Reject an invalid drop operation
+							event.rejectDrop();
 							return;
 						}
 					}
