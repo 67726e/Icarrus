@@ -2,15 +2,12 @@ package com.hexhaus.icarrus.ui;
 
 import com.hexhaus.icarrus.dao.ImageDao;
 import com.hexhaus.icarrus.dao.LoggingDao;
-import com.hexhaus.icarrus.handler.CredentialHandler;
+
 import com.hexhaus.icarrus.handler.MessageHandler;
 import com.hexhaus.imagelocator.ImageLocator;
 import com.hexhaus.imagelocator.RandomImage;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -18,14 +15,12 @@ import java.util.TimerTask;
 
 public class ExtendedTrayIcon extends TrayIcon {
 	private TrayIcon trayIcon = this;
-	private LoginForm loginForm;
-	private ControlPanelForm controlPanelForm;
 	private DropForm dropForm;
 	private ImageLocator imageLocator;
 	private ExtendedPopupMenu popupMenu;
 
 	public static void setLoginStatus(String status) {
-		//login.setText(status);
+//		login.setText(status);
 	}
 
 	public ExtendedTrayIcon(Image image) {
@@ -43,12 +38,12 @@ public class ExtendedTrayIcon extends TrayIcon {
 		// Create and position the dialog used to catch file drops
 		calibrateDropForm();
 
-		controlPanelForm = new ControlPanelForm();
+		ControlPanelForm controlPanelForm = new ControlPanelForm();
 
 		// Used as in lieu of the standard AWT popup menu used by TrayIcon
 		popupMenu = ExtendedPopupMenu.getExtendedPopupMenu(this, controlPanelForm);
 
-		loginForm = LoginForm.getLoginForm();
+		LoginForm loginForm = LoginForm.getLoginForm();
 		loginForm.setVisible(true);
 
 		// Brings the tray icon to the front of the display
@@ -131,16 +126,19 @@ public class ExtendedTrayIcon extends TrayIcon {
 
 	private class TrayMouseListener implements MouseListener {
 		public void mouseClicked(MouseEvent event) {
-			System.out.println("CLICKED");
+
 		}
 
 		public void mouseEntered(MouseEvent event) {
+
 		}
 
 		public void mouseExited(MouseEvent event) {
+
 		}
 
 		public void mousePressed(MouseEvent event) {
+			// TODO: Add display of an alternative file drop
 		}
 
 		public void mouseReleased(MouseEvent event) {

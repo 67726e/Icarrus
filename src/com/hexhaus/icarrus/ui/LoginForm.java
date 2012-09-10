@@ -90,7 +90,7 @@ class LoginForm extends JFrame {
 
 			rememberMe = new JCheckBox("Remember Me");
 			rememberMe.setBounds(127, 90, 120, 20);
-			this.add(rememberMe);
+//			this.add(rememberMe);
 
 			JButton login = new JButton("Login");
 			login.setBounds(50, 135, 80, 25);
